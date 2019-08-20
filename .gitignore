@@ -59,3 +59,18 @@ typings/
 
 # next.js build output
 .next
+
+src/**/*.map
+src/**/*.js
+features/**/*.map
+features/**/*.js
+package-lock.json
+
+
+**/.DS_Store
+**/.vscode
+*.swp
+.idea
+\#*\#
+~*.docx
+
