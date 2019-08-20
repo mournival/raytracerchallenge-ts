@@ -4,7 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "particle": "./node_modules/ts-node/dist/bin.js particle.ts",
+    "scratch": "./node_modules/ts-node/dist/bin.js src/scratch.ts",
+    "particle": "./node_modules/ts-node/dist/bin.js src/particle.ts",
     "test": "tsc && cucumber-js features/"
   },
   "keywords": [],

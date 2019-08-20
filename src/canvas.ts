@@ -19,13 +19,10 @@ export class Canvas {
                 r += Color.asPPMString(canvas.colors[h][w]);
             }
 
-            let i = 0;
-            while (i < r.length) {
-                let items = r.substring(i, i + 67);
-                if (items.length !== 0) {
-                    ppm.push(items);
-                }
-                i += 68;
+            let strings = r.split(' ');
+            while (strings.length > 0) {
+                ppm.push(strings.slice(0, 17).join(' '));
+                strings = strings.slice(17);
             }
         }
         ppm.push('');
