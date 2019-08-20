@@ -112,12 +112,12 @@ Scenario: Transposing the identity matrix
   Given A ← transpose(identity_matrix)
   Then A = identity_matrix
 
-#Scenario: Calculating the determinant of a 2x2 matrix
-#  Given the following 2x2 matrix A:
-#    |  1 | 5 |
-#    | -3 | 2 |
-#  Then determinant(A) = 17
-#
+Scenario: Calculating the determinant of a 2x2 matrix
+  Given the following 2x2 matrix A:
+    |  1 | 5 |
+    | -3 | 2 |
+  Then determinant(A) = 17
+
 #Scenario: A submatrix of a 3x3 matrix is a 2x2 matrix
 #  Given the following 3x3 matrix A:
 #    |  1 | 5 |  0 |

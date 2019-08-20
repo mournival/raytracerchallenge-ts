@@ -89,6 +89,13 @@ class MatricesSteps {
         expect(Matrix.equals(actual, expected)).to.be.true;
     }
 
+    @then(/^determinant\((\w+)\) = (.*)$/)
+    public thenDeterminantEquals(matId: string, value: string) {
+        const actual = Matrix.determinant(this.workspace.matrices[matId]);
+        const expected = parseFloat(value);
+        expect(actual).to.be.closeTo(expected, Matrix.EPSILON);
+    }
+
     private static createMatrixFromDataTable(dataTable: { rawTable: [][] }) {
         const data = dataTable.rawTable;
         const rows = data.length;

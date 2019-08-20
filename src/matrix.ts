@@ -56,7 +56,7 @@ export class Matrix {
     }
 
     static identity(dim: number): Matrix {
-        let  m = new Matrix(dim, dim);
+        let m = new Matrix(dim, dim);
         for (let i = 0; i < dim; ++i) {
             m.data[i][i] = 1;
         }
@@ -71,6 +71,15 @@ export class Matrix {
             }
         }
         return mPrime;
+    }
+
+    static determinant(m: Matrix): number {
+        return Matrix.det2(m);
+    }
+
+    private static det2(m: Matrix): number {
+        const d = m.data;
+        return d[0][0] * d[1][1] - d[0][1] * d[1][0];
     }
 
     data: number[][] = [];
