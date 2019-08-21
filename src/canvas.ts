@@ -20,9 +20,19 @@ export class Canvas {
             }
 
             let strings = r.split(' ');
+            // while (strings.length > 0) {
+            //     ppm.push(strings.slice(0, 17).join(' '));
+            //     strings = strings.slice(17);
+            // }
             while (strings.length > 0) {
-                ppm.push(strings.slice(0, 17).join(' '));
-                strings = strings.slice(17);
+                let ll = 0;
+                let i = 0;
+                while (ll < 67 && i < strings.length) {
+                    ll += strings[i].length + 1;
+                    ++i;
+                }
+                ppm.push(strings.slice(0, i).join(' '));
+                strings = strings.slice(i);
             }
         }
         ppm.push('');
