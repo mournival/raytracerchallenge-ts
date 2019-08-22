@@ -156,7 +156,7 @@ class MatricesSteps {
     @then(/^inverse\((\w+)\) is the following (\d+)x(\d+) matrix:$/)
     public inverseEquals(matId: string, dimR: string, dimC: string, dataTable: { rawTable: [][] }) {
         const actual = Matrix.inverse(this.workspace.matrices[matId]);
-        
+
         const expectedR = parseInt(dimR);
         expect(expectedR).to.be.eq(actual.data.length);
         const expectedC = parseInt(dimC);
