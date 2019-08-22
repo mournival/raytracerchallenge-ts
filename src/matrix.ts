@@ -74,7 +74,41 @@ export class Matrix {
     }
 
     static determinant(m: Matrix): number {
-        return Matrix.det2(m);
+        if (m.data.length === 2) {
+            return Matrix.det2(m);
+        }
+
+        let dt: number = 0;
+        for (let c = 0; c < m.data[0].length; ++c) {
+            dt = dt + m.data[0][c] * Matrix.cofactor(m, 0, c);
+        }
+        return dt;
+    }
+
+    static subMatrix(m: Matrix, rrow: number, rcol: number): Matrix {
+        const mMinor = new Matrix(m.data.length - 1, m.data[0].length - 1);
+
+        for (let r = 0; r < m.data.length; ++r) {
+            for (let c = 0; c < m.data[0].length; ++c) {
+                if (r != rrow && c != rcol) {
+                    mMinor.data[r < rrow ? r : r - 1][c < rcol ? c : c - 1] = m.data[r][c];
+                }
+            }
+        }
+        return mMinor;
+    }
+
+    static minor(m: Matrix, r: number, c: number): number {
+        return Matrix.determinant(Matrix.subMatrix(m, r, c));
+    }
+
+    static cofactor(m: Matrix, r: number, c: number): number {
+        const coeff = (r + c) % 2 === 0 ? 1 : -1;
+        return coeff * Matrix.minor(m, r, c);
+    }
+
+    static isInvertible(m: Matrix) : boolean {
+        return Math.abs(Matrix.determinant(m)) > Matrix.EPSILON;
     }
 
     private static det2(m: Matrix): number {

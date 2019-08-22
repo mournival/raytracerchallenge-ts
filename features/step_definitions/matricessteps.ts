@@ -96,6 +96,44 @@ class MatricesSteps {
         expect(actual).to.be.closeTo(expected, Matrix.EPSILON);
     }
 
+    @then(/^submatrix\((\w+), (\d+), (\d+)\) is the following (\d+)x(\d+) matrix:$/)
+    public subMatrixEquals(matId: string, r: string, c: string, dimZ: string, dimY: string, dataTable: { rawTable: [][] }) {
+        const actual = Matrix.subMatrix(this.workspace.matrices[matId], parseInt(r), parseInt(c));
+        const expected = MatricesSteps.createMatrixFromDataTable(dataTable);
+        expect(Matrix.equals(actual, expected)).to.be.true;
+    }
+
+    @given(/^(\w+) ← submatrix\((\w+), (\d+), (\d+)\)$/)
+    public createSubmatrix(subMatId: string, matId: string, r: string, c: string) {
+        return this.workspace.matrices[subMatId] = Matrix.subMatrix(this.workspace.matrices[matId], parseInt(r), parseInt(c));
+    }
+
+    @then(/^minor\((\w+), (\d+), (\d+)\) = (.*)$/)
+    public minorEquals(matId: string, r: string, c: string, value: string) {
+        const actual = Matrix.minor(this.workspace.matrices[matId], parseInt(r), parseInt(c));
+        const expected = parseFloat(value);
+        expect(actual).to.be.closeTo(expected, Matrix.EPSILON);
+    }
+
+    @then(/^cofactor\((\w+), (\d+), (\d+)\) = (.*)$/)
+    public cofactorEquals(matId: string, r: string, c: string, value: string) {
+        const actual = Matrix.cofactor(this.workspace.matrices[matId], parseInt(r), parseInt(c));
+        const expected = parseFloat(value);
+        expect(actual).to.be.closeTo(expected, Matrix.EPSILON);
+    }
+
+    @then(/^(\w+) is invertible$/)
+    public isInvertible(matId: string) {
+        const actual = Matrix.isInvertible(this.workspace.matrices[matId]);
+        expect(actual).to.be.true;
+    }
+
+    @then(/^(\w+) is not invertible$/)
+    public isNotInvertible(matId: string) {
+        const actual = Matrix.isInvertible(this.workspace.matrices[matId]);
+        expect(actual).to.be.false;
+    }
+
     private static createMatrixFromDataTable(dataTable: { rawTable: [][] }) {
         const data = dataTable.rawTable;
         const rows = data.length;
