@@ -252,3 +252,12 @@ Scenario: Calculating the inverse of a third matrix
 #      |  6 | -2 |  0 |  5 |
 #    And C ← A * B
 #  Then C * inverse(B) = A
+
+#Putting it together question (Not in original
+#-What happens when you invert the identity matrix
+  #-What do you get when you multiply A*inverse(A)
+  #-Is there any difference between inverse(A) and transpose(inverse(A))
+  #-if I(3)*v = v, what does 
+  # |1|0| 0|
+  # |0|2| 0| * v = ?
+  # |0|0| 1|
