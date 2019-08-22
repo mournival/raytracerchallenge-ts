@@ -134,6 +134,38 @@ class MatricesSteps {
         expect(actual).to.be.false;
     }
 
+    @given(/^(\w+) ← inverse\((\w+)\)$/)
+    public givenInverse(matBId: string, matAId: string) {
+        this.workspace.matrices[matBId] = Matrix.inverse(this.workspace.matrices[matAId]);
+    }
+
+    @then(/^(\w+)\[(\d+),(\d+)] = ([+-]?\d*?)\/(\d+)$/)
+    public matrixCellRationalEquals(matId: string, r: string, c: string, p: string, q: string) {
+        const actual = this.workspace.matrices[matId].get(parseInt(r), parseInt(c));
+        const expectedValue = parseInt(p) / parseFloat(q);
+        expect(actual).to.be.closeTo(expectedValue, Matrix.EPSILON);
+    }
+
+    @then(/^(\w+) is the following 4x4 matrix:$/)
+    public matrixResultEquals(matBId: string, dataTable: { rawTable: [][] }) {
+        const expected = MatricesSteps.createMatrixFromDataTable(dataTable);
+        const actual = this.workspace.matrices[matBId];
+        expect(Matrix.equals(actual, expected)).to.be.true;
+    }
+
+    @then(/^inverse\((\w+)\) is the following (\d+)x(\d+) matrix:$/)
+    public inverseEquals(matId: string, dimR: string, dimC: string, dataTable: { rawTable: [][] }) {
+        const actual = Matrix.inverse(this.workspace.matrices[matId]);
+        
+        const expectedR = parseInt(dimR);
+        expect(expectedR).to.be.eq(actual.data.length);
+        const expectedC = parseInt(dimC);
+        expect(expectedC).to.be.eq(actual.data[0].length);
+
+        const expectedA = MatricesSteps.createMatrixFromDataTable(dataTable);
+        expect(Matrix.equals(actual, expectedA)).to.be.true;
+    }
+
     private static createMatrixFromDataTable(dataTable: { rawTable: [][] }) {
         const data = dataTable.rawTable;
         const rows = data.length;

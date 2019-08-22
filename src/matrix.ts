@@ -107,13 +107,29 @@ export class Matrix {
         return coeff * Matrix.minor(m, r, c);
     }
 
-    static isInvertible(m: Matrix) : boolean {
+    static isInvertible(m: Matrix): boolean {
         return Math.abs(Matrix.determinant(m)) > Matrix.EPSILON;
     }
 
     private static det2(m: Matrix): number {
         const d = m.data;
         return d[0][0] * d[1][1] - d[0][1] * d[1][0];
+    }
+
+    static inverse(m: Matrix): Matrix {
+        if (!Matrix.isInvertible(m)) {
+            throw "Cannot invert this matrix";
+        }
+
+        const m_prime = new Matrix(m.data.length, m.data[0].length);
+        const det = Matrix.determinant(m);
+        for (let r = 0; r < m.data.length; ++r) {
+            for (let c = 0; c < m.data[0].length; ++c) {
+                const cofactorC = Matrix.cofactor(m, r, c);
+                m_prime.data[c][r] = cofactorC / det;
+            }
+        }
+        return m_prime;
     }
 
     data: number[][] = [];
