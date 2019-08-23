@@ -4,8 +4,11 @@ export class Tuple {
     static readonly EPSILON = 0.0001;
 
     static equals(lhs: Tuple, rhs: Tuple): boolean {
-        // console.log(lhs);
-        // console.log(rhs);
+        if (rhs.x === 1 && rhs.y == 16) {
+            console.log(lhs);
+            console.log(rhs);
+           }
+
 
         return Math.abs(lhs.x - rhs.x) < Tuple.EPSILON &&
             Math.abs(lhs.y - rhs.y) < Tuple.EPSILON &&

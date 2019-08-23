@@ -39,15 +39,24 @@ class MatricesSteps {
         this.workspace.matrices[matId] = MatricesSteps.createMatrixFromDataTable(dataTable);
     };
 
-
     @then(/^A = B$/)
     public matrixAEqualsB() {
         expect(Matrix.equals(this.workspace.matrices['A'], this.workspace.matrices['B'])).to.be.true;
     }
 
+    @then(/^C = B$/)
+    public matrixCEqualsB() {
+        expect(Matrix.equals(this.workspace.matrices['C'], this.workspace.matrices['B'])).to.be.true;
+    }
+
     @then(/^A != B$/)
     public matrixANotEqualsB() {
         expect(Matrix.equals(this.workspace.matrices['A'], this.workspace.matrices['B'])).to.be.false;
+    }
+
+    @then(/^C!= B$/)
+    public matrixCNotEqualsB() {
+        expect(Matrix.equals(this.workspace.matrices['C'], this.workspace.matrices['B'])).to.be.false;
     }
 
     @then(/^(\w+) \* (\w+) is the following 4x4 matrix:$/)
@@ -78,8 +87,9 @@ class MatricesSteps {
         expect(Matrix.equals(actual, expected)).to.be.true;
     }
 
-    @given(/^A ← transpose\(identity_matrix\)$/)
-    public givenTransposeIdentity() {
+    @given(/^(\w+) ← transpose\((\w+)\)$/)
+    public givenTransposeIdentity(matAId: string, matBId: string) {
+        this.workspace.matrices[matAId] = Matrix.transpose(this.workspace.matrices[matBId]);
     }
 
     @then(/^A = identity_matrix$/)
@@ -165,6 +175,25 @@ class MatricesSteps {
         const expectedA = MatricesSteps.createMatrixFromDataTable(dataTable);
         expect(Matrix.equals(actual, expectedA)).to.be.true;
     }
+
+    @given(/^(\w+) ← (\w+) \* (\w+)$/)
+    public givenAProduct(matCId: string, matAId: string, matBId: string) {
+        this.workspace.matrices[matCId] = Matrix.multiply(this.workspace.matrices[matAId], this.workspace.matrices[matBId]);
+    }
+
+
+    @then(/^(\w+) \* inverse\((\w+)\) = (\w+)$/)
+    public multiplyByInverseEquals(matCId: string, matBId: string, matAId: string,) {
+        const expected = this.workspace.matrices[matAId];
+        const actual = Matrix.multiply(this.workspace.matrices[matCId], Matrix.inverse(this.workspace.matrices[matBId]));
+        expect(Matrix.equals(actual, expected)).to.be.true;
+    }
+
+    @given(/^(\w+) ← identity_matrix\((\w+)\)$/)
+    public givenIdentity(matId: string, dim: string) {
+        this.workspace.matrices[matId] = Matrix.identity(parseInt(dim));
+    }
+
 
     private static createMatrixFromDataTable(dataTable: { rawTable: [][] }) {
         const data = dataTable.rawTable;

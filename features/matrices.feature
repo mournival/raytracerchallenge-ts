@@ -215,49 +215,84 @@ Feature: Matrices
       | -0.07895 | -0.22368 | -0.05263 | 0.19737  |
       | -0.52256 | -0.81391 | -0.30075 | 0.30639  |
 
-Scenario: Calculating the inverse of another matrix
-  Given the following 4x4 matrix A:
-    |  8 | -5 |  9 |  2 |
-    |  7 |  5 |  6 |  1 |
-    | -6 |  0 |  9 |  6 |
-    | -3 |  0 | -9 | -4 |
-  Then inverse(A) is the following 4x4 matrix:
-    | -0.15385 | -0.15385 | -0.28205 | -0.53846 |
-    | -0.07692 |  0.12308 |  0.02564 |  0.03077 |
-    |  0.35897 |  0.35897 |  0.43590 |  0.92308 |
-    | -0.69231 | -0.69231 | -0.76923 | -1.92308 |
+  Scenario: Calculating the inverse of another matrix
+    Given the following 4x4 matrix A:
+      | 8  | -5 | 9  | 2  |
+      | 7  | 5  | 6  | 1  |
+      | -6 | 0  | 9  | 6  |
+      | -3 | 0  | -9 | -4 |
+    Then inverse(A) is the following 4x4 matrix:
+      | -0.15385 | -0.15385 | -0.28205 | -0.53846 |
+      | -0.07692 | 0.12308  | 0.02564  | 0.03077  |
+      | 0.35897  | 0.35897  | 0.43590  | 0.92308  |
+      | -0.69231 | -0.69231 | -0.76923 | -1.92308 |
 
-Scenario: Calculating the inverse of a third matrix
-  Given the following 4x4 matrix A:
-    |  9 |  3 |  0 |  9 |
-    | -5 | -2 | -6 | -3 |
-    | -4 |  9 |  6 |  4 |
-    | -7 |  6 |  6 |  2 |
-  Then inverse(A) is the following 4x4 matrix:
-    | -0.04074 | -0.07778 |  0.14444 | -0.22222 |
-    | -0.07778 |  0.03333 |  0.36667 | -0.33333 |
-    | -0.02901 | -0.14630 | -0.10926 |  0.12963 |
-    |  0.17778 |  0.06667 | -0.26667 |  0.33333 |
-#
-#Scenario: Multiplying a product by its inverse
-#  Given the following 4x4 matrix A:
-#      |  3 | -9 |  7 |  3 |
-#      |  3 | -8 |  2 | -9 |
-#      | -4 |  4 |  4 |  1 |
-#      | -6 |  5 | -1 |  1 |
-#    And the following 4x4 matrix B:
-#      |  8 |  2 |  2 |  2 |
-#      |  3 | -1 |  7 |  0 |
-#      |  7 |  0 |  5 |  4 |
-#      |  6 | -2 |  0 |  5 |
-#    And C ← A * B
-#  Then C * inverse(B) = A
+  Scenario: Calculating the inverse of a third matrix
+    Given the following 4x4 matrix A:
+      | 9  | 3  | 0  | 9  |
+      | -5 | -2 | -6 | -3 |
+      | -4 | 9  | 6  | 4  |
+      | -7 | 6  | 6  | 2  |
+    Then inverse(A) is the following 4x4 matrix:
+      | -0.04074 | -0.07778 | 0.14444  | -0.22222 |
+      | -0.07778 | 0.03333  | 0.36667  | -0.33333 |
+      | -0.02901 | -0.14630 | -0.10926 | 0.12963  |
+      | 0.17778  | 0.06667  | -0.26667 | 0.33333  |
+
+  Scenario: Multiplying a product by its inverse
+    Given the following 4x4 matrix A:
+      | 3  | -9 | 7  | 3  |
+      | 3  | -8 | 2  | -9 |
+      | -4 | 4  | 4  | 1  |
+      | -6 | 5  | -1 | 1  |
+    And the following 4x4 matrix B:
+      | 8 | 2  | 2 | 2 |
+      | 3 | -1 | 7 | 0 |
+      | 7 | 0  | 5 | 4 |
+      | 6 | -2 | 0 | 5 |
+    And C ← A * B
+    Then C * inverse(B) = A
 
 #Putting it together question (Not in original
-#-What happens when you invert the identity matrix
-  #-What do you get when you multiply A*inverse(A)
-  #-Is there any difference between inverse(A) and transpose(inverse(A))
-  #-if I(3)*v = v, what does 
-  # |1|0| 0|
-  # |0|2| 0| * v = ?
-  # |0|0| 1|
+  Scenario: Multiplying an identity matrix by its inverse
+    Given A ← identity_matrix(4)
+    Then A * inverse(A) = A
+
+  Scenario: Inverting the identity matrix
+    Given A ← identity_matrix(4)
+    Then inverse(A) is the following 4x4 matrix:
+      | 1 | 0 | 0 | 0 |
+      | 0 | 1 | 0 | 0 |
+      | 0 | 0 | 1 | 0 |
+      | 0 | 0 | 0 | 1 |
+
+  Scenario: Multiply A by inverse(A)
+    Given  I ← identity_matrix(4)
+    And the following 4x4 matrix A:
+      | 3  | -9 | 7  | 3  |
+      | 3  | -8 | 2  | -9 |
+      | -4 | 4  | 4  | 1  |
+      | -6 | 5  | -1 | 1  |
+    Then A * inverse(A) = I
+
+  Scenario: inverse(A)^T is = inverse(A^T)
+    Given the following 4x4 matrix A:
+      | 3  | -9 | 7  | 3  |
+      | 3  | -8 | 2  | -9 |
+      | -4 | 4  | 4  | 1  |
+      | -6 | 5  | -1 | 1  |
+    And AI ← inverse(A)
+    And C ← transpose(AI)
+    And AT ← transpose(A)
+    And B ← inverse(AT)
+    Then C = B
+
+  Scenario: 4
+    Given the following 4x4 matrix A:
+      | 1 | 0  | 0 | 0 |
+      | 0 | -8 | 0 | 0 |
+      | 0 | 0  | 1 | 0 |
+      | 0 | 0  | 0 | 1 |
+    And v ← vector(1, 2, 3)
+    Then A * v = tuple(1, -16, 3, 0)
+    
