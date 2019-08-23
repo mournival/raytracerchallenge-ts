@@ -295,4 +295,3 @@ Feature: Matrices
       | 0 | 0  | 0 | 1 |
     And v ← vector(1, 2, 3)
     Then A * v = tuple(1, -16, 3, 0)
-    

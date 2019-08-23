@@ -2,6 +2,17 @@ import {Tuple} from "./tuple";
 
 export class Matrix {
     static readonly EPSILON = 0.0001;
+    data: number[][] = [];
+
+    constructor(row: number, col: number) {
+        for (let c = 0; c < col; ++c) {
+            let newRow = [];
+            for (let r = 0; r < row; ++r) {
+                newRow.push(0);
+            }
+            this.data.push(newRow);
+        }
+    }
 
     static equals(lhs: Matrix, rhs: Matrix): boolean {
         if (lhs.data.length !== rhs.data.length ||
@@ -38,13 +49,6 @@ export class Matrix {
             this.vectorDot(lhs, rhs, 2),
             this.vectorDot(lhs, rhs, 3)
         );
-    }
-
-    private static vectorDot(lhs: Matrix, rhs: Tuple, r: number) {
-        return lhs.data[r][0] * rhs.x +
-            lhs.data[r][1] * rhs.y +
-            lhs.data[r][2] * rhs.z +
-            lhs.data[r][3] * rhs.w;
     }
 
     static dot4(lhs: Matrix, row: number, rhs: Matrix, col: number): number {
@@ -111,11 +115,6 @@ export class Matrix {
         return Math.abs(Matrix.determinant(m)) > Matrix.EPSILON;
     }
 
-    private static det2(m: Matrix): number {
-        const d = m.data;
-        return d[0][0] * d[1][1] - d[0][1] * d[1][0];
-    }
-
     static inverse(m: Matrix): Matrix {
         if (!Matrix.isInvertible(m)) {
             throw "Cannot invert this matrix";
@@ -132,16 +131,16 @@ export class Matrix {
         return m_prime;
     }
 
-    data: number[][] = [];
+    private static vectorDot(lhs: Matrix, rhs: Tuple, r: number) {
+        return lhs.data[r][0] * rhs.x +
+            lhs.data[r][1] * rhs.y +
+            lhs.data[r][2] * rhs.z +
+            lhs.data[r][3] * rhs.w;
+    }
 
-    constructor(row: number, col: number) {
-        for (let c = 0; c < col; ++c) {
-            let newRow = [];
-            for (let r = 0; r < row; ++r) {
-                newRow.push(0);
-            }
-            this.data.push(newRow);
-        }
+    private static det2(m: Matrix): number {
+        const d = m.data;
+        return d[0][0] * d[1][1] - d[0][1] * d[1][0];
     }
 
     get(row: number, col: number): number {

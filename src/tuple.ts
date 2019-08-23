@@ -3,13 +3,15 @@ export type VectorElement = 'x' | 'y' | 'z' | 'w';
 export class Tuple {
     static readonly EPSILON = 0.0001;
 
+    constructor(
+        public readonly x: number,
+        public readonly y: number,
+        public readonly z: number,
+        public readonly w: number
+    ) {
+    }
+
     static equals(lhs: Tuple, rhs: Tuple): boolean {
-        if (rhs.x === 1 && rhs.y == 16) {
-            console.log(lhs);
-            console.log(rhs);
-           }
-
-
         return Math.abs(lhs.x - rhs.x) < Tuple.EPSILON &&
             Math.abs(lhs.y - rhs.y) < Tuple.EPSILON &&
             Math.abs(lhs.z - rhs.z) < Tuple.EPSILON &&
@@ -80,14 +82,6 @@ export class Tuple {
         const coeff = 2 * vDotn;
         const a = Tuple.multiply(n, coeff);
         return Tuple.subtract(v, a);
-    }
-
-    constructor(
-        public readonly x: number,
-        public readonly y: number,
-        public readonly z: number,
-        public readonly w: number
-    ) {
     }
 
     getElements(e: VectorElement): number {
