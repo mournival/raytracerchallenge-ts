@@ -160,3 +160,12 @@ export function translation(x: number, y: number, z: number): Matrix {
     m.set(2, 3, z);
     return m;
 }
+
+export function scaling(x: number, y: number, z: number): Matrix {
+    const m = new Matrix(4, 4);
+    m.set(0, 0, x);
+    m.set(1, 1, y);
+    m.set(2, 2, z);
+    m.set(3, 3, 1);
+    return m;
+}

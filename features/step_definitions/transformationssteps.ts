@@ -1,7 +1,7 @@
 import {before, binding, given, then, when} from 'cucumber-tsflow';
 import {Workspace} from './Workspace';
 import {expect} from 'chai';
-import {Matrix, translation} from "../../src/matrix";
+import {Matrix, scaling, translation} from "../../src/matrix";
 import {Tuple} from "../../src/tuple";
 
 
@@ -20,13 +20,7 @@ class TransformationsSteps {
 
     @given(/^(\w+) ← scaling\(([+-]?\d*?\.?\d*), ([+-]?\d*?\.?\d*), ([+-]?\d*?\.?\d*)\)$/)
     public givensScaling(tId: string, x: string, y: string, z: string) {
-        return 'pending';
-    }
-
-
-    @then(/^transform \* (\w+) = vector\(([+-]?\d*?\.?\d*), ([+-]?\d*?\.?\d*), ([+-]?\d*?\.?\d*)\)$/)
-    public thenTransformVectorToExplicitVector(rhsId: string, x: string, y: string, z: string) {
-        return 'pending';
+        this.workspace.matrices[tId] = scaling(parseFloat(x), parseFloat(y), parseFloat(z));
     }
 
     @then(/^transform \* (\w+) = (\w+)$/)
