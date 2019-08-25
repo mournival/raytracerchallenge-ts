@@ -13,12 +13,12 @@ class TransformationsSteps {
 
     // Float regex: [+-]?\d*?\.?\d*
 
-    @given(/^(\w+) ← translation\(([+-]?\d*?\.?\d*), ([+-]?\d*?\.?\d*), ([+-]?\d*?\.?\d*)\)$/)
+    @given(/^(\w+) ← translation\(([^,]+), ([^,]+), ([^,]+)\)$/)
     public givensTransformation(tId: string, x: string, y: string, z: string) {
         this.workspace.matrices[tId] = translation(parseFloat(x), parseFloat(y), parseFloat(z));
     }
 
-    @given(/^(\w+) ← scaling\(([+-]?\d*?\.?\d*), ([+-]?\d*?\.?\d*), ([+-]?\d*?\.?\d*)\)$/)
+    @given(/^(\w+) ← scaling\(([^,]+), ([^,]+), ([^,]+)\)$/)
     public givensScaling(tId: string, x: string, y: string, z: string) {
         this.workspace.matrices[tId] = scaling(parseFloat(x), parseFloat(y), parseFloat(z));
     }
@@ -34,7 +34,6 @@ class TransformationsSteps {
     public givensRotationX(tId: string, x: string) {
         this.workspace.matrices[tId] = rotation_x(Math.PI / parseInt(x));
     }
-
 
 }
 

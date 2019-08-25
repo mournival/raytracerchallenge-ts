@@ -13,19 +13,14 @@ class TupleSteps {
     constructor(protected workspace: Workspace) {
     }
 
-    @given(/^(\w+) ← tuple\(([+-]?\d*?\.?\d*), ([+-]?\d*?\.?\d*), ([+-]?\d*?\.?\d*), ([+-]?\d*?\.?\d*)\)$/)
-    public givenATuple(id: string, x: string, y: string, z: string, w: string): void {
-        this.workspace.tuples[id] = new Tuple(parseFloat(x), parseFloat(y), parseFloat(z), parseFloat(w));
-    }
-
     @then(/^(\w+)\.([xyzw]) = (.*)$/)
     public tupleFieldEquals(id: string, field: VectorElement, value: string) {
-        expect(this.workspace.tuples[id].getElements(field)).to.eq(parseFloat(value));
+        expect(this.workspace.tuples[id].getElements(field)).to.eq(TupleSteps.parseArg(value));
     }
 
     @then(/^(\w+)\.(red|green|blue) = (.*)$/)
     public colorFieldEquals(id: string, field: RGBElement, value: string) {
-        expect(this.workspace.colors[id].getElement(field)).to.eq(parseFloat(value));
+        expect(this.workspace.colors[id].getElement(field)).to.eq(TupleSteps.parseArg(value));
     }
 
     @then(/^(\w+) is (\w* *)a point/)
@@ -38,24 +33,24 @@ class TupleSteps {
         expect(Tuple.isVector(this.workspace.tuples[id])).to.eq(not !== 'not ');
     }
 
-    @given(/^(\w+) ← (tuple|point|vector)\(([+-]?\d*?\.?\d*), ([+-]?\d*?\.?\d*), ([+-]?\d*?\.?\d*)\)$/)
-    public givenATupleType(id: string, expectedType: string, x: string, y: string, z: string): void {
-        this.workspace.tuples[id] = TupleSteps.createExpected(expectedType, x, y, z);
+    @given(/^(\w+) ← (tuple|point|vector)\(([^,]+), ([^,]+), ([^,]+)[, ]*(.*)\)$/)
+    public givenATupleType(id: string, expectedType: string, x: string, y: string, z: string, w: string): void {
+        this.workspace.tuples[id] = TupleSteps.createExpected(expectedType, x, y, z, w);
     }
 
-    @given(/^(\w+) ← (color)\(([+-]?\d*?\.?\d*), ([+-]?\d*?\.?\d*), ([+-]?\d*?\.?\d*)\)$/)
+    @given(/^(\w+) ← (color)\(([^,]+), ([^,]+), ([^,]+)\)$/)
     public givenAColor(id: string, expectedType: string, x: string, y: string, z: string): void {
-        this.workspace.colors[id] = new Color(parseFloat(x), parseFloat(y), parseFloat(z));
+        this.workspace.colors[id] = new Color(TupleSteps.parseArg(x), TupleSteps.parseArg(y), TupleSteps.parseArg(z));
     }
 
-    @then(/^(\w+) = tuple\(([+-]?\d*?\.?\d*), ([+-]?\d*?\.?\d*), ([+-]?\d*?\.?\d*), ([+-]?\d*?\.?\d*)\)$/)
+    @then(/^(\w+) = tuple\(([^,]+), ([^,]+), ([^,]+), ([^,]+)\)$/)
     public thenTupleEquals(id: string, x: string, y: string, z: string, w: string): void {
         expect(
-            Tuple.equals(this.workspace.tuples[id], new Tuple(parseFloat(x), parseFloat(y), parseFloat(z), parseFloat(w)))
+            Tuple.equals(this.workspace.tuples[id], new Tuple(TupleSteps.parseArg(x), TupleSteps.parseArg(y), TupleSteps.parseArg(z), TupleSteps.parseArg(w)))
         ).to.be.true;
     }
 
-    @then(/^(\w+) = (\w+)\(([+-]?\d*?\.?\d*), ([+-]?\d*?\.?\d*), ([+-]?\d*?\.?\d*)\)$/)
+    @then(/^(\w+) = (\w+)\(([^,]+), ([^,]+), ([^,]+)\)$/)
     public thenTypedTupleEquals(id: string, expectedType: string, x: string, y: string, z: string): void {
         let expectedValue = TupleSteps.createExpected(expectedType, x, y, z);
         expect(
@@ -63,7 +58,7 @@ class TupleSteps {
         ).to.be.true;
     }
 
-    @then(/^(\w+) (.) (.+) = (\w*)\(([+-]?\d*?\.?\d*), ([+-]?\d*?\.?\d*), ([+-]?\d*?\.?\d*)(, ([+-]?\d*?\.?\d*))?\)$/)
+    @then(/^(\w+) (.) (.+) = (\w*)\(([^,]+), ([^,]+), ([^,]+)[, ]*([^,]*)\)$/)
     public testMixedOperation(lhs: string, op: string, rhs: string, expectedType: string, x: string, y: string, z: string, w: string): void {
         switch (expectedType) {
             case 'color':
@@ -79,22 +74,22 @@ class TupleSteps {
         switch (op) {
             case '+':
                 expect(
-                    Color.equals(Color.add(this.workspace.colors[lhs], this.workspace.colors[rhs]), new Color(parseFloat(x), parseFloat(y), parseFloat(z)))
+                    Color.equals(Color.add(this.workspace.colors[lhs], this.workspace.colors[rhs]), new Color(TupleSteps.parseArg(x), TupleSteps.parseArg(y), TupleSteps.parseArg(z)))
                 ).to.be.true;
                 break;
             case '-':
                 expect(
-                    Color.equals(Color.subtract(this.workspace.colors[lhs], this.workspace.colors[rhs]), new Color(parseFloat(x), parseFloat(y), parseFloat(z)))
+                    Color.equals(Color.subtract(this.workspace.colors[lhs], this.workspace.colors[rhs]), new Color(TupleSteps.parseArg(x), TupleSteps.parseArg(y), TupleSteps.parseArg(z)))
                 ).to.be.true;
                 break;
             case '*':
                 if (this.workspace.colors[rhs]) {
                     expect(
-                        Color.equals(Color.multiply(this.workspace.colors[lhs], this.workspace.colors[rhs]), new Color(parseFloat(x), parseFloat(y), parseFloat(z)))
+                        Color.equals(Color.multiply(this.workspace.colors[lhs], this.workspace.colors[rhs]), new Color(TupleSteps.parseArg(x), TupleSteps.parseArg(y), TupleSteps.parseArg(z)))
                     ).to.be.true;
                 } else {
                     expect(
-                        Color.equals(Color.multiplyScalar(this.workspace.colors[lhs], parseFloat(rhs)), new Color(parseFloat(x), parseFloat(y), parseFloat(z)))
+                        Color.equals(Color.multiplyScalar(this.workspace.colors[lhs], TupleSteps.parseArg(rhs)), new Color(TupleSteps.parseArg(x), TupleSteps.parseArg(y), TupleSteps.parseArg(z)))
                     ).to.be.true;
                 }
                 break;
@@ -108,7 +103,7 @@ class TupleSteps {
         switch (op) {
             case '+':
                 expect(
-                    Tuple.equals(Tuple.add(this.workspace.tuples[lhs], this.workspace.tuples[rhs]), new Tuple(parseFloat(x), parseFloat(y), parseFloat(z), parseFloat(w)))
+                    Tuple.equals(Tuple.add(this.workspace.tuples[lhs], this.workspace.tuples[rhs]), new Tuple(TupleSteps.parseArg(x), TupleSteps.parseArg(y), TupleSteps.parseArg(z), TupleSteps.parseArg(w)))
                 ).to.be.true;
                 break;
             case '-':
@@ -119,24 +114,16 @@ class TupleSteps {
             case '*':
                 if (this.workspace.matrices[lhs]) {
                     const actual = Matrix.multiplyVector(this.workspace.matrices[lhs], this.workspace.tuples[rhs]);
-                    // if (expectedType === 'point') {
-                    //     console.log(JSON.stringify(this.workspace.matrices[lhs]));
-                    //     console.log(JSON.stringify(this.workspace.tuples[rhs]));
-                    //
-                    //     console.log(JSON.stringify(actual));
-                    //     console.log(JSON.stringify(TupleSteps.createExpected(expectedType, x, y, z, w)));
-                    //
-                    // }
                     expect(Tuple.equals(actual, TupleSteps.createExpected(expectedType, x, y, z, w))).to.be.true;
                 } else {
                     expect(
-                        Tuple.equals(Tuple.multiply(this.workspace.tuples[lhs], parseFloat(rhs)), new Tuple(parseFloat(x), parseFloat(y), parseFloat(z), parseFloat(w)))
+                        Tuple.equals(Tuple.multiply(this.workspace.tuples[lhs], TupleSteps.parseArg(rhs)), new Tuple(TupleSteps.parseArg(x), TupleSteps.parseArg(y), TupleSteps.parseArg(z), TupleSteps.parseArg(w)))
                     ).to.be.true;
                 }
                 break;
             case '/':
                 expect(
-                    Tuple.equals(Tuple.divide(this.workspace.tuples[lhs], parseFloat(rhs)), new Tuple(parseFloat(x), parseFloat(y), parseFloat(z), parseFloat(w)))
+                    Tuple.equals(Tuple.divide(this.workspace.tuples[lhs], TupleSteps.parseArg(rhs)), new Tuple(TupleSteps.parseArg(x), TupleSteps.parseArg(y), TupleSteps.parseArg(z), TupleSteps.parseArg(w)))
                 ).to.be.true;
                 break;
             default:
@@ -144,23 +131,23 @@ class TupleSteps {
         }
     }
 
-    @then(/^-(\w+) = tuple\(([+-]?\d*?\.?\d*), ([+-]?\d*?\.?\d*), ([+-]?\d*?\.?\d*), ([+-]?\d*?\.?\d*)\)$/)
+    @then(/^-(\w+) = tuple\(([^,]+), ([^,]+), ([^,]+), ([^,]+)\)$/)
     public thenNegateTest(id: string, x: string, y: string, z: string, w: string): void {
         expect(
-            Tuple.equals(Tuple.negate(this.workspace.tuples[id]), new Tuple(parseFloat(x), parseFloat(y), parseFloat(z), parseFloat(w)))
+            Tuple.equals(Tuple.negate(this.workspace.tuples[id]), new Tuple(TupleSteps.parseArg(x), TupleSteps.parseArg(y), TupleSteps.parseArg(z), TupleSteps.parseArg(w)))
         ).to.be.true;
     }
 
-    @then(/^magnitude\((.*)\) = (\D?)(.*)$/)
+    @then(/^magnitude\((.*)\) = (√?)(.*)$/)
     public thenMagnitudeEquals(id: string, radical: string, m: string): void {
-        let mag = radical ? Math.sqrt(parseFloat(m)) : parseFloat(m);
+        let mag = radical ? Math.sqrt(TupleSteps.parseArg(m)) : TupleSteps.parseArg(m);
         expect(Tuple.magnitude(this.workspace.tuples[id])).to.be.eq(mag);
     }
 
-    @then(/^normalize\((.*)\) = (approximately )?vector\(([+-]?\d*?\.?\d*), ([+-]?\d*?\.?\d*), ([+-]?\d*?\.?\d*)\)$/)
+    @then(/^normalize\((.*)\) = (approximately )?vector\(([^,]+), ([^,]+), ([^,]+)\)$/)
     public thenVectorEquals(id: string, approx: string, x: string, y: string, z: string): void {
         let actualVal = Tuple.normalize(this.workspace.tuples[id]);
-        let expectedVal = vector(parseFloat(x), parseFloat(y), parseFloat(z));
+        let expectedVal = vector(TupleSteps.parseArg(x), TupleSteps.parseArg(y), TupleSteps.parseArg(z));
         expect(Tuple.equals(actualVal, expectedVal)).to.be.true;
     }
 
@@ -169,10 +156,10 @@ class TupleSteps {
         this.workspace.tuples[id] = Tuple.normalize(this.workspace.tuples[src]);
     }
 
-    @then(/^dot\((.*), (.*)\) = ([+-]?\d*?\.?\d*)$/)
+    @then(/^dot\((.*), (.*)\) = ([^,]+)$/)
     public thenDotEquals(lhs: string, rhs: string, product: string): void {
         expect(
-            Math.abs(Tuple.dot(this.workspace.tuples[lhs], this.workspace.tuples[rhs]) - parseFloat(product)) < Tuple.EPSILON
+            Math.abs(Tuple.dot(this.workspace.tuples[lhs], this.workspace.tuples[rhs]) - TupleSteps.parseArg(product)) < Tuple.EPSILON
         ).to.be.true;
     }
 
@@ -181,25 +168,44 @@ class TupleSteps {
         this.workspace.tuples[id] = Tuple.reflect(this.workspace.tuples[vId], this.workspace.tuples[nId]);
     }
 
-    @then(/^cross\((.*), (.*)\) = vector\(([+-]?\d*?\.?\d*), ([+-]?\d*?\.?\d*), ([+-]?\d*?\.?\d*)\)$/)
+    @then(/^cross\((.*), (.*)\) = vector\(([^,]+), ([^,]+), ([^,]+)\)$/)
     public thenCrossEquals(lhs: string, rhs: string, x: string, y: string, z: string): void {
         let actualVal = Tuple.cross(this.workspace.tuples[lhs], this.workspace.tuples[rhs]);
-        let expectedVal = vector(parseFloat(x), parseFloat(y), parseFloat(z));
+        let expectedVal = vector(TupleSteps.parseArg(x), TupleSteps.parseArg(y), TupleSteps.parseArg(z));
         expect(Tuple.equals(actualVal, expectedVal)).to.be.true;
     }
 
     private static createExpected(typ: string, x: string, y: string, z: string, w = ''): Tuple {
         if (typ === 'vector') {
-            return vector(parseFloat(x), parseFloat(y), parseFloat(z));
+            return vector(TupleSteps.parseArg(x), TupleSteps.parseArg(y), TupleSteps.parseArg(z));
         }
         if (typ === 'point') {
-            return point(parseFloat(x), parseFloat(y), parseFloat(z));
+            return point(TupleSteps.parseArg(x), TupleSteps.parseArg(y), TupleSteps.parseArg(z));
         }
         if (typ === 'tuple') {
-            return new Tuple(parseFloat(x), parseFloat(y), parseFloat(z), parseFloat(w));
+            return new Tuple(TupleSteps.parseArg(x), TupleSteps.parseArg(y), TupleSteps.parseArg(z), TupleSteps.parseArg(w));
         }
         assert.fail('Unexpected type');
         return new Tuple(NaN, NaN, NaN, NaN);
+    }
+
+    public static parseArg(s: string): number {
+        // int
+        if (s.match(/^[+-]?\d+$/))
+            return parseInt(s);
+
+        // simple float
+        if (s.match(/^([+-]?\d*?\.\d*)$/))
+            return parseFloat(s);
+
+        // rational
+        if (s.match(/^[+-]?\d+\s*\/\s*\d+$/)) {
+            const matchArray = s.split('/');
+            return parseInt(matchArray[0]) / parseInt(matchArray[1]);
+        }
+        // irrational ratio
+        throw 'Parse error';
+
     }
 }
 

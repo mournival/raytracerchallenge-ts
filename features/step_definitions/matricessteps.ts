@@ -3,8 +3,7 @@ import {Workspace} from './Workspace';
 import {expect} from 'chai';
 import {Matrix} from "../../src/matrix";
 import {Tuple} from "../../src/tuple";
-
-// Float regex: [+-]?\d*?\.?\d*
+import TupleSteps = require("./tuplesteps");
 
 @binding([Workspace])
 class MatricesSteps {
@@ -23,15 +22,15 @@ class MatricesSteps {
         let data = dataTable.rawTable;
         for (let r = 0; r < parseInt(rows); ++r) {
             for (let c = 0; c < parseInt(cols); ++c) {
-                this.workspace.matrices[matId].set(r, c, parseFloat(data[r][c]));
+                this.workspace.matrices[matId].set(r, c, TupleSteps.parseArg(data[r][c]));
             }
         }
     };
 
-    @then(/^(\w+)\[(\d+),(\d+)] = ([+-]?\d*?\.?\d*)$/)
+    @then(/^(\w+)\[(\d+),(\d+)] = (.*)$/)
     public checkMatrixElement(matId: string, row: string, col: string, expectedValue: string) {
         const actual = this.workspace.matrices[matId].get(parseInt(row), parseInt(col));
-        expect(actual).to.be.closeTo(parseFloat(expectedValue), Matrix.EPSILON);
+        expect(actual).to.be.closeTo(TupleSteps.parseArg(expectedValue), Matrix.EPSILON);
     }
 
     @given(/the following matrix (\w+):/)
@@ -102,7 +101,7 @@ class MatricesSteps {
     @then(/^determinant\((\w+)\) = (.*)$/)
     public thenDeterminantEquals(matId: string, value: string) {
         const actual = Matrix.determinant(this.workspace.matrices[matId]);
-        const expected = parseFloat(value);
+        const expected = TupleSteps.parseArg(value);
         expect(actual).to.be.closeTo(expected, Matrix.EPSILON);
     }
 
@@ -121,14 +120,14 @@ class MatricesSteps {
     @then(/^minor\((\w+), (\d+), (\d+)\) = (.*)$/)
     public minorEquals(matId: string, r: string, c: string, value: string) {
         const actual = Matrix.minor(this.workspace.matrices[matId], parseInt(r), parseInt(c));
-        const expected = parseFloat(value);
+        const expected = TupleSteps.parseArg(value);
         expect(actual).to.be.closeTo(expected, Matrix.EPSILON);
     }
 
     @then(/^cofactor\((\w+), (\d+), (\d+)\) = (.*)$/)
     public cofactorEquals(matId: string, r: string, c: string, value: string) {
         const actual = Matrix.cofactor(this.workspace.matrices[matId], parseInt(r), parseInt(c));
-        const expected = parseFloat(value);
+        const expected = TupleSteps.parseArg(value);
         expect(actual).to.be.closeTo(expected, Matrix.EPSILON);
     }
 
@@ -147,13 +146,6 @@ class MatricesSteps {
     @given(/^(\w+) ← inverse\((\w+)\)$/)
     public givenInverse(matBId: string, matAId: string) {
         this.workspace.matrices[matBId] = Matrix.inverse(this.workspace.matrices[matAId]);
-    }
-
-    @then(/^(\w+)\[(\d+),(\d+)] = ([+-]?\d*?)\/(\d+)$/)
-    public matrixCellRationalEquals(matId: string, r: string, c: string, p: string, q: string) {
-        const actual = this.workspace.matrices[matId].get(parseInt(r), parseInt(c));
-        const expectedValue = parseInt(p) / parseFloat(q);
-        expect(actual).to.be.closeTo(expectedValue, Matrix.EPSILON);
     }
 
     @then(/^(\w+) is the following 4x4 matrix:$/)
@@ -181,7 +173,6 @@ class MatricesSteps {
         this.workspace.matrices[matCId] = Matrix.multiply(this.workspace.matrices[matAId], this.workspace.matrices[matBId]);
     }
 
-
     @then(/^(\w+) \* inverse\((\w+)\) = (\w+)$/)
     public multiplyByInverseEquals(matCId: string, matBId: string, matAId: string,) {
         const expected = this.workspace.matrices[matAId];
@@ -194,7 +185,6 @@ class MatricesSteps {
         this.workspace.matrices[matId] = Matrix.identity(parseInt(dim));
     }
 
-
     private static createMatrixFromDataTable(dataTable: { rawTable: [][] }) {
         const data = dataTable.rawTable;
         const rows = data.length;
@@ -203,7 +193,7 @@ class MatricesSteps {
         const expected = new Matrix(rows, cols);
         for (let r = 0; r < rows; ++r) {
             for (let c = 0; c < cols; ++c) {
-                expected.set(r, c, parseFloat(data[r][c]));
+                expected.set(r, c, TupleSteps.parseArg(data[r][c]));
             }
         }
         return expected;
