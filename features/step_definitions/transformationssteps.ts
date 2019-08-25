@@ -1,7 +1,7 @@
 import {before, binding, given, then, when} from 'cucumber-tsflow';
 import {Workspace} from './Workspace';
 import {expect} from 'chai';
-import {Matrix, scaling, translation} from "../../src/matrix";
+import {Matrix, rotation_x, scaling, translation} from "../../src/matrix";
 import {Tuple} from "../../src/tuple";
 
 
@@ -28,8 +28,13 @@ class TransformationsSteps {
         const actual = Matrix.multiplyVector(this.workspace.matrices['transform'], this.workspace.tuples[rhsId]);
         const expected = this.workspace.tuples[productId];
         expect(Tuple.equals(actual, expected)).to.be.true;
-
     }
+
+    @given(/^([\w_]+) ← rotation_x\(π \/ (\d+)\)$/)
+    public givensRotationX(tId: string, x: string) {
+        this.workspace.matrices[tId] = rotation_x(Math.PI / parseInt(x));
+    }
+
 
 }
 

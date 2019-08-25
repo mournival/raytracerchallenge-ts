@@ -131,6 +131,24 @@ export class Matrix {
         return m_prime;
     }
 
+    // static add(lhs: Matrix, rhs: Matrix): Matrix {
+    //     const ldata = lhs.data;
+    //     const rdata = rhs.data;
+    //     if ((ldata.length != rdata.length) || (ldata[0].length != rdata[0].length))
+    //         throw 'Can\'t add matrices of different dimensions';
+    //
+    //     const m = new Matrix(ldata.length, ldata[0].length);
+    //     for (let r = 0; r < ldata.length; ++r)
+    //         for (let c = 0; c < ldata[0].length; ++c)
+    //             m.data[r][c] = ldata[r][c] + rdata[r][c];
+    //
+    //     return m;
+    // }
+    //
+    // static copy(m: Matrix): Matrix {
+    //     return Matrix.add(m, new Matrix(m.data.length, m.data[0].length));
+    // }
+
     private static vectorDot(lhs: Matrix, rhs: Tuple, r: number) {
         return lhs.data[r][0] * rhs.x +
             lhs.data[r][1] * rhs.y +
@@ -150,7 +168,6 @@ export class Matrix {
     set(row: number, col: number, value: number): void {
         this.data[row][col] = value;
     }
-
 }
 
 export function translation(x: number, y: number, z: number): Matrix {
@@ -168,4 +185,18 @@ export function scaling(x: number, y: number, z: number): Matrix {
     m.set(2, 2, z);
     m.set(3, 3, 1);
     return m;
+}
+
+export function rotation_x(r_x: number): Matrix {
+    const m = Matrix.identity(4);
+    const cos = Math.cos(r_x);
+    m.set(1, 1, cos);
+    m.set(2, 2, cos);
+
+    const sin = Math.sin(r_x);
+    m.set(1, 2, -sin);
+    m.set(2, 1, sin);
+
+    return m;
+
 }

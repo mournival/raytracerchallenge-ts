@@ -18,9 +18,15 @@ interface CanvasArray {
 interface MatrixArray {
     [index: string]: Matrix;
 }
+
+interface NumberArray {
+    [index: string]: number;
+}
+
 export class Workspace {
     public tuples: TupleArray = {};
     public canvases: CanvasArray = {};
     public colors: ColorArray = {};
     public matrices: MatrixArray = {};
+    public numbers: NumberArray = {};
 }
