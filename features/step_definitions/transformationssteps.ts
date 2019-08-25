@@ -11,8 +11,6 @@ class TransformationsSteps {
     constructor(protected workspace: Workspace) {
     }
 
-    // Float regex: [+-]?\d*?\.?\d*
-
     @given(/^(\w+) ← translation\(([^,]+), ([^,]+), ([^,]+)\)$/)
     public givensTransformation(tId: string, x: string, y: string, z: string) {
         this.workspace.matrices[tId] = translation(parseFloat(x), parseFloat(y), parseFloat(z));

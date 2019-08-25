@@ -6,7 +6,6 @@ import {Color, RGBElement} from '../../src/color';
 import {Workspace} from './Workspace';
 import {Matrix} from "../../src/matrix";
 
-// Float regex: [+-]?\d*?\.?\d*
 @binding([Workspace])
 class TupleSteps {
 
@@ -114,7 +113,9 @@ class TupleSteps {
             case '*':
                 if (this.workspace.matrices[lhs]) {
                     const actual = Matrix.multiplyVector(this.workspace.matrices[lhs], this.workspace.tuples[rhs]);
-                    expect(Tuple.equals(actual, TupleSteps.createExpected(expectedType, x, y, z, w))).to.be.true;
+                    const expected = TupleSteps.createExpected(expectedType, x, y, z, w);
+                    expect(Tuple.equals(actual, expected),
+                        JSON.stringify(actual) + ' should equal ' + JSON.stringify(expected) + ' ' + x+ ' ' + y + ' ' + z).to.be.true;
                 } else {
                     expect(
                         Tuple.equals(Tuple.multiply(this.workspace.tuples[lhs], TupleSteps.parseArg(rhs)), new Tuple(TupleSteps.parseArg(x), TupleSteps.parseArg(y), TupleSteps.parseArg(z), TupleSteps.parseArg(w)))
@@ -175,15 +176,18 @@ class TupleSteps {
         expect(Tuple.equals(actualVal, expectedVal)).to.be.true;
     }
 
-    private static createExpected(typ: string, x: string, y: string, z: string, w = ''): Tuple {
+    private static createExpected(typ: string, xs: string, ys: string, zs: string, w = ''): Tuple {
+        const x = TupleSteps.parseArg(xs);
+        const y = TupleSteps.parseArg(ys);
+        const z = TupleSteps.parseArg(zs);
         if (typ === 'vector') {
-            return vector(TupleSteps.parseArg(x), TupleSteps.parseArg(y), TupleSteps.parseArg(z));
+            return vector(x, y, z);
         }
         if (typ === 'point') {
-            return point(TupleSteps.parseArg(x), TupleSteps.parseArg(y), TupleSteps.parseArg(z));
+            return point(x, y, z);
         }
         if (typ === 'tuple') {
-            return new Tuple(TupleSteps.parseArg(x), TupleSteps.parseArg(y), TupleSteps.parseArg(z), TupleSteps.parseArg(w));
+            return new Tuple(x, y, z, TupleSteps.parseArg(w));
         }
         assert.fail('Unexpected type');
         return new Tuple(NaN, NaN, NaN, NaN);
@@ -202,6 +206,14 @@ class TupleSteps {
         if (s.match(/^[+-]?\d+\s*\/\s*\d+$/)) {
             const matchArray = s.split('/');
             return parseInt(matchArray[0]) / parseInt(matchArray[1]);
+        }
+        if (s.match(/^√\d+\s*\/\s*\d+$/)) {
+            const matchArray = s.split('/');
+            return Math.sqrt(parseInt(matchArray[0].slice(1))) / parseInt(matchArray[1]);
+        }
+        if (s.match(/^-√\d+\s*\/\s*\d+$/)) {
+            const matchArray = s.split('/');
+            return -Math.sqrt(parseInt(matchArray[0].slice(2))) / parseInt(matchArray[1]);
         }
         // irrational ratio
         throw 'Parse error';
