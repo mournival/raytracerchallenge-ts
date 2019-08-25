@@ -152,3 +152,11 @@ export class Matrix {
     }
 
 }
+
+export function translation(x: number, y: number, z: number): Matrix {
+    const m = Matrix.identity(4);
+    m.set(0, 3, x);
+    m.set(1, 3, y);
+    m.set(2, 3, z);
+    return m;
+}

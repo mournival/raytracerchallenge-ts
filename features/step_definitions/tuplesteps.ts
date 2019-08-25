@@ -119,7 +119,15 @@ class TupleSteps {
             case '*':
                 if (this.workspace.matrices[lhs]) {
                     const actual = Matrix.multiplyVector(this.workspace.matrices[lhs], this.workspace.tuples[rhs]);
-                    expect(Tuple.equals(actual, new Tuple(parseFloat(x), parseFloat(y), parseFloat(z), parseFloat(w)))).to.be.true;
+                    // if (expectedType === 'point') {
+                    //     console.log(JSON.stringify(this.workspace.matrices[lhs]));
+                    //     console.log(JSON.stringify(this.workspace.tuples[rhs]));
+                    //
+                    //     console.log(JSON.stringify(actual));
+                    //     console.log(JSON.stringify(TupleSteps.createExpected(expectedType, x, y, z, w)));
+                    //
+                    // }
+                    expect(Tuple.equals(actual, TupleSteps.createExpected(expectedType, x, y, z, w))).to.be.true;
                 } else {
                     expect(
                         Tuple.equals(Tuple.multiply(this.workspace.tuples[lhs], parseFloat(rhs)), new Tuple(parseFloat(x), parseFloat(y), parseFloat(z), parseFloat(w)))
@@ -180,12 +188,15 @@ class TupleSteps {
         expect(Tuple.equals(actualVal, expectedVal)).to.be.true;
     }
 
-    private static createExpected(typ: string, x: string, y: string, z: string): Tuple {
+    private static createExpected(typ: string, x: string, y: string, z: string, w = ''): Tuple {
         if (typ === 'vector') {
             return vector(parseFloat(x), parseFloat(y), parseFloat(z));
         }
         if (typ === 'point') {
             return point(parseFloat(x), parseFloat(y), parseFloat(z));
+        }
+        if (typ === 'tuple') {
+            return new Tuple(parseFloat(x), parseFloat(y), parseFloat(z), parseFloat(w));
         }
         assert.fail('Unexpected type');
         return new Tuple(NaN, NaN, NaN, NaN);
