@@ -30,8 +30,11 @@ class TransformationsSteps {
     }
 
     @then(/^transform \* (\w+) = (\w+)$/)
-    public thenTransformVectorToVectorName(rhsId: string, x: string, y: string, z: string) {
-        return 'pending';
+    public thenTransformVectorToVectorName(rhsId: string, productId: string) {
+        const actual = Matrix.multiplyVector(this.workspace.matrices['transform'], this.workspace.tuples[rhsId]);
+        const expected = this.workspace.tuples[productId];
+        expect(Tuple.equals(actual, expected)).to.be.true;
+
     }
 
 }
