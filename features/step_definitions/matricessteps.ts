@@ -4,6 +4,7 @@ import {expect} from 'chai';
 import {Matrix} from "../../src/matrix";
 import {Tuple} from "../../src/tuple";
 import TupleSteps = require("./tuplesteps");
+import {fail} from "assert";
 
 @binding([Workspace])
 class MatricesSteps {
@@ -51,11 +52,6 @@ class MatricesSteps {
     @then(/^A != B$/)
     public matrixANotEqualsB() {
         expect(Matrix.equals(this.workspace.matrices['A'], this.workspace.matrices['B'])).to.be.false;
-    }
-
-    @then(/^C!= B$/)
-    public matrixCNotEqualsB() {
-        expect(Matrix.equals(this.workspace.matrices['C'], this.workspace.matrices['B'])).to.be.false;
     }
 
     @then(/^(\w+) \* (\w+) is the following 4x4 matrix:$/)
@@ -169,8 +165,14 @@ class MatricesSteps {
     }
 
     @given(/^(\w+) ← (\w+) \* (\w+)$/)
-    public givenAProduct(matCId: string, matAId: string, matBId: string) {
-        this.workspace.matrices[matCId] = Matrix.multiply(this.workspace.matrices[matAId], this.workspace.matrices[matBId]);
+    public givenAProduct(matCId: string, lhsId: string, rhsId: string) {
+        if (this.workspace.matrices[rhsId] ) {
+            this.workspace.matrices[matCId] = Matrix.multiply(this.workspace.matrices[lhsId], this.workspace.matrices[rhsId]);
+        } else if (this.workspace.tuples[rhsId]) {
+            this.workspace.tuples[matCId] = Matrix.multiplyVector(this.workspace.matrices[lhsId], this.workspace.tuples[rhsId]);
+        } else {
+            fail('Could not figure out which ops to test')
+        }
     }
 
     @then(/^(\w+) \* inverse\((\w+)\) = (\w+)$/)
