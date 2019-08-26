@@ -198,5 +198,44 @@ export function rotation_x(r_x: number): Matrix {
     m.set(2, 1, sin);
 
     return m;
+}
 
+export function rotation_y(r_y: number): Matrix {
+    const m = Matrix.identity(4);
+    const cos = Math.cos(r_y);
+    m.set(0, 1, cos);
+    m.set(2, 2, cos);
+
+    const sin = Math.sin(r_y);
+    m.set(0, 2, sin);
+    m.set(2, 1, -sin);
+
+    return m;
+}
+
+export function rotation_z(r_z: number): Matrix {
+    const m = Matrix.identity(4);
+    const cos = Math.cos(r_z);
+    m.set(0, 0, cos);
+    m.set(1, 1, cos);
+
+    const sin = Math.sin(r_z);
+    m.set(0, 1, -sin);
+    m.set(1, 0, sin);
+
+    return m;
+}
+
+export function shearing(x_y: number, x_z: number, y_x: number, y_z: number, z_x: number, z_y: number): Matrix {
+    const m = Matrix.identity(4);
+    m.set(0, 1, x_y);
+    m.set(0, 2, x_z);
+
+    m.set(1, 0, y_x);
+    m.set(1, 2, y_z);
+
+    m.set(2, 0, z_x);
+    m.set(2, 1, z_y);
+
+    return m;
 }
