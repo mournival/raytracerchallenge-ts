@@ -175,6 +175,12 @@ class MatricesSteps {
         }
     }
 
+    @given(/^(\w+) ← (\w+) \* (\w+) \* (\w+)$/)
+    public givenAChainedProduct(matCId: string, m1Id: string, m2Id: string, m3Id: string) {
+            this.workspace.matrices[matCId] =  Matrix.multiply(
+                Matrix.multiply(this.workspace.matrices[m1Id], this.workspace.matrices[m2Id]),  this.workspace.matrices[m3Id]);
+    }
+
     @then(/^(\w+) \* inverse\((\w+)\) = (\w+)$/)
     public multiplyByInverseEquals(matCId: string, matBId: string, matAId: string,) {
         const expected = this.workspace.matrices[matAId];
