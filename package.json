@@ -6,6 +6,7 @@
   "scripts": {
     "scratch": "./node_modules/ts-node/dist/bin.js src/scratch.ts",
     "particle": "./node_modules/ts-node/dist/bin.js src/particle.ts",
+    "clock": "./node_modules/ts-node/dist/bin.js src/clock.ts",
     "test": "tsc && cucumber-js features/"
   },
   "keywords": [],
