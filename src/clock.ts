@@ -1,23 +1,14 @@
 #!/usr/bin/env node
 
-import {point, Tuple} from "./tuple";
+import {point} from "./tuple";
 import {Canvas} from "./canvas";
 import {Color} from "./color";
 import {Matrix, rotation_z, scaling, translation} from "./matrix";
-
-class Clock {
-    constructor(
-        public readonly   center: Tuple,
-        public readonly   radius: number
-    ) {
-    }
-}
 
 const COLOR = new Color(1, 1, 1);
 
 let c = new Canvas(1200, 1200);
 
-let p_0 = point(600, 600, 0);
 const PiOver6 = Math.PI / 6;
 for (let i = 0; i < 12; ++i) {
     const p = Matrix.multiplyVector(
