@@ -5,7 +5,7 @@ The principal objective is personal development (in particular mine), with an em
 * Learning Cucumber testing framework
 * Improving my TypeScript
 * Practicing fairly pure  aspects of TDD 
-* (Finally) revisiting some of my favorite topics from a favorite graduate CS graphics class
+* (Finally) revisiting topics from a favorite graduate CS graphics class
 
 ## Getting Started
 
@@ -16,6 +16,7 @@ These instructions will get you a copy of the project up and running on your loc
 Assumed already installed:
 - Node.js w/ npm
 - Git
+- ...
 
 Clone this repo
 
@@ -33,6 +34,10 @@ npm install
 To run the demo code:
 ```
 npm run particle
+```
+or 
+```
+npm run clock
 ```
 
 ## Running the tests
