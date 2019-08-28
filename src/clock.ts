@@ -9,18 +9,40 @@ const COLOR = new Color(1, 1, 1);
 
 let c = new Canvas(1200, 1200);
 
+const scaledTranslation = Matrix.multiply(
+    translation(c.width / 2, c.width / 2, 0),
+    scaling(c.width / 3, c.width / 3, 0));
+
 const PiOver6 = Math.PI / 6;
 for (let i = 0; i < 12; ++i) {
     const p = Matrix.multiplyVector(
         Matrix.multiply(
-            translation(c.width / 2, c.width / 2, 0),
-            Matrix.multiply(
-                scaling(c.width / 3, c.width / 3, 0),
-                rotation_z(PiOver6 * i)))
+            scaledTranslation,
+            rotation_z(PiOver6 * i))
         , point(0, 1, 0));
     // console.log(JSON.stringify(p));
 
     const dotSize = 16;
+
+    for (let rOffset = 0; rOffset < dotSize; ++rOffset) {
+        for (let cOffset = 0; cOffset < dotSize; ++cOffset) {
+            const xPos = Math.round(p.x - dotSize / 2) + rOffset;
+            const yPos = Math.round(p.y - dotSize / 2) + cOffset;
+            c.colors[xPos][yPos] = COLOR;
+        }
+    }
+}
+
+const PiOver30 = Math.PI / 30;
+for (let i = 0; i < 60; ++i) {
+    const p = Matrix.multiplyVector(
+        Matrix.multiply(
+            scaledTranslation,
+            rotation_z(PiOver30 * i))
+        , point(0, 1, 0));
+    // console.log(JSON.stringify(p));
+
+    const dotSize = 3;
 
     for (let rOffset = 0; rOffset < dotSize; ++rOffset) {
         for (let cOffset = 0; cOffset < dotSize; ++cOffset) {
