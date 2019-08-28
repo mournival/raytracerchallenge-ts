@@ -13,58 +13,48 @@ const scaledTranslation = Matrix.multiply(
     translation(c.width / 2, c.width / 2, 0),
     scaling(c.width / 3, c.width / 3, 0));
 
-const PiOver6 = Math.PI / 6;
-for (let i = 0; i < 12; ++i) {
-    const p = Matrix.multiplyVector(
-        Matrix.multiply(
-            scaledTranslation,
-            rotation_z(PiOver6 * i))
-        , point(0, 1, 0));
-    // console.log(JSON.stringify(p));
+function clock(dots: number, dotSize: number) {
+    const slice = 2 * Math.PI / dots;
 
-    const dotSize = 16;
+    for (let i = 0; i < dots; ++i) {
+        const p = Matrix.multiplyVector(
+            Matrix.multiply(
+                scaledTranslation,
+                rotation_z(slice * i))
+            , point(0, 1, 0));
+        // console.log(JSON.stringify(p));
 
-    for (let rOffset = 0; rOffset < dotSize; ++rOffset) {
-        for (let cOffset = 0; cOffset < dotSize; ++cOffset) {
-            const xPos = Math.round(p.x - dotSize / 2) + rOffset;
-            const yPos = Math.round(p.y - dotSize / 2) + cOffset;
-            c.colors[xPos][yPos] = COLOR;
+        for (let rOffset = 0; rOffset < dotSize; ++rOffset) {
+            for (let cOffset = 0; cOffset < dotSize; ++cOffset) {
+                const xPos = Math.round(p.x - dotSize / 2) + rOffset;
+                const yPos = Math.round(p.y - dotSize / 2) + cOffset;
+                c.colors[xPos][yPos] = COLOR;
+            }
         }
     }
 }
 
-const PiOver30 = Math.PI / 30;
-for (let i = 0; i < 60; ++i) {
-    const p = Matrix.multiplyVector(
-        Matrix.multiply(
-            scaledTranslation,
-            rotation_z(PiOver30 * i))
-        , point(0, 1, 0));
-    // console.log(JSON.stringify(p));
-
-    const dotSize = 3;
-
-    for (let rOffset = 0; rOffset < dotSize; ++rOffset) {
-        for (let cOffset = 0; cOffset < dotSize; ++cOffset) {
-            const xPos = Math.round(p.x - dotSize / 2) + rOffset;
-            const yPos = Math.round(p.y - dotSize / 2) + cOffset;
-            c.colors[xPos][yPos] = COLOR;
-        }
+function axes() {
+    let p = c.width / 2;
+    for (let n = 0; n < c.width; ++n) {
+        c.colors[n][p] = COLOR;
+        c.colors[p][n] = COLOR;
     }
 }
 
-let p = c.width / 2;
-for (let n = 0; n < c.width; ++n) {
-    c.colors[n][p] = COLOR;
-    c.colors[p][n] = COLOR;
-}
-
-let fs = require('fs');
+function saveFile() {
+    let fs = require('fs');
 // @ts-ignore
-fs.writeFile('./ppm/clock.ppm', Canvas.canvas_to_ppm(c).join('\n'), function (err) {
-    if (err) {
-        return console.error(err);
-    }
-    console.log("File created!");
-});
+    fs.writeFile('./ppm/clock.ppm', Canvas.canvas_to_ppm(c).join('\n'), function (err) {
+        if (err) {
+            return console.error(err);
+        }
+        console.log("File created!");
+    });
+}
+
+axes();
+clock(12, 16);
+clock(60, 4);
+saveFile();
 
