@@ -1,7 +1,9 @@
 import {Tuple} from '../../src/tuple';
 import {Color} from '../../src/color';
 import {Canvas} from '../../src/canvas';
-import {Matrix} from "../../src/matrix";
+import {Matrix} from '../../src/matrix';
+import {Ray} from '../../src/ray';
+import {Sphere} from '../../src/sphere';
 
 interface TupleArray {
     [index: string]: Tuple;
@@ -19,8 +21,12 @@ interface MatrixArray {
     [index: string]: Matrix;
 }
 
-interface NumberArray {
-    [index: string]: number;
+interface RayArray {
+    [index: string]: Ray;
+}
+
+interface SphereArray {
+    [index: string]: Sphere;
 }
 
 export class Workspace {
@@ -28,5 +34,8 @@ export class Workspace {
     public canvases: CanvasArray = {};
     public colors: ColorArray = {};
     public matrices: MatrixArray = {};
-    public numbers: NumberArray = {};
+    public rays: RayArray = {};
+    public spheres: SphereArray = {};
+
+
 }
