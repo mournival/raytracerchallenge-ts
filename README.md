@@ -81,6 +81,13 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 ## Developer Log
 
+### TODO
+
+- Create file utils to save canvas either as global or Canvas static or Canvas method.
+- Fix mutable Matrix
+- Fix mutable Canvas(?). Not entirely sure if this is the correct decision for the global model that may have 1M+ pixels.
+ 
+
 ### 20190830
 I have reached what feels like a major decision. While implementing spheres.feature, I got to:
 ```
