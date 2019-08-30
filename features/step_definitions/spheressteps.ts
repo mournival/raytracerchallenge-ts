@@ -1,8 +1,10 @@
 import {before, binding, given, then, when} from 'cucumber-tsflow';
 import {Workspace} from './Workspace';
 import {expect} from 'chai';
-import {intersect, set_transform, Sphere} from "../../src/sphere";
+import {intersect, normal_at, set_transform, Sphere} from "../../src/sphere";
 import {Matrix, scaling, translation} from "../../src/matrix";
+import {point, Tuple} from "../../src/tuple";
+import TupleSteps = require("./tuplesteps");
 
 @binding([Workspace])
 class SpheresSteps {
@@ -84,6 +86,21 @@ class SpheresSteps {
         const s = this.workspace.spheres[sphereId];
         const t = translation(parseFloat(x), parseFloat(y), parseFloat(z));
         this.workspace.spheres[sphereId] = set_transform(s, t);
+    }
+
+    @when(/^(\w+) ← normal_at\((\w+), point\(([^,]+), ([^,]+), ([^,]+)\)\)$/)
+    public whenNormalAt(normalId: string, sphereId: string, x: string, y: string, z: string) {
+        this.workspace.tuples[normalId] = normal_at(
+            this.workspace.spheres[sphereId],
+            point(TupleSteps.parseArg(x), TupleSteps.parseArg(y), TupleSteps.parseArg(z))
+        );
+    }
+
+    @then(/^([^,]+) = normalize\((\w+)\)$/)
+    public givensRotationX(lhsId: string, nId: string) {
+        const actual = this.workspace.tuples[lhsId];
+        const expected = Tuple.normalize(this.workspace.tuples[nId]);
+        expect(Tuple.equals(actual, expected)).to.be.true;
     }
 
 }

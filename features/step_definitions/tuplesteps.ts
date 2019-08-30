@@ -216,7 +216,7 @@ class TupleSteps {
             return -Math.sqrt(parseInt(matchArray[0].slice(2))) / parseInt(matchArray[1]);
         }
         // irrational ratio
-        throw 'Parse error';
+        throw 'Parse error: ' + s;
 
     }
 }

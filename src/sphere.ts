@@ -1,5 +1,5 @@
 import {Ray, transform} from './ray';
-import {point, Tuple} from './tuple';
+import {point, Tuple, vector} from './tuple';
 import {Intersection} from '../features/step_definitions/intersect';
 import {Matrix} from './matrix';
 
@@ -29,5 +29,8 @@ export function intersect(s: Sphere, r: Ray): Intersection[] {
 
 export function set_transform(s: Sphere, t: Matrix): Sphere {
     return new Sphere(t);
+}
 
+export function normal_at(s: Sphere, p: Tuple): Tuple {
+    return Tuple.normalize(vector(p.x, p.y, p.z));
 }

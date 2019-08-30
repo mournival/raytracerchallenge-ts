@@ -5,6 +5,7 @@ import {Canvas} from '../canvas';
 import {Color} from '../color';
 import {Ray} from '../ray';
 import {intersect, Sphere} from '../sphere';
+import {scaling, shearing} from "../matrix";
 
 function saveFile() {
     let fs = require('fs');
@@ -30,7 +31,10 @@ const half = wall_size / 2;
 
 const c = new Canvas(canvas_pixels, canvas_pixels);
 
-const s = new Sphere();
+// const s = new Sphere(scaling(1, 0.5, 1));
+// const s = new Sphere(scaling(0.5, 1, 1));
+// const s = new Sphere(shearing(1, 0, 0, 0, 0, 0));
+ const s = new Sphere();
 
 for (let y = 0; y < c.height; ++y) {
     const world_y = half - pixel_size * y;
