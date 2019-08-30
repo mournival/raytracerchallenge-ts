@@ -1,8 +1,11 @@
 import {Ray} from './ray';
 import {point, Tuple} from './tuple';
 import {Intersection} from '../features/step_definitions/intersect';
+import {Matrix} from './matrix';
 
 export class Sphere {
+    constructor(public readonly transform: Matrix = Matrix.identity(4)) {
+    }
 
 }
 

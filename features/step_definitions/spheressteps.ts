@@ -2,11 +2,17 @@ import {before, binding, given, then, when} from 'cucumber-tsflow';
 import {Workspace} from './Workspace';
 import {expect} from 'chai';
 import {intersect, Sphere} from "../../src/sphere";
+import {Matrix} from "../../src/matrix";
 
 @binding([Workspace])
 class SpheresSteps {
 
     constructor(protected workspace: Workspace) {
+    }
+
+    @before()
+    public beforeAllScenarios(): void {
+        this.workspace.matrices['identity_matrix'] = Matrix.identity(4);
     }
 
     @given(/^(\w+) ← sphere\(\)$/)
@@ -45,6 +51,13 @@ class SpheresSteps {
         expect(actual).to.be.equal(expected);
     }
 
+    @then(/^(\w+).transform = ([^,]+)$/)
+    public thenSphereTransform(sphereId: string, mId: string) {
+        const actual = this.workspace.spheres[sphereId].transform;
+        const expected = this.workspace.matrices[mId];
+
+        expect(Matrix.equals(actual, expected), JSON.stringify(actual) + ' should equal ' + JSON.stringify(expected)).to.be.true;
+    }
 }
 
 export = SpheresSteps;
