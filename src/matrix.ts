@@ -59,7 +59,7 @@ export class Matrix {
         return sum;
     }
 
-    static identity(dim: number): Matrix {
+    static identity(dim = 4): Matrix {
         let m = new Matrix(dim, dim);
         for (let i = 0; i < dim; ++i) {
             m.data[i][i] = 1;

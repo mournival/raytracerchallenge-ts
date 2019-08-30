@@ -7,6 +7,8 @@
     "scratch": "./node_modules/ts-node/dist/bin.js src/putting_it_together/scratch.ts",
     "particle": "./node_modules/ts-node/dist/bin.js src/putting_it_together/particle.ts",
     "clock": "./node_modules/ts-node/dist/bin.js src/putting_it_together/clock.ts",
+    "sphere-shadow": "./node_modules/ts-node/dist/bin.js src/putting_it_together/sphere-shadow.ts",
+
     "test": "tsc && cucumber-js features/"
   },
   "keywords": [],
