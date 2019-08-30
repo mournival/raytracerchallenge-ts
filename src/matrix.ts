@@ -69,8 +69,8 @@ export class Matrix {
 
     static transpose(m: Matrix): Matrix {
         let mPrime = new Matrix(m.data[0].length, m.data.length);
-        for (let r = 0; r < 4; ++r) {
-            for (let c = 0; c < 4; ++c) {
+        for (let r = 0; r < m.data.length; ++r) {
+            for (let c = 0; c < m.data[0].length; ++c) {
                 mPrime.data[c][r] = m.data[r][c];
             }
         }
@@ -89,13 +89,15 @@ export class Matrix {
         return dt;
     }
 
-    static subMatrix(m: Matrix, rrow: number, rcol: number): Matrix {
+    static subMatrix(m: Matrix, row: number, col: number): Matrix {
         const mMinor = new Matrix(m.data.length - 1, m.data[0].length - 1);
 
         for (let r = 0; r < m.data.length; ++r) {
-            for (let c = 0; c < m.data[0].length; ++c) {
-                if (r != rrow && c != rcol) {
-                    mMinor.data[r < rrow ? r : r - 1][c < rcol ? c : c - 1] = m.data[r][c];
+            if (r != row) {
+                for (let c = 0; c < m.data[0].length; ++c) {
+                    if (c != col) {
+                        mMinor.data[r < row ? r : r - 1][c < col ? c : c - 1] = m.data[r][c];
+                    }
                 }
             }
         }

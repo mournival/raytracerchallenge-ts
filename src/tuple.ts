@@ -58,11 +58,11 @@ export class Tuple {
     }
 
     static magnitude(t: Tuple): number {
-        return Math.sqrt(t.x * t.x + t.y * t.y + t.z * t.z);
+        return Math.sqrt(this.dot(t, t));
     }
 
     static normalize(t: Tuple): Tuple {
-        return Tuple.divide(t, Tuple.magnitude(t));
+        return Tuple.multiply(t,  1 / Tuple.magnitude(t));
     }
 
     static dot(lhs: Tuple, rhs: Tuple): number {

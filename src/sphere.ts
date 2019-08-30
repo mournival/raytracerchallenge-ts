@@ -6,7 +6,6 @@ import {Matrix} from './matrix';
 export class Sphere {
     constructor(public readonly transform: Matrix = Matrix.identity(4)) {
     }
-
 }
 
 export function intersect(s: Sphere, r: Ray): Intersection[] {
@@ -29,6 +28,6 @@ export function intersect(s: Sphere, r: Ray): Intersection[] {
 }
 
 export function set_transform(s: Sphere, t: Matrix): Sphere {
-    return new Sphere(Matrix.multiply(t, s.transform));
+    return new Sphere(t);
 
 }
