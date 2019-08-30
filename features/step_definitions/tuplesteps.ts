@@ -51,9 +51,11 @@ class TupleSteps {
 
     @then(/^(\w+) = (\w+)\(([^,]+), ([^,]+), ([^,]+)\)$/)
     public thenTypedTupleEquals(id: string, expectedType: string, x: string, y: string, z: string): void {
-        let expectedValue = TupleSteps.createExpected(expectedType, x, y, z);
+        let expected = TupleSteps.createExpected(expectedType, x, y, z);
+        const actual = this.workspace.tuples[id];
         expect(
-            Tuple.equals(this.workspace.tuples[id], expectedValue)
+            Tuple.equals(actual, expected),
+            JSON.stringify(actual) + " should equal " + JSON.stringify(expected)
         ).to.be.true;
     }
 
@@ -115,7 +117,7 @@ class TupleSteps {
                     const actual = Matrix.multiplyVector(this.workspace.matrices[lhs], this.workspace.tuples[rhs]);
                     const expected = TupleSteps.createExpected(expectedType, x, y, z, w);
                     expect(Tuple.equals(actual, expected),
-                        JSON.stringify(actual) + ' should equal ' + JSON.stringify(expected) + ' ' + x+ ' ' + y + ' ' + z).to.be.true;
+                        JSON.stringify(actual) + ' should equal ' + JSON.stringify(expected) + ' ' + x + ' ' + y + ' ' + z).to.be.true;
                 } else {
                     expect(
                         Tuple.equals(Tuple.multiply(this.workspace.tuples[lhs], TupleSteps.parseArg(rhs)), new Tuple(TupleSteps.parseArg(x), TupleSteps.parseArg(y), TupleSteps.parseArg(z), TupleSteps.parseArg(w)))

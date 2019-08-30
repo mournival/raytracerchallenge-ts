@@ -83,6 +83,7 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 ### TODO
 
+- Figure TypeScript method / function overloading (if possible)
 - Create file utils to save canvas either as global or Canvas static or Canvas method.
 - Fix mutable Matrix
 - Fix mutable Canvas(?). Not entirely sure if this is the correct decision for the global model that may have 1M+ pixels.

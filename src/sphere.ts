@@ -31,6 +31,10 @@ export function set_transform(s: Sphere, t: Matrix): Sphere {
     return new Sphere(t);
 }
 
-export function normal_at(s: Sphere, p: Tuple): Tuple {
-    return Tuple.normalize(vector(p.x, p.y, p.z));
+export function normal_at(s: Sphere, world_point: Tuple): Tuple {
+    const transInv = Matrix.inverse(s.transform);
+    const object_point = Matrix.multiplyVector(transInv, world_point);
+    const object_normal = Tuple.subtract(object_point, point(0, 0, 0));
+    const world_normal = Matrix.multiplyVector(Matrix.transpose(transInv), object_normal);
+    return Tuple.normalize(vector(world_normal.x, world_normal.y, world_normal.z));
 }
