@@ -26,3 +26,8 @@ export function intersect(s: Sphere, r: Ray): Intersection[] {
 
     return [new Intersection(s, t1), new Intersection(s, t2)];
 }
+
+export function set_transform(s: Sphere, t: Matrix): Sphere {
+    return new Sphere(Matrix.multiply(t, s.transform));
+
+}

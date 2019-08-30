@@ -1,11 +1,8 @@
 import {before, binding, given, then, when} from 'cucumber-tsflow';
 import {Workspace} from './Workspace';
 import {expect} from 'chai';
-import {Matrix} from '../../src/matrix';
 import {point, Tuple, vector} from '../../src/tuple';
-import TupleSteps = require('./tuplesteps');
-import {fail} from 'assert';
-import {position, Ray} from '../../src/ray';
+import {position, Ray, transform} from '../../src/ray';
 
 
 @binding([Workspace])
@@ -46,10 +43,33 @@ class RaysSteps {
 
     @then(/^position\((\w+), ([^,]+)\) = point\(([^,]+), ([^,]+), ([^,]+)\)$/)
     public thenPosition(rayId: string, distance: string, px: string, py: string, pz: string) {
-        const actual = position(this.workspace.rays[rayId],parseFloat(distance));
+        const actual = position(this.workspace.rays[rayId], parseFloat(distance));
         const expected = point(parseFloat(px), parseFloat(py), parseFloat(pz));
         expect(Tuple.equals(actual, expected)).to.be.true;
     }
+
+    @when(/^(\w+) ← transform\(([^,]+), ([^,]+)\)$/)
+    public whenTransformRay(r2Id: string, rId: string, tId: string,) {
+        this.workspace.rays[r2Id] = transform(
+            this.workspace.rays[rId],
+            this.workspace.matrices[tId]
+        );
+    }
+
+    @then(/^(\w+).origin = point\(([^,]+), ([^,]+), ([^,]+)\)$/)
+    public thenRayOriginPoint(rayId: string, px: string, py: string, pz: string) {
+        const actual = this.workspace.rays[rayId].origin;
+        const expected = point(parseFloat(px), parseFloat(py), parseFloat(pz));
+        expect(Tuple.equals(actual, expected)).to.be.true;
+    }
+
+    @then(/^(\w+).direction = vector\(([^,]+), ([^,]+), ([^,]+)$/)
+    public thenRayDirectionVector(rayId: string, vx: string, vy: string, vz: string) {
+        const actual = this.workspace.rays[rayId].direction;
+        const expected = vector(parseFloat(vx), parseFloat(vy), parseFloat(vz));
+        expect(Tuple.equals(actual, expected)).to.be.true;
+    }
+
 
 }
 

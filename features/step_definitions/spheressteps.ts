@@ -1,8 +1,8 @@
 import {before, binding, given, then, when} from 'cucumber-tsflow';
 import {Workspace} from './Workspace';
 import {expect} from 'chai';
-import {intersect, Sphere} from "../../src/sphere";
-import {Matrix} from "../../src/matrix";
+import {intersect, set_transform, Sphere} from "../../src/sphere";
+import {Matrix, scaling} from "../../src/matrix";
 
 @binding([Workspace])
 class SpheresSteps {
@@ -37,7 +37,7 @@ class SpheresSteps {
 
     @then(/^(\w+)\[(\d+)] = ([^,]+)$/)
     public thenIntersectionValue(intersectionsId: string, intersectionIndex: string, value: string) {
-        const actual = this.workspace.intersections[intersectionsId][parseInt(intersectionIndex)].value;
+        const actual = this.workspace.intersections[intersectionsId][parseInt(intersectionIndex)].t;
         const expected = parseFloat(value);
 
         expect(actual).to.be.closeTo(expected, 0.0001);
@@ -57,6 +57,30 @@ class SpheresSteps {
         const expected = this.workspace.matrices[mId];
 
         expect(Matrix.equals(actual, expected), JSON.stringify(actual) + ' should equal ' + JSON.stringify(expected)).to.be.true;
+    }
+
+    @then(/^set_transform\((\w+), (\w+)\)$/)
+    public whenSetTransform(sphereId: string, matrixId: string) {
+        const t = this.workspace.matrices[matrixId];
+        this.workspace.spheres[sphereId] = new Sphere(t);
+    }
+
+    @then(/^set_transform\((\w+), scaling\(([^,]+), ([^,]+), ([^,]+)\)\)$/)
+    public whenSetTransformScaling(sphereId: string, x: string, y: string, z: string) {
+        const s = this.workspace.spheres[sphereId];
+        const t = scaling(parseFloat(x), parseFloat(y), parseFloat(z));
+        this.workspace.spheres[sphereId] = set_transform(s, t);
+    }
+
+    @then(/^(\w+)\[(\d+)].t = ([^,]+)$/)
+    public thenIntersectionT(intersectionsId: string, intersectionIndex: string, value: string) {
+        // console.log(JSON.stringify(this.workspace.rays['r']));
+        // console.log(JSON.stringify(this.workspace.spheres['s']));
+        // console.log(JSON.stringify(this.workspace.intersections[intersectionsId]));
+
+        const actual = this.workspace.intersections[intersectionsId][parseInt(intersectionIndex)].t;
+        const expected = parseFloat(value);
+        expect(actual).to.be.closeTo(expected, 0.0001);
     }
 }
 
