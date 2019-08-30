@@ -4,7 +4,6 @@ import {expect} from 'chai';
 import {point, Tuple, vector} from '../../src/tuple';
 import {position, Ray, transform} from '../../src/ray';
 
-
 @binding([Workspace])
 class RaysSteps {
 
@@ -69,8 +68,6 @@ class RaysSteps {
         const expected = vector(parseFloat(vx), parseFloat(vy), parseFloat(vz));
         expect(Tuple.equals(actual, expected)).to.be.true;
     }
-
-
 }
 
 export = RaysSteps;

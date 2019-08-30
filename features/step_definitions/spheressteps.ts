@@ -74,10 +74,6 @@ class SpheresSteps {
 
     @then(/^(\w+)\[(\d+)].t = ([^,]+)$/)
     public thenIntersectionT(intersectionsId: string, intersectionIndex: string, value: string) {
-        // console.log(JSON.stringify(this.workspace.rays['r']));
-        // console.log(JSON.stringify(this.workspace.spheres['s']));
-        // console.log(JSON.stringify(this.workspace.intersections[intersectionsId]));
-
         const actual = this.workspace.intersections[intersectionsId][parseInt(intersectionIndex)].t;
         const expected = parseFloat(value);
         expect(actual).to.be.closeTo(expected, 0.0001);
