@@ -2,7 +2,7 @@ import {before, binding, given, then, when} from 'cucumber-tsflow';
 import {Workspace} from './Workspace';
 import {expect} from 'chai';
 import {intersect, set_transform, Sphere} from "../../src/sphere";
-import {Matrix, scaling} from "../../src/matrix";
+import {Matrix, scaling, translation} from "../../src/matrix";
 
 @binding([Workspace])
 class SpheresSteps {
@@ -78,6 +78,14 @@ class SpheresSteps {
         const expected = parseFloat(value);
         expect(actual).to.be.closeTo(expected, 0.0001);
     }
+
+    @then(/^set_transform\((\w+), translation\(([^,]+), ([^,]+), ([^,]+)\)\)$/)
+    public whenSetTransformTranslation(sphereId: string, x: string, y: string, z: string) {
+        const s = this.workspace.spheres[sphereId];
+        const t = translation(parseFloat(x), parseFloat(y), parseFloat(z));
+        this.workspace.spheres[sphereId] = set_transform(s, t);
+    }
+
 }
 
 export = SpheresSteps;
