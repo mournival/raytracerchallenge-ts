@@ -1,9 +1,9 @@
 #!/usr/bin/env node
 
-import {point} from "./tuple";
-import {Canvas} from "./canvas";
-import {Color} from "./color";
-import {Matrix, rotation_z, scaling, translation} from "./matrix";
+import {point} from "../tuple";
+import {Canvas} from "../canvas";
+import {Color} from "../color";
+import {Matrix, rotation_z, scaling, translation} from "../matrix";
 
 const COLOR = new Color(1, 1, 1);
 

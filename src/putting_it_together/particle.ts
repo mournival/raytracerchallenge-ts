@@ -1,8 +1,8 @@
 #!/usr/bin/env node
 
-import {point, Tuple, vector} from "./tuple";
-import {Canvas} from "./canvas";
-import {Color} from "./color";
+import {point, Tuple, vector} from "../tuple";
+import {Canvas} from "../canvas";
+import {Color} from "../color";
 
 class Particle {
     constructor(
