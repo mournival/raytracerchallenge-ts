@@ -29,6 +29,11 @@ interface SphereArray {
     [index: string]: Sphere;
 }
 
+interface NumberArrayArray {
+    [index: string]: number[];
+
+}
+
 export class Workspace {
     public tuples: TupleArray = {};
     public canvases: CanvasArray = {};
@@ -36,6 +41,7 @@ export class Workspace {
     public matrices: MatrixArray = {};
     public rays: RayArray = {};
     public spheres: SphereArray = {};
+    public intersections: NumberArrayArray = {};
 
 
 }
