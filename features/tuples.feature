@@ -1,3 +1,4 @@
+#noinspection CucumberUndefinedStep
 Feature: Tuples, Vectors, and Points
 
   Scenario: A tuple with w=1.0 is a point
