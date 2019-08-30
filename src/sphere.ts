@@ -1,11 +1,12 @@
 import {Ray} from './ray';
-import {point, Tuple} from "./tuple";
+import {point, Tuple} from './tuple';
+import {Intersection} from '../features/step_definitions/intersect';
 
 export class Sphere {
 
 }
 
-export function intersect(s: Sphere, r: Ray): number[] {
+export function intersect(s: Sphere, r: Ray): Intersection[] {
     const sphere_to_ray = Tuple.subtract(r.origin, point(0, 0, 0));
     const a = Tuple.dot(r.direction, r.direction);
     const b = 2 * Tuple.dot(r.direction, sphere_to_ray);
@@ -20,5 +21,5 @@ export function intersect(s: Sphere, r: Ray): number[] {
     const t1 = (-b - rootDisc) / (2 * a);
     const t2 = (-b + rootDisc) / (2 * a);
 
-    return [t1, t2];
+    return [new Intersection(s, t1), new Intersection(s, t2)];
 }

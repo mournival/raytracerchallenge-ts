@@ -4,6 +4,7 @@ import {Canvas} from '../../src/canvas';
 import {Matrix} from '../../src/matrix';
 import {Ray} from '../../src/ray';
 import {Sphere} from '../../src/sphere';
+import {Intersection} from "./intersect";
 
 interface TupleArray {
     [index: string]: Tuple;
@@ -29,8 +30,8 @@ interface SphereArray {
     [index: string]: Sphere;
 }
 
-interface NumberArrayArray {
-    [index: string]: number[];
+interface IntersectionsArray {
+    [index: string]: Intersection[];
 
 }
 
@@ -41,7 +42,7 @@ export class Workspace {
     public matrices: MatrixArray = {};
     public rays: RayArray = {};
     public spheres: SphereArray = {};
-    public intersections: NumberArrayArray = {};
+    public intersections: IntersectionsArray = {};
 
 
 }

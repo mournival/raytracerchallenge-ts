@@ -1,10 +1,6 @@
 import {before, binding, given, then, when} from 'cucumber-tsflow';
 import {Workspace} from './Workspace';
 import {expect} from 'chai';
-import {Matrix} from '../../src/matrix';
-import {point, Tuple, vector} from '../../src/tuple';
-import {fail} from 'assert';
-import {position, Ray} from '../../src/ray';
 import {intersect, Sphere} from "../../src/sphere";
 
 @binding([Workspace])
@@ -35,11 +31,20 @@ class SpheresSteps {
 
     @then(/^(\w+)\[(\d+)] = ([^,]+)$/)
     public thenIntersectionValue(intersectionsId: string, intersectionIndex: string, value: string) {
-        const actual = this.workspace.intersections[intersectionsId][parseInt(intersectionIndex)];
+        const actual = this.workspace.intersections[intersectionsId][parseInt(intersectionIndex)].value;
         const expected = parseFloat(value);
 
         expect(actual).to.be.closeTo(expected, 0.0001);
     }
+
+    @then(/^(\w+)\[(\d+)].object = ([^,]+)$/)
+    public thenIntersectionObject(intersectionsId: string, intersectionIndex: string, objectId: string) {
+        const actual = this.workspace.intersections[intersectionsId][parseInt(intersectionIndex)].obj;
+        const expected = this.workspace.spheres[objectId];
+
+        expect(actual).to.be.equal(expected);
+    }
+
 }
 
 export = SpheresSteps;
