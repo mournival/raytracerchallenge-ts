@@ -3,7 +3,7 @@ import {assert, expect} from 'chai';
 
 import {point, Tuple, vector, VectorElement} from '../../src/tuple';
 import {Color, RGBElement} from '../../src/color';
-import {parseArg, Workspace} from './Workspace';
+import {parseArg, shouldEqualMsg, Workspace} from './Workspace';
 import {Matrix} from "../../src/matrix";
 
 @binding([Workspace])
@@ -53,10 +53,7 @@ class TupleSteps {
     public thenTypedTupleEquals(id: string, expectedType: string, x: string, y: string, z: string): void {
         let expected = TupleSteps.createExpected(expectedType, x, y, z);
         const actual = this.workspace.tuples[id];
-        expect(
-            Tuple.equals(actual, expected),
-            JSON.stringify(actual) + " should equal " + JSON.stringify(expected)
-        ).to.be.true;
+        expect(Tuple.equals(actual, expected), shouldEqualMsg(actual, expected)).to.be.true;
     }
 
     @then(/^(\w+) (.) (.+) = (\w*)\(([^,]+), ([^,]+), ([^,]+)[, ]*([^,]*)\)$/)
@@ -116,8 +113,7 @@ class TupleSteps {
                 if (this.workspace.matrices[lhs]) {
                     const actual = Matrix.multiplyVector(this.workspace.matrices[lhs], this.workspace.tuples[rhs]);
                     const expected = TupleSteps.createExpected(expectedType, x, y, z, w);
-                    expect(Tuple.equals(actual, expected),
-                        JSON.stringify(actual) + ' should equal ' + JSON.stringify(expected) + ' ' + x + ' ' + y + ' ' + z).to.be.true;
+                    expect(Tuple.equals(actual, expected), shouldEqualMsg(actual, expected)).to.be.true;
                 } else {
                     expect(
                         Tuple.equals(Tuple.multiply(this.workspace.tuples[lhs], parseArg(rhs)), new Tuple(parseArg(x), parseArg(y), parseArg(z), parseArg(w)))

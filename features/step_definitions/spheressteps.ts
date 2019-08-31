@@ -1,5 +1,5 @@
 import {before, binding, given, then, when} from 'cucumber-tsflow';
-import {parseArg, Workspace} from './Workspace';
+import {parseArg, shouldEqualMsg, Workspace} from './Workspace';
 import {expect} from 'chai';
 import {intersect, normal_at, set_transform, Sphere} from "../../src/sphere";
 import {Matrix, scaling, translation} from "../../src/matrix";
@@ -58,7 +58,7 @@ class SpheresSteps {
         const actual = this.workspace.spheres[sphereId].transform;
         const expected = this.workspace.matrices[mId];
 
-        expect(Matrix.equals(actual, expected), JSON.stringify(actual) + ' should equal ' + JSON.stringify(expected)).to.be.true;
+        expect(Matrix.equals(actual, expected), shouldEqualMsg(actual, expected)).to.be.true;
     }
 
     @then(/^set_transform\((\w+), (\w+)\)$/)
