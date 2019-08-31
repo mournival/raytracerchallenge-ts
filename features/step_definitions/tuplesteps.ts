@@ -137,9 +137,9 @@ class TupleSteps {
         ).to.be.true;
     }
 
-    @then(/^magnitude\((.*)\) = (√?)(.*)$/)
-    public thenMagnitudeEquals(id: string, radical: string, m: string): void {
-        let mag = radical ? Math.sqrt(parseArg(m)) : parseArg(m);
+    @then(/^magnitude\((.*)\) = (.*)$/)
+    public thenMagnitudeEquals(id: string, m: string): void {
+        let mag = parseArg(m);
         expect(Tuple.magnitude(this.workspace.tuples[id])).to.be.eq(mag);
     }
 

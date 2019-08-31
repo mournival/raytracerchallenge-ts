@@ -56,6 +56,8 @@ export function shouldEqualMsg(actual: Object, expected: Object): string {
 }
 
 export function parseArg(s: string): number {
+    s = s.trim();
+
     // int
     if (s.match(/^[+-]?\d+$/))
         return parseInt(s);
@@ -77,6 +79,10 @@ export function parseArg(s: string): number {
     if (s.match(/^-√\d+\s*\/\s*\d+$/)) {
         const matchArray = s.split('/');
         return -Math.sqrt(parseInt(matchArray[0].slice(2))) / parseInt(matchArray[1]);
+    }
+    if (s.match(/^√\d+$/)) {
+        const matchArray = s.split('/');
+        return Math.sqrt(parseInt(matchArray[0].slice(1)));
     }
     // π
     if (s.match(/^π\s*\/\s*\d+$/)) {
