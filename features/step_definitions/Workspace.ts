@@ -4,8 +4,8 @@ import {Canvas} from '../../src/canvas';
 import {Matrix} from '../../src/matrix';
 import {Ray} from '../../src/ray';
 import {Sphere} from '../../src/sphere';
-import {Intersection} from "./intersect";
-import {Light} from "../../src/light";
+import {Intersection} from './intersect';
+import {Light} from '../../src/light';
 
 interface TupleArray {
     [index: string]: Tuple;
@@ -69,6 +69,7 @@ export function parseArg(s: string): number {
         const matchArray = s.split('/');
         return parseInt(matchArray[0]) / parseInt(matchArray[1]);
     }
+    // √
     if (s.match(/^√\d+\s*\/\s*\d+$/)) {
         const matchArray = s.split('/');
         return Math.sqrt(parseInt(matchArray[0].slice(1))) / parseInt(matchArray[1]);
@@ -77,6 +78,12 @@ export function parseArg(s: string): number {
         const matchArray = s.split('/');
         return -Math.sqrt(parseInt(matchArray[0].slice(2))) / parseInt(matchArray[1]);
     }
+    // π
+    if (s.match(/^π\s*\/\s*\d+$/)) {
+        const matchArray = s.split('/');
+        return Math.PI / parseInt(matchArray[1]);
+    }
+
     // irrational ratio
     throw 'Parse error: ' + s;
 

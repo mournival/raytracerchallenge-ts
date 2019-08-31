@@ -4,7 +4,7 @@ import {assert, expect} from 'chai';
 import {point, Tuple, vector, VectorElement} from '../../src/tuple';
 import {Color, RGBElement} from '../../src/color';
 import {parseArg, shouldEqualMsg, Workspace} from './Workspace';
-import {Matrix} from "../../src/matrix";
+import {Matrix} from '../../src/matrix';
 
 @binding([Workspace])
 class TupleSteps {

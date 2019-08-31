@@ -1,8 +1,8 @@
 import {before, binding, given, then, when} from 'cucumber-tsflow';
 import {Workspace} from './Workspace';
 import {expect} from 'chai';
-import {Matrix, rotation_x, rotation_y, rotation_z, scaling, shearing, translation} from "../../src/matrix";
-import {Tuple} from "../../src/tuple";
+import {Matrix, rotation_x, rotation_y, rotation_z, scaling, shearing, translation} from '../../src/matrix';
+import {Tuple} from '../../src/tuple';
 
 
 @binding([Workspace])
@@ -16,7 +16,7 @@ class TransformationsSteps {
         this.workspace.matrices[tId] = translation(parseFloat(x), parseFloat(y), parseFloat(z));
     }
 
-    @given(/^(\w+) ← scaling\(([^,]+), ([^,]+), ([^,]+)\)$/)
+    @given(/^(\w+) ← scaling\(([^,]+), ([^,]+), ([^,*]+)\)$/)
     public givensScaling(tId: string, x: string, y: string, z: string) {
         this.workspace.matrices[tId] = scaling(parseFloat(x), parseFloat(y), parseFloat(z));
     }

@@ -1,10 +1,9 @@
 import {before, binding, given, then, when} from 'cucumber-tsflow';
 import {parseArg, shouldEqualMsg, Workspace} from './Workspace';
 import {expect} from 'chai';
-import {intersect, normal_at, set_transform, Sphere} from "../../src/sphere";
-import {Matrix, scaling, translation} from "../../src/matrix";
-import {point, Tuple} from "../../src/tuple";
-import TupleSteps = require("./tuplesteps");
+import {intersect, normal_at, set_transform, Sphere} from '../../src/sphere';
+import {Matrix, rotation_z, scaling, translation} from '../../src/matrix';
+import {point, Tuple} from '../../src/tuple';
 
 @binding([Workspace])
 class SpheresSteps {
@@ -40,7 +39,7 @@ class SpheresSteps {
     @then(/^(\w+)\[(\d+)] = ([^,]+)$/)
     public thenIntersectionValue(intersectionsId: string, intersectionIndex: string, value: string) {
         const actual = this.workspace.intersections[intersectionsId][parseInt(intersectionIndex)].t;
-        const expected = parseFloat(value);
+        const expected = parseArg(value);
 
         expect(actual).to.be.closeTo(expected, 0.0001);
     }
@@ -70,21 +69,21 @@ class SpheresSteps {
     @then(/^set_transform\((\w+), scaling\(([^,]+), ([^,]+), ([^,]+)\)\)$/)
     public whenSetTransformScaling(sphereId: string, x: string, y: string, z: string) {
         const s = this.workspace.spheres[sphereId];
-        const t = scaling(parseFloat(x), parseFloat(y), parseFloat(z));
+        const t = scaling(parseArg(x), parseArg(y), parseArg(z));
         this.workspace.spheres[sphereId] = set_transform(s, t);
     }
 
     @then(/^(\w+)\[(\d+)].t = ([^,]+)$/)
     public thenIntersectionT(intersectionsId: string, intersectionIndex: string, value: string) {
         const actual = this.workspace.intersections[intersectionsId][parseInt(intersectionIndex)].t;
-        const expected = parseFloat(value);
+        const expected = parseArg(value);
         expect(actual).to.be.closeTo(expected, 0.0001);
     }
 
     @then(/^set_transform\((\w+), translation\(([^,]+), ([^,]+), ([^,]+)\)\)$/)
     public whenSetTransformTranslation(sphereId: string, x: string, y: string, z: string) {
         const s = this.workspace.spheres[sphereId];
-        const t = translation(parseFloat(x), parseFloat(y), parseFloat(z));
+        const t = translation(parseArg(x), parseArg(y), parseArg(z));
         this.workspace.spheres[sphereId] = set_transform(s, t);
     }
 
@@ -101,6 +100,13 @@ class SpheresSteps {
         const actual = this.workspace.tuples[lhsId];
         const expected = Tuple.normalize(this.workspace.tuples[nId]);
         expect(Tuple.equals(actual, expected)).to.be.true;
+    }
+
+    @given(/^(\w+) ← scaling\(([^,]+), ([^,]+), ([^,]+)\) \* rotation_z\(([^,]+)\)$/)
+    public givensScaling(tId: string, x: string, y: string, z: string, rot: string) {
+        this.workspace.matrices[tId] = Matrix.multiply(
+            scaling(parseArg(x), parseArg(y), parseArg(z)),
+            rotation_z(parseArg(rot)));
     }
 
 }

@@ -1,8 +1,8 @@
 import {binding, given, then, when} from 'cucumber-tsflow';
 import {expect} from 'chai';
-import {Canvas} from "../../src/canvas";
-import {Color} from "../../src/color";
-import {Workspace} from "./Workspace";
+import {Canvas} from '../../src/canvas';
+import {Color} from '../../src/color';
+import {Workspace} from './Workspace';
 
 type PPM = string[];
 

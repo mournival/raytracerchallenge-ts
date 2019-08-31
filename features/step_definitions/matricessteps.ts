@@ -1,10 +1,10 @@
 import {before, binding, given, then, when} from 'cucumber-tsflow';
 import {parseArg, Workspace} from './Workspace';
 import {expect} from 'chai';
-import {Matrix} from "../../src/matrix";
-import {Tuple} from "../../src/tuple";
-import TupleSteps = require("./tuplesteps");
-import {fail} from "assert";
+import {Matrix} from '../../src/matrix';
+import {Tuple} from '../../src/tuple';
+import TupleSteps = require('./tuplesteps');
+import {fail} from 'assert';
 
 @binding([Workspace])
 class MatricesSteps {
