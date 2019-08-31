@@ -5,6 +5,7 @@ import {Matrix} from '../../src/matrix';
 import {Ray} from '../../src/ray';
 import {Sphere} from '../../src/sphere';
 import {Intersection} from "./intersect";
+import {Light} from "../../src/light";
 
 interface TupleArray {
     [index: string]: Tuple;
@@ -32,7 +33,10 @@ interface SphereArray {
 
 interface IntersectionsArray {
     [index: string]: Intersection[];
+}
 
+interface LightsArray {
+    [index: string]: Light;
 }
 
 export class Workspace {
@@ -43,6 +47,37 @@ export class Workspace {
     public rays: RayArray = {};
     public spheres: SphereArray = {};
     public intersections: IntersectionsArray = {};
+    public lights: LightsArray = {};
 
+}
+
+export function shouldEqualMsg(actual: Object, expected: Object): string {
+    return JSON.stringify(actual) + ' should equal ' + JSON.stringify(expected);
+}
+
+export function parseArg(s: string): number {
+    // int
+    if (s.match(/^[+-]?\d+$/))
+        return parseInt(s);
+
+    // simple float
+    if (s.match(/^([+-]?\d*?\.\d*)$/))
+        return parseFloat(s);
+
+    // rational
+    if (s.match(/^[+-]?\d+\s*\/\s*\d+$/)) {
+        const matchArray = s.split('/');
+        return parseInt(matchArray[0]) / parseInt(matchArray[1]);
+    }
+    if (s.match(/^√\d+\s*\/\s*\d+$/)) {
+        const matchArray = s.split('/');
+        return Math.sqrt(parseInt(matchArray[0].slice(1))) / parseInt(matchArray[1]);
+    }
+    if (s.match(/^-√\d+\s*\/\s*\d+$/)) {
+        const matchArray = s.split('/');
+        return -Math.sqrt(parseInt(matchArray[0].slice(2))) / parseInt(matchArray[1]);
+    }
+    // irrational ratio
+    throw 'Parse error: ' + s;
 
 }

@@ -1,5 +1,5 @@
 import {before, binding, given, then, when} from 'cucumber-tsflow';
-import {Workspace} from './Workspace';
+import {parseArg, Workspace} from './Workspace';
 import {expect} from 'chai';
 import {Matrix} from "../../src/matrix";
 import {Tuple} from "../../src/tuple";
@@ -23,7 +23,7 @@ class MatricesSteps {
         let data = dataTable.rawTable;
         for (let r = 0; r < parseInt(rows); ++r) {
             for (let c = 0; c < parseInt(cols); ++c) {
-                this.workspace.matrices[matId].set(r, c, TupleSteps.parseArg(data[r][c]));
+                this.workspace.matrices[matId].set(r, c, parseArg(data[r][c]));
             }
         }
     };
@@ -31,7 +31,7 @@ class MatricesSteps {
     @then(/^(\w+)\[(\d+),(\d+)] = (.*)$/)
     public checkMatrixElement(matId: string, row: string, col: string, expectedValue: string) {
         const actual = this.workspace.matrices[matId].get(parseInt(row), parseInt(col));
-        expect(actual).to.be.closeTo(TupleSteps.parseArg(expectedValue), Matrix.EPSILON);
+        expect(actual).to.be.closeTo(parseArg(expectedValue), Matrix.EPSILON);
     }
 
     @given(/the following matrix (\w+):/)
@@ -97,7 +97,7 @@ class MatricesSteps {
     @then(/^determinant\((\w+)\) = (.*)$/)
     public thenDeterminantEquals(matId: string, value: string) {
         const actual = Matrix.determinant(this.workspace.matrices[matId]);
-        const expected = TupleSteps.parseArg(value);
+        const expected = parseArg(value);
         expect(actual).to.be.closeTo(expected, Matrix.EPSILON);
     }
 
@@ -116,14 +116,14 @@ class MatricesSteps {
     @then(/^minor\((\w+), (\d+), (\d+)\) = (.*)$/)
     public minorEquals(matId: string, r: string, c: string, value: string) {
         const actual = Matrix.minor(this.workspace.matrices[matId], parseInt(r), parseInt(c));
-        const expected = TupleSteps.parseArg(value);
+        const expected = parseArg(value);
         expect(actual).to.be.closeTo(expected, Matrix.EPSILON);
     }
 
     @then(/^cofactor\((\w+), (\d+), (\d+)\) = (.*)$/)
     public cofactorEquals(matId: string, r: string, c: string, value: string) {
         const actual = Matrix.cofactor(this.workspace.matrices[matId], parseInt(r), parseInt(c));
-        const expected = TupleSteps.parseArg(value);
+        const expected = parseArg(value);
         expect(actual).to.be.closeTo(expected, Matrix.EPSILON);
     }
 
@@ -201,7 +201,7 @@ class MatricesSteps {
         const expected = new Matrix(rows, cols);
         for (let r = 0; r < rows; ++r) {
             for (let c = 0; c < cols; ++c) {
-                expected.set(r, c, TupleSteps.parseArg(data[r][c]));
+                expected.set(r, c, parseArg(data[r][c]));
             }
         }
         return expected;

@@ -18,9 +18,6 @@ export class Color {
     static readonly EPSILON = 0.0001;
 
     static equals(lhs: Color, rhs: Color): boolean {
-        // console.log(lhs);
-        // console.log(rhs);
-
         return Math.abs(lhs.red - rhs.red) < Color.EPSILON &&
             Math.abs(lhs.green - rhs.green) < Color.EPSILON &&
             Math.abs(lhs.blue - rhs.blue) < Color.EPSILON;

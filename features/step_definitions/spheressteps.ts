@@ -1,5 +1,5 @@
 import {before, binding, given, then, when} from 'cucumber-tsflow';
-import {Workspace} from './Workspace';
+import {parseArg, Workspace} from './Workspace';
 import {expect} from 'chai';
 import {intersect, normal_at, set_transform, Sphere} from "../../src/sphere";
 import {Matrix, scaling, translation} from "../../src/matrix";
@@ -92,7 +92,7 @@ class SpheresSteps {
     public whenNormalAt(normalId: string, sphereId: string, x: string, y: string, z: string) {
         this.workspace.tuples[normalId] = normal_at(
             this.workspace.spheres[sphereId],
-            point(TupleSteps.parseArg(x), TupleSteps.parseArg(y), TupleSteps.parseArg(z))
+            point(parseArg(x), parseArg(y), parseArg(z))
         );
     }
 
