@@ -8,4 +8,13 @@ export class Material {
                 public readonly  shininess = 200.0) {
     }
 
+    public static EPSILON = 0.001;
+
+    public static equals(lhs: Material, rhs: Material): boolean {
+        return Color.equals(lhs.color, rhs.color) &&
+            Math.abs(lhs.ambient - rhs.ambient) < this.EPSILON &&
+            Math.abs(lhs.diffuse - rhs.diffuse) < this.EPSILON &&
+            Math.abs(lhs.specular - rhs.specular) < this.EPSILON &&
+            Math.abs(lhs.shininess - rhs.shininess) < this.EPSILON;
+    }
 }

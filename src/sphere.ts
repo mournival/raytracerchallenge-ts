@@ -2,9 +2,10 @@ import {Ray, transform} from './ray';
 import {point, Tuple, vector} from './tuple';
 import {Intersection} from '../features/step_definitions/intersect';
 import {Matrix} from './matrix';
+import {Material} from './material';
 
 export class Sphere {
-    constructor(public readonly transform: Matrix = Matrix.identity(4)) {
+    constructor(public readonly transform: Matrix = Matrix.identity(4), public readonly material = new Material() ) {
     }
 }
 

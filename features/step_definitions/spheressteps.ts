@@ -4,6 +4,7 @@ import {expect} from 'chai';
 import {intersect, normal_at, set_transform, Sphere} from '../../src/sphere';
 import {Matrix, rotation_z, scaling, translation} from '../../src/matrix';
 import {point, Tuple} from '../../src/tuple';
+import {Material} from '../../src/material';
 
 @binding([Workspace])
 class SpheresSteps {
@@ -107,6 +108,19 @@ class SpheresSteps {
         this.workspace.matrices[tId] = Matrix.multiply(
             scaling(parseArg(x), parseArg(y), parseArg(z)),
             rotation_z(parseArg(rot)));
+    }
+
+    @when(/^(\w+) ← (\w+).material$/)
+    public materialIs(mId: string, sphereId: string) {
+        this.workspace.materials[mId] = this.workspace.spheres[sphereId].material;
+    }
+
+    @then(/^(\w+) = material\(\)$/)
+    public thenSphereMaterial(mId: string) {
+        const actual = this.workspace.materials[mId];
+        const expected = new Material();
+
+        expect(Material.equals(actual, expected), shouldEqualMsg(actual, expected)).to.be.true;
     }
 
 }
