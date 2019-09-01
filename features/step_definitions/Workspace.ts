@@ -6,6 +6,7 @@ import {Ray} from '../../src/ray';
 import {Sphere} from '../../src/sphere';
 import {Intersection} from './intersect';
 import {Light} from '../../src/light';
+import {Material} from '../../src/material';
 
 interface TupleArray {
     [index: string]: Tuple;
@@ -39,6 +40,9 @@ interface LightsArray {
     [index: string]: Light;
 }
 
+interface MaterialsArray {
+    [index: string]: Material;
+}
 export class Workspace {
     public tuples: TupleArray = {};
     public canvases: CanvasArray = {};
@@ -48,7 +52,7 @@ export class Workspace {
     public spheres: SphereArray = {};
     public intersections: IntersectionsArray = {};
     public lights: LightsArray = {};
-
+    public materials: MaterialsArray = {};
 }
 
 export function shouldEqualMsg(actual: Object, expected: Object): string {
