@@ -14,84 +14,6 @@ export class Matrix {
         }
     }
 
-    static equals(lhs: Matrix, rhs: Matrix): boolean {
-        if (lhs.data.length !== rhs.data.length ||
-            lhs.data[0].length !== rhs.data[0].length
-        ) {
-            return false;
-        }
-        for (let r = 0; r < lhs.data.length; ++r) {
-            for (let c = 0; c < lhs.data[0].length; ++c) {
-                if (Math.abs(lhs.get(r, c) - rhs.get(r, c)) > Matrix.EPSILON) {
-                    return false;
-                }
-            }
-        }
-        return true;
-    }
-
-    static multiply(lhs: Matrix, rhs: Matrix): Matrix {
-        let product = new Matrix(4, 4);
-
-        for (let r = 0; r < 4; ++r) {
-            for (let c = 0; c < 4; ++c) {
-                product.data[r][c] = Matrix.dot4(lhs, r, rhs, c);
-            }
-        }
-
-        return product;
-    }
-
-    static multiplyVector(lhs: Matrix, rhs: Tuple): Tuple {
-        return new Tuple(
-            this.vectorDot(lhs, rhs, 0),
-            this.vectorDot(lhs, rhs, 1),
-            this.vectorDot(lhs, rhs, 2),
-            this.vectorDot(lhs, rhs, 3)
-        );
-    }
-
-    static dot4(lhs: Matrix, row: number, rhs: Matrix, col: number): number {
-        let sum = 0;
-        for (let i = 0; i < 4; ++i) {
-            sum += lhs.data[row][i] * rhs.data[i][col];
-        }
-        return sum;
-    }
-
-    static identity(dim = 4): Matrix {
-        let m = new Matrix(dim, dim);
-        for (let i = 0; i < dim; ++i) {
-            m.data[i][i] = 1;
-        }
-        return m;
-    }
-
-    // static add(lhs: Matrix, rhs: Matrix): Matrix {
-    //     const ldata = lhs.data;
-    //     const rdata = rhs.data;
-    //     if ((ldata.length != rdata.length) || (ldata[0].length != rdata[0].length))
-    //         throw 'Can\'t add matrices of different dimensions';
-    //
-    //     const m = new Matrix(ldata.length, ldata[0].length);
-    //     for (let r = 0; r < ldata.length; ++r)
-    //         for (let c = 0; c < ldata[0].length; ++c)
-    //             m.data[r][c] = ldata[r][c] + rdata[r][c];
-    //
-    //     return m;
-    // }
-    //
-    // static copy(m: Matrix): Matrix {
-    //     return Matrix.add(m, new Matrix(m.data.length, m.data[0].length));
-    // }
-
-    private static vectorDot(lhs: Matrix, rhs: Tuple, r: number) {
-        return lhs.data[r][0] * rhs.x +
-            lhs.data[r][1] * rhs.y +
-            lhs.data[r][2] * rhs.z +
-            lhs.data[r][3] * rhs.w;
-    }
-
     public get det(): number {
         if (this.data.length === 2) {
             return this.det2();
@@ -134,6 +56,84 @@ export class Matrix {
         return mPrime;
     }
 
+    static equals(lhs: Matrix, rhs: Matrix): boolean {
+        if (lhs.data.length !== rhs.data.length ||
+            lhs.data[0].length !== rhs.data[0].length
+        ) {
+            return false;
+        }
+        for (let r = 0; r < lhs.data.length; ++r) {
+            for (let c = 0; c < lhs.data[0].length; ++c) {
+                if (Math.abs(lhs.get(r, c) - rhs.get(r, c)) > Matrix.EPSILON) {
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
+
+    // static add(lhs: Matrix, rhs: Matrix): Matrix {
+    //     const ldata = lhs.data;
+    //     const rdata = rhs.data;
+    //     if ((ldata.length != rdata.length) || (ldata[0].length != rdata[0].length))
+    //         throw 'Can\'t add matrices of different dimensions';
+    //
+    //     const m = new Matrix(ldata.length, ldata[0].length);
+    //     for (let r = 0; r < ldata.length; ++r)
+    //         for (let c = 0; c < ldata[0].length; ++c)
+    //             m.data[r][c] = ldata[r][c] + rdata[r][c];
+    //
+    //     return m;
+    // }
+    //
+    // static copy(m: Matrix): Matrix {
+    //     return Matrix.add(m, new Matrix(m.data.length, m.data[0].length));
+    // }
+
+    static multiply(lhs: Matrix, rhs: Matrix): Matrix {
+        let product = new Matrix(4, 4);
+
+        for (let r = 0; r < 4; ++r) {
+            for (let c = 0; c < 4; ++c) {
+                product.data[r][c] = Matrix.dot4(lhs, r, rhs, c);
+            }
+        }
+
+        return product;
+    }
+
+    static multiplyVector(lhs: Matrix, rhs: Tuple): Tuple {
+        return new Tuple(
+            this.vectorDot(lhs, rhs, 0),
+            this.vectorDot(lhs, rhs, 1),
+            this.vectorDot(lhs, rhs, 2),
+            this.vectorDot(lhs, rhs, 3)
+        );
+    }
+
+    static dot4(lhs: Matrix, row: number, rhs: Matrix, col: number): number {
+        let sum = 0;
+        for (let i = 0; i < 4; ++i) {
+            sum += lhs.data[row][i] * rhs.data[i][col];
+        }
+        return sum;
+    }
+
+    static identity(dim = 4): Matrix {
+        let m = new Matrix(dim, dim);
+        for (let i = 0; i < dim; ++i) {
+            m.data[i][i] = 1;
+        }
+        return m;
+    }
+
+    private static vectorDot(lhs: Matrix, rhs: Tuple, r: number) {
+        return lhs.data[r][0] * rhs.x +
+            lhs.data[r][1] * rhs.y +
+            lhs.data[r][2] * rhs.z +
+            lhs.data[r][3] * rhs.w;
+    }
+
     public cofactor(r: number, c: number): number {
         const coeff = (r + c) % 2 === 0 ? 1 : -1;
         return coeff * this.minor(r, c);
@@ -158,17 +158,17 @@ export class Matrix {
         return this.subMatrix(r, c).det;
     }
 
-    private det2(): number {
-        const d = this.data;
-        return d[0][0] * d[1][1] - d[0][1] * d[1][0];
-    }
-
     get(row: number, col: number): number {
         return this.data[row][col];
     }
 
     set(row: number, col: number, value: number): void {
         this.data[row][col] = value;
+    }
+
+    private det2(): number {
+        const d = this.data;
+        return d[0][0] * d[1][1] - d[0][1] * d[1][0];
     }
 }
 

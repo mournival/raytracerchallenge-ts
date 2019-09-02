@@ -24,12 +24,12 @@ class TupleSteps {
 
     @then(/^(\w+) is (\w* *)a point/)
     public testPoint(id: string, not?: string) {
-        expect(Tuple.isPoint(this.workspace.tuples[id])).to.eq(not !== 'not ');
+        expect(this.workspace.tuples[id].isPoint).to.eq(not !== 'not ');
     }
 
     @then(/^(\w+) is (\w* *)a vector/)
     public testVector(id: string, not?: string) {
-        expect(Tuple.isVector(this.workspace.tuples[id])).to.eq(not !== 'not ');
+        expect(this.workspace.tuples[id].isVector).to.eq(not !== 'not ');
     }
 
     @given(/^(\w+) ← (tuple|point|vector)\(([^,]+), ([^,]+), ([^,]+)[, ]*(.*)\)$/)
@@ -140,26 +140,26 @@ class TupleSteps {
     @then(/^-(\w+) = tuple\(([^,]+), ([^,]+), ([^,]+), ([^,]+)\)$/)
     public thenNegateTest(id: string, x: string, y: string, z: string, w: string): void {
         expect(
-            Tuple.equals(Tuple.negate(this.workspace.tuples[id]), new Tuple(parseArg(x), parseArg(y), parseArg(z), parseArg(w)))
+            Tuple.equals(this.workspace.tuples[id].negative, new Tuple(parseArg(x), parseArg(y), parseArg(z), parseArg(w)))
         ).to.be.true;
     }
 
     @then(/^magnitude\((.*)\) = (.*)$/)
     public thenMagnitudeEquals(id: string, m: string): void {
         let mag = parseArg(m);
-        expect(Tuple.magnitude(this.workspace.tuples[id])).to.be.eq(mag);
+        expect(this.workspace.tuples[id].magnitude).to.be.eq(mag);
     }
 
     @then(/^normalize\((.*)\) = (approximately )?vector\(([^,]+), ([^,]+), ([^,]+)\)$/)
     public thenVectorEquals(id: string, approx: string, x: string, y: string, z: string): void {
-        let actualVal = Tuple.normalize(this.workspace.tuples[id]);
+        let actualVal = this.workspace.tuples[id].normalize;
         let expectedVal = vector(parseArg(x), parseArg(y), parseArg(z));
         expect(Tuple.equals(actualVal, expectedVal)).to.be.true;
     }
 
     @when(/^(\w+) ← normalize\((\w+)\)$/)
     public whenNormed(id: string, src: string): void {
-        this.workspace.tuples[id] = Tuple.normalize(this.workspace.tuples[src]);
+        this.workspace.tuples[id] = this.workspace.tuples[src].normalize;
     }
 
     @then(/^dot\((.*), (.*)\) = ([^,]+)$/)

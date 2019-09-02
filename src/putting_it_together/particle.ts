@@ -30,7 +30,7 @@ function tick(env: Environment, particle: Particle): Particle {
 
 let fs = require('fs');
 
-let p = new Particle(point(0, 1, 0), Tuple.multiply(Tuple.normalize(vector(1, 1.8, 0)), 11.25));
+let p = new Particle(point(0, 1, 0), Tuple.multiply(vector(1, 1.8, 0).normalize, 11.25));
 const e = new Environment(vector(0, -0.1, 0), vector(-0.01, 0, 0));
 
 let c = new Canvas(900, 550);

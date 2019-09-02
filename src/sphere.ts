@@ -37,5 +37,5 @@ export function normal_at(s: Sphere, world_point: Tuple): Tuple {
     const object_point = Matrix.multiplyVector(transInv, world_point);
     const object_normal = Tuple.subtract(object_point, point(0, 0, 0));
     const world_normal = Matrix.multiplyVector(transInv.transpose, object_normal);
-    return Tuple.normalize(vector(world_normal.x, world_normal.y, world_normal.z));
+    return vector(world_normal.x, world_normal.y, world_normal.z).normalize;
 }

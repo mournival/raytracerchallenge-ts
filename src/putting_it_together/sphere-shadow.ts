@@ -5,7 +5,6 @@ import {Canvas} from '../canvas';
 import {Color} from '../color';
 import {Ray} from '../ray';
 import {intersect, Sphere} from '../sphere';
-import {scaling, shearing} from "../matrix";
 
 function saveFile() {
     let fs = require('fs');
@@ -41,7 +40,7 @@ for (let y = 0; y < c.height; ++y) {
     for (let x = 0; x < c.width; ++x) {
         const world_x = -half + pixel_size * x;
         const position = point(world_x, world_y, wall_z);
-        const r = new Ray(ray_origin, Tuple.normalize(Tuple.subtract(position, ray_origin)));
+        const r = new Ray(ray_origin, Tuple.subtract(position, ray_origin).normalize);
         intersect(s, r).forEach(i => Canvas.write_pixel(c, x, y, COLOR));
     }
 }

@@ -99,7 +99,7 @@ class SpheresSteps {
     @then(/^([^,]+) = normalize\((\w+)\)$/)
     public givensRotationX(lhsId: string, nId: string) {
         const actual = this.workspace.tuples[lhsId];
-        const expected = Tuple.normalize(this.workspace.tuples[nId]);
+        const expected = this.workspace.tuples[nId].normalize;
         expect(Tuple.equals(actual, expected)).to.be.true;
     }
 

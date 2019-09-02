@@ -11,6 +11,27 @@ export class Tuple {
     ) {
     }
 
+    public get isPoint(): boolean {
+        return 1.0 - Tuple.EPSILON < this.w &&
+            this.w < 1.0 + Tuple.EPSILON;
+    }
+
+    public get isVector(): boolean {
+        return Math.abs(this.w) < Tuple.EPSILON;
+    }
+
+    public get negative(): Tuple {
+        return Tuple.multiply(this, -1);
+    }
+
+    public get magnitude(): number {
+        return Math.sqrt(Tuple.dot(this, this));
+    }
+
+    public get normalize(): Tuple {
+        return Tuple.multiply(this, 1 / this.magnitude);
+    }
+
     static equals(lhs: Tuple, rhs: Tuple): boolean {
         return Math.abs(lhs.x - rhs.x) < Tuple.EPSILON &&
             Math.abs(lhs.y - rhs.y) < Tuple.EPSILON &&
@@ -36,33 +57,12 @@ export class Tuple {
         );
     }
 
-    static isPoint(t: Tuple): boolean {
-        return 1.0 - Tuple.EPSILON < t.w &&
-            t.w < 1.0 + Tuple.EPSILON;
-    }
-
-    static isVector(t: Tuple): boolean {
-        return Math.abs(t.w) < Tuple.EPSILON;
-    }
-
     static multiply(t: Tuple, s: number): Tuple {
         return new Tuple(t.x * s, t.y * s, t.z * s, t.w * s);
     }
 
     static divide(t: Tuple, s: number): Tuple {
         return new Tuple(t.x / s, t.y / s, t.z / s, t.w / s);
-    }
-
-    static negate(t: Tuple): Tuple {
-        return Tuple.multiply(t, -1);
-    }
-
-    static magnitude(t: Tuple): number {
-        return Math.sqrt(this.dot(t, t));
-    }
-
-    static normalize(t: Tuple): Tuple {
-        return Tuple.multiply(t,  1 / Tuple.magnitude(t));
     }
 
     static dot(lhs: Tuple, rhs: Tuple): number {
