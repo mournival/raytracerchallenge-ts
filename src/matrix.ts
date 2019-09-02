@@ -1,4 +1,4 @@
-import {Tuple} from "./tuple";
+import {Tuple} from './tuple';
 
 export class Matrix {
     static readonly EPSILON = 0.0001;
@@ -32,7 +32,7 @@ export class Matrix {
 
     public get inverse(): Matrix {
         if (!this.invertible) {
-            throw "Cannot invert this matrix";
+            throw 'Cannot invert this matrix';
         }
 
         const m_prime = new Matrix(this.rDim, this.cDim);

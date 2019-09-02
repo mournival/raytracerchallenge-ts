@@ -1,6 +1,6 @@
 import {Color} from './color';
-import {Light} from "./light";
-import {Tuple} from "./tuple";
+import {Light} from './light';
+import {Tuple} from './tuple';
 
 export class Material {
     constructor(public readonly color = new Color(1, 1, 1),
@@ -19,26 +19,25 @@ export class Material {
             Math.abs(lhs.specular - rhs.specular) < this.EPSILON &&
             Math.abs(lhs.shininess - rhs.shininess) < this.EPSILON;
     }
-
 }
 
-export function lighting(m: Material, light: Light, point: Tuple, eyev: Tuple, normalv: Tuple): Color {
-    const effective_color = Color.multiply(m.color, light.intensity);
+export function lighting(material: Material, light: Light, point: Tuple, eyev: Tuple, normalv: Tuple): Color {
+    const effective_color = Color.multiply(material.color, light.intensity);
     const lightv = Tuple.subtract(light.position, point).normalize;
-    const ambient = Color.multiplyScalar(effective_color, m.ambient);
+    const ambient = Color.multiplyScalar(effective_color, material.ambient);
     const light_dot_normal = Tuple.dot(lightv, normalv);
     let specular: Color = Color.BLACK;
     let diffuse: Color = Color.BLACK;
 
     if (light_dot_normal >= 0) {
-        diffuse = Color.multiplyScalar(effective_color, m.diffuse * light_dot_normal);
+        diffuse = Color.multiplyScalar(effective_color, material.diffuse * light_dot_normal);
         const reflectv = Tuple.reflect(lightv.negative, normalv);
         const reflect_dot_eye = Tuple.dot(reflectv, eyev);
         if (reflect_dot_eye <= 0) {
             specular = Color.BLACK;
         } else {
-            const factor = Math.pow(reflect_dot_eye, m.shininess);
-            specular = Color.multiplyScalar(light.intensity, m.specular * factor);
+            const factor = Math.pow(reflect_dot_eye, material.shininess);
+            specular = Color.multiplyScalar(light.intensity, material.specular * factor);
         }
     }
 

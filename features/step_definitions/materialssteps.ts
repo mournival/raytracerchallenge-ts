@@ -3,8 +3,8 @@ import {parseArg, Workspace} from './Workspace';
 import {lighting, Material} from '../../src/material';
 import {expect} from 'chai';
 import {Color} from '../../src/color';
-import {Light} from "../../src/light";
-import {point} from "../../src/tuple";
+import {Light} from '../../src/light';
+import {point} from '../../src/tuple';
 
 @binding([Workspace])
 class MaterialsSteps {

@@ -1,8 +1,8 @@
 #!/usr/bin/env node
 
-import {point, Tuple, vector} from "../tuple";
-import {Canvas} from "../canvas";
-import {Color} from "../color";
+import {point, Tuple, vector} from '../tuple';
+import {Canvas} from '../canvas';
+import {Color} from '../color';
 
 class Particle {
     constructor(
@@ -49,6 +49,6 @@ fs.writeFile('./ppm/file.ppm', Canvas.canvas_to_ppm(c).join('\n'), function (err
     if (err) {
         return console.error(err);
     }
-    console.log("File created!");
+    console.log('File created!');
 });
 

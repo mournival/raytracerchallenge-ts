@@ -1,5 +1,5 @@
 import {Tuple} from './tuple';
-import {Matrix} from "./matrix";
+import {Matrix} from './matrix';
 
 export class Ray {
     constructor(public readonly origin: Tuple, public readonly  direction: Tuple) {
