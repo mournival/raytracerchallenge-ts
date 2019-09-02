@@ -33,7 +33,7 @@ const wall_z = 10;
 
 const wall_size = 7.0;
 
-const canvas_pixels = 600;
+const canvas_pixels = 1500;
 
 const pixel_size = wall_size / canvas_pixels;
 
@@ -41,12 +41,21 @@ const half = wall_size / 2;
 
 const canvas = new Canvas(canvas_pixels, canvas_pixels);
 
-const sphere = new Sphere(Matrix.identity(4), new Material(new Color(1, 0.2, 1)));
+const sphere = new Sphere(Matrix.identity(4), new Material(new Color(0.964, 0.403, 0.2)));
 
 const light_position = point(-10, 10, -10);
 const light_color = new Color(1, 1, 1);
 const light = new Light(light_position, light_color);
 
+const COLOR = new Color(0.5,0.5, 0.5);
+
+let p = canvas.width / 2;
+for (let n = 0; n < canvas.width; ++n) {
+    canvas.colors[n][p] = COLOR;
+    canvas.colors[p][n] = COLOR;
+}
+
+console.time('Rendering');
 for (let y = 0; y < canvas.height; ++y) {
     const world_y = half - pixel_size * y;
     for (let x = 0; x < canvas.width; ++x) {
@@ -64,5 +73,6 @@ for (let y = 0; y < canvas.height; ++y) {
         }
     }
 }
+console.timeEnd('Rendering');
 
 saveFile();
