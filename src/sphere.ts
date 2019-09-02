@@ -10,7 +10,7 @@ export class Sphere {
 }
 
 export function intersect(s: Sphere, r: Ray): Intersection[] {
-    const r2 = transform(r, Matrix.inverse(s.transform));
+    const r2 = transform(r, s.transform.inverse);
     const sphere_to_ray = Tuple.subtract(r2.origin, point(0, 0, 0));
     const a = Tuple.dot(r2.direction, r2.direction);
     const b = 2 * Tuple.dot(r2.direction, sphere_to_ray);
@@ -33,9 +33,9 @@ export function set_transform(s: Sphere, t: Matrix): Sphere {
 }
 
 export function normal_at(s: Sphere, world_point: Tuple): Tuple {
-    const transInv = Matrix.inverse(s.transform);
+    const transInv = s.transform.inverse;
     const object_point = Matrix.multiplyVector(transInv, world_point);
     const object_normal = Tuple.subtract(object_point, point(0, 0, 0));
-    const world_normal = Matrix.multiplyVector(Matrix.transpose(transInv), object_normal);
+    const world_normal = Matrix.multiplyVector(transInv.transpose, object_normal);
     return Tuple.normalize(vector(world_normal.x, world_normal.y, world_normal.z));
 }

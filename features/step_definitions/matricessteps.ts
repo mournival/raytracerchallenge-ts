@@ -3,7 +3,6 @@ import {parseArg, Workspace} from './Workspace';
 import {expect} from 'chai';
 import {Matrix} from '../../src/matrix';
 import {Tuple} from '../../src/tuple';
-import TupleSteps = require('./tuplesteps');
 import {fail} from 'assert';
 
 @binding([Workspace])
@@ -77,71 +76,71 @@ class MatricesSteps {
 
     @then(/^transpose\((\w+)\) is the following matrix:$/)
     public transposeM(matAId: string, dataTable: { rawTable: [][] }) {
-        const actual = Matrix.transpose(this.workspace.matrices[matAId]);
+        const actual = this.workspace.matrices[matAId].transpose;
         const expected = MatricesSteps.createMatrixFromDataTable(dataTable);
         expect(Matrix.equals(actual, expected)).to.be.true;
     }
 
     @given(/^(\w+) ← transpose\((\w+)\)$/)
     public givenTransposeIdentity(matAId: string, matBId: string) {
-        this.workspace.matrices[matAId] = Matrix.transpose(this.workspace.matrices[matBId]);
+        this.workspace.matrices[matAId] = this.workspace.matrices[matBId].transpose;
     }
 
     @then(/^A = identity_matrix$/)
     public transposeI() {
-        const actual = Matrix.transpose(Matrix.identity(4));
+        const actual = Matrix.identity(4).transpose;
         const expected = Matrix.identity(4);
         expect(Matrix.equals(actual, expected)).to.be.true;
     }
 
     @then(/^determinant\((\w+)\) = (.*)$/)
     public thenDeterminantEquals(matId: string, value: string) {
-        const actual = Matrix.determinant(this.workspace.matrices[matId]);
+        const actual = this.workspace.matrices[matId].det;
         const expected = parseArg(value);
         expect(actual).to.be.closeTo(expected, Matrix.EPSILON);
     }
 
     @then(/^submatrix\((\w+), (\d+), (\d+)\) is the following (\d+)x(\d+) matrix:$/)
     public subMatrixEquals(matId: string, r: string, c: string, dimZ: string, dimY: string, dataTable: { rawTable: [][] }) {
-        const actual = Matrix.subMatrix(this.workspace.matrices[matId], parseInt(r), parseInt(c));
+        const actual = this.workspace.matrices[matId].subMatrix(parseInt(r), parseInt(c));
         const expected = MatricesSteps.createMatrixFromDataTable(dataTable);
         expect(Matrix.equals(actual, expected)).to.be.true;
     }
 
     @given(/^(\w+) ← submatrix\((\w+), (\d+), (\d+)\)$/)
     public createSubmatrix(subMatId: string, matId: string, r: string, c: string) {
-        return this.workspace.matrices[subMatId] = Matrix.subMatrix(this.workspace.matrices[matId], parseInt(r), parseInt(c));
+        return this.workspace.matrices[subMatId] = this.workspace.matrices[matId].subMatrix(parseInt(r), parseInt(c));
     }
 
     @then(/^minor\((\w+), (\d+), (\d+)\) = (.*)$/)
     public minorEquals(matId: string, r: string, c: string, value: string) {
-        const actual = Matrix.minor(this.workspace.matrices[matId], parseInt(r), parseInt(c));
+        const actual = this.workspace.matrices[matId].minor(parseInt(r), parseInt(c));
         const expected = parseArg(value);
         expect(actual).to.be.closeTo(expected, Matrix.EPSILON);
     }
 
     @then(/^cofactor\((\w+), (\d+), (\d+)\) = (.*)$/)
     public cofactorEquals(matId: string, r: string, c: string, value: string) {
-        const actual = Matrix.cofactor(this.workspace.matrices[matId], parseInt(r), parseInt(c));
+        const actual = this.workspace.matrices[matId].cofactor(parseInt(r), parseInt(c));
         const expected = parseArg(value);
         expect(actual).to.be.closeTo(expected, Matrix.EPSILON);
     }
 
     @then(/^(\w+) is invertible$/)
     public isInvertible(matId: string) {
-        const actual = Matrix.isInvertible(this.workspace.matrices[matId]);
+        const actual = this.workspace.matrices[matId].invertible;
         expect(actual).to.be.true;
     }
 
     @then(/^(\w+) is not invertible$/)
     public isNotInvertible(matId: string) {
-        const actual = Matrix.isInvertible(this.workspace.matrices[matId]);
+        const actual = this.workspace.matrices[matId].invertible;
         expect(actual).to.be.false;
     }
 
     @given(/^(\w+) ← inverse\((\w+)\)$/)
     public givenInverse(matBId: string, matAId: string) {
-        this.workspace.matrices[matBId] = Matrix.inverse(this.workspace.matrices[matAId]);
+        this.workspace.matrices[matBId] = this.workspace.matrices[matAId].inverse;
     }
 
     @then(/^(\w+) is the following 4x4 matrix:$/)
@@ -153,7 +152,7 @@ class MatricesSteps {
 
     @then(/^inverse\((\w+)\) is the following (\d+)x(\d+) matrix:$/)
     public inverseEquals(matId: string, dimR: string, dimC: string, dataTable: { rawTable: [][] }) {
-        const actual = Matrix.inverse(this.workspace.matrices[matId]);
+        const actual = this.workspace.matrices[matId].inverse;
 
         const expectedR = parseInt(dimR);
         expect(expectedR).to.be.eq(actual.data.length);
@@ -166,7 +165,7 @@ class MatricesSteps {
 
     @given(/^(\w+) ← (\w+) \* (\w+)$/)
     public givenAProduct(matCId: string, lhsId: string, rhsId: string) {
-        if (this.workspace.matrices[rhsId] ) {
+        if (this.workspace.matrices[rhsId]) {
             this.workspace.matrices[matCId] = Matrix.multiply(this.workspace.matrices[lhsId], this.workspace.matrices[rhsId]);
         } else if (this.workspace.tuples[rhsId]) {
             this.workspace.tuples[matCId] = Matrix.multiplyVector(this.workspace.matrices[lhsId], this.workspace.tuples[rhsId]);
@@ -177,14 +176,14 @@ class MatricesSteps {
 
     @given(/^(\w+) ← (\w+) \* (\w+) \* (\w+)$/)
     public givenAChainedProduct(matCId: string, m1Id: string, m2Id: string, m3Id: string) {
-            this.workspace.matrices[matCId] =  Matrix.multiply(
-                Matrix.multiply(this.workspace.matrices[m1Id], this.workspace.matrices[m2Id]),  this.workspace.matrices[m3Id]);
+        this.workspace.matrices[matCId] = Matrix.multiply(
+            Matrix.multiply(this.workspace.matrices[m1Id], this.workspace.matrices[m2Id]), this.workspace.matrices[m3Id]);
     }
 
     @then(/^(\w+) \* inverse\((\w+)\) = (\w+)$/)
     public multiplyByInverseEquals(matCId: string, matBId: string, matAId: string,) {
         const expected = this.workspace.matrices[matAId];
-        const actual = Matrix.multiply(this.workspace.matrices[matCId], Matrix.inverse(this.workspace.matrices[matBId]));
+        const actual = Matrix.multiply(this.workspace.matrices[matCId], this.workspace.matrices[matBId].inverse);
         expect(Matrix.equals(actual, expected)).to.be.true;
     }
 

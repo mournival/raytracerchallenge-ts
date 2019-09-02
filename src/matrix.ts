@@ -67,72 +67,6 @@ export class Matrix {
         return m;
     }
 
-    static transpose(m: Matrix): Matrix {
-        let mPrime = new Matrix(m.data[0].length, m.data.length);
-        for (let r = 0; r < m.data.length; ++r) {
-            for (let c = 0; c < m.data[0].length; ++c) {
-                mPrime.data[c][r] = m.data[r][c];
-            }
-        }
-        return mPrime;
-    }
-
-    static determinant(m: Matrix): number {
-        if (m.data.length === 2) {
-            return Matrix.det2(m);
-        }
-
-        let dt: number = 0;
-        for (let c = 0; c < m.data[0].length; ++c) {
-            dt = dt + m.data[0][c] * Matrix.cofactor(m, 0, c);
-        }
-        return dt;
-    }
-
-    static subMatrix(m: Matrix, row: number, col: number): Matrix {
-        const mMinor = new Matrix(m.data.length - 1, m.data[0].length - 1);
-
-        for (let r = 0; r < m.data.length; ++r) {
-            if (r != row) {
-                for (let c = 0; c < m.data[0].length; ++c) {
-                    if (c != col) {
-                        mMinor.data[r < row ? r : r - 1][c < col ? c : c - 1] = m.data[r][c];
-                    }
-                }
-            }
-        }
-        return mMinor;
-    }
-
-    static minor(m: Matrix, r: number, c: number): number {
-        return Matrix.determinant(Matrix.subMatrix(m, r, c));
-    }
-
-    static cofactor(m: Matrix, r: number, c: number): number {
-        const coeff = (r + c) % 2 === 0 ? 1 : -1;
-        return coeff * Matrix.minor(m, r, c);
-    }
-
-    static isInvertible(m: Matrix): boolean {
-        return Math.abs(Matrix.determinant(m)) > Matrix.EPSILON;
-    }
-
-    static inverse(m: Matrix): Matrix {
-        if (!Matrix.isInvertible(m)) {
-            throw "Cannot invert this matrix";
-        }
-
-        const m_prime = new Matrix(m.data.length, m.data[0].length);
-        const det = Matrix.determinant(m);
-        for (let r = 0; r < m.data.length; ++r) {
-            for (let c = 0; c < m.data[0].length; ++c) {
-                const cofactorC = Matrix.cofactor(m, r, c);
-                m_prime.data[c][r] = cofactorC / det;
-            }
-        }
-        return m_prime;
-    }
-
     // static add(lhs: Matrix, rhs: Matrix): Matrix {
     //     const ldata = lhs.data;
     //     const rdata = rhs.data;
@@ -158,8 +92,74 @@ export class Matrix {
             lhs.data[r][3] * rhs.w;
     }
 
-    private static det2(m: Matrix): number {
-        const d = m.data;
+    public get det(): number {
+        if (this.data.length === 2) {
+            return this.det2();
+        }
+
+        let dt: number = 0;
+        for (let c = 0; c < this.data[0].length; ++c) {
+            dt = dt + this.data[0][c] * this.cofactor(0, c);
+        }
+        return dt;
+    }
+
+    public get invertible(): boolean {
+        return Math.abs(this.det) > Matrix.EPSILON;
+    }
+
+    public get inverse(): Matrix {
+        if (!this.invertible) {
+            throw "Cannot invert this matrix";
+        }
+
+        const m_prime = new Matrix(this.data.length, this.data[0].length);
+        const det = this.det;
+        for (let r = 0; r < this.data.length; ++r) {
+            for (let c = 0; c < this.data[0].length; ++c) {
+                const cofactorC = this.cofactor(r, c);
+                m_prime.data[c][r] = cofactorC / det;
+            }
+        }
+        return m_prime;
+    }
+
+    public get transpose(): Matrix {
+        let mPrime = new Matrix(this.data[0].length, this.data.length);
+        for (let r = 0; r < this.data.length; ++r) {
+            for (let c = 0; c < this.data[0].length; ++c) {
+                mPrime.data[c][r] = this.data[r][c];
+            }
+        }
+        return mPrime;
+    }
+
+    public cofactor(r: number, c: number): number {
+        const coeff = (r + c) % 2 === 0 ? 1 : -1;
+        return coeff * this.minor(r, c);
+    }
+
+    public subMatrix(row: number, col: number): Matrix {
+        const mMinor = new Matrix(this.data.length - 1, this.data[0].length - 1);
+
+        for (let r = 0; r < this.data.length; ++r) {
+            if (r != row) {
+                for (let c = 0; c < this.data[0].length; ++c) {
+                    if (c != col) {
+                        mMinor.data[r < row ? r : r - 1][c < col ? c : c - 1] = this.data[r][c];
+                    }
+                }
+            }
+        }
+        return mMinor;
+    }
+
+    public minor(r: number, c: number): number {
+        return this.subMatrix(r, c).det;
+    }
+
+    private det2(): number {
+        const d = this.data;
         return d[0][0] * d[1][1] - d[0][1] * d[1][0];
     }
 
