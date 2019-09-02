@@ -15,12 +15,12 @@ export class Matrix {
     }
 
     public get det(): number {
-        if (this.data.length === 2) {
+        if (this.rDim === 2) {
             return this.det2();
         }
 
         let dt: number = 0;
-        for (let c = 0; c < this.data[0].length; ++c) {
+        for (let c = 0; c < this.cDim; ++c) {
             dt = dt + this.data[0][c] * this.cofactor(0, c);
         }
         return dt;
@@ -35,10 +35,10 @@ export class Matrix {
             throw "Cannot invert this matrix";
         }
 
-        const m_prime = new Matrix(this.data.length, this.data[0].length);
+        const m_prime = new Matrix(this.rDim, this.cDim);
         const det = this.det;
-        for (let r = 0; r < this.data.length; ++r) {
-            for (let c = 0; c < this.data[0].length; ++c) {
+        for (let r = 0; r < this.rDim; ++r) {
+            for (let c = 0; c <this.cDim; ++c) {
                 const cofactorC = this.cofactor(r, c);
                 m_prime.data[c][r] = cofactorC / det;
             }
@@ -47,22 +47,48 @@ export class Matrix {
     }
 
     public get transpose(): Matrix {
-        let mPrime = new Matrix(this.data[0].length, this.data.length);
-        for (let r = 0; r < this.data.length; ++r) {
-            for (let c = 0; c < this.data[0].length; ++c) {
+        let mPrime = new Matrix(this.cDim, this.rDim);
+        for (let r = 0; r < this.rDim; ++r) {
+            for (let c = 0; c < this.cDim; ++c) {
                 mPrime.data[c][r] = this.data[r][c];
             }
         }
         return mPrime;
     }
 
+    public get cDim(): number {
+        return this.data[0].length;
+    }
+
+    public get rDim(): number {
+        return this.data.length;
+    }
+
+    // static add(lhs: Matrix, rhs: Matrix): Matrix {
+    //     const ldata = lhs.data;
+    //     const rdata = rhs.data;
+    //     if ((lrDim != rrDim) || (ldata[0].length != rdata[0].length))
+    //         throw 'Can\'t add matrices of different dimensions';
+    //
+    //     const m = new Matrix(lrDim, ldata[0].length);
+    //     for (let r = 0; r < lrDim; ++r)
+    //         for (let c = 0; c < ldata[0].length; ++c)
+    //             m.data[r][c] = ldata[r][c] + rdata[r][c];
+    //
+    //     return m;
+    // }
+    //
+    // static copy(m: Matrix): Matrix {
+    //     return Matrix.add(m, new Matrix(m.rDim, m.data[0].length));
+    // }
+
     static equals(lhs: Matrix, rhs: Matrix): boolean {
-        if (lhs.data.length !== rhs.data.length ||
+        if (lhs.rDim !== rhs.rDim ||
             lhs.data[0].length !== rhs.data[0].length
         ) {
             return false;
         }
-        for (let r = 0; r < lhs.data.length; ++r) {
+        for (let r = 0; r < lhs.rDim; ++r) {
             for (let c = 0; c < lhs.data[0].length; ++c) {
                 if (Math.abs(lhs.get(r, c) - rhs.get(r, c)) > Matrix.EPSILON) {
                     return false;
@@ -71,24 +97,6 @@ export class Matrix {
         }
         return true;
     }
-
-    // static add(lhs: Matrix, rhs: Matrix): Matrix {
-    //     const ldata = lhs.data;
-    //     const rdata = rhs.data;
-    //     if ((ldata.length != rdata.length) || (ldata[0].length != rdata[0].length))
-    //         throw 'Can\'t add matrices of different dimensions';
-    //
-    //     const m = new Matrix(ldata.length, ldata[0].length);
-    //     for (let r = 0; r < ldata.length; ++r)
-    //         for (let c = 0; c < ldata[0].length; ++c)
-    //             m.data[r][c] = ldata[r][c] + rdata[r][c];
-    //
-    //     return m;
-    // }
-    //
-    // static copy(m: Matrix): Matrix {
-    //     return Matrix.add(m, new Matrix(m.data.length, m.data[0].length));
-    // }
 
     static multiply(lhs: Matrix, rhs: Matrix): Matrix {
         let product = new Matrix(4, 4);
@@ -140,11 +148,12 @@ export class Matrix {
     }
 
     public subMatrix(row: number, col: number): Matrix {
-        const mMinor = new Matrix(this.data.length - 1, this.data[0].length - 1);
+        const mMinor = new Matrix(this.rDim - 1, this.cDim
+            - 1);
 
-        for (let r = 0; r < this.data.length; ++r) {
+        for (let r = 0; r < this.rDim; ++r) {
             if (r != row) {
-                for (let c = 0; c < this.data[0].length; ++c) {
+                for (let c = 0; c < this.cDim; ++c) {
                     if (c != col) {
                         mMinor.data[r < row ? r : r - 1][c < col ? c : c - 1] = this.data[r][c];
                     }

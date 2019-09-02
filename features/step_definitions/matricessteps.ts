@@ -155,9 +155,9 @@ class MatricesSteps {
         const actual = this.workspace.matrices[matId].inverse;
 
         const expectedR = parseInt(dimR);
-        expect(expectedR).to.be.eq(actual.data.length);
+        expect(expectedR).to.be.eq(actual.rDim);
         const expectedC = parseInt(dimC);
-        expect(expectedC).to.be.eq(actual.data[0].length);
+        expect(expectedC).to.be.eq(actual.cDim);
 
         const expectedA = MatricesSteps.createMatrixFromDataTable(dataTable);
         expect(Matrix.equals(actual, expectedA)).to.be.true;
