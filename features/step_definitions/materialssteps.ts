@@ -1,8 +1,10 @@
 import {before, binding, given, then, when} from 'cucumber-tsflow';
 import {parseArg, Workspace} from './Workspace';
-import {Material} from '../../src/material';
+import {lighting, Material} from '../../src/material';
 import {expect} from 'chai';
 import {Color} from '../../src/color';
+import {Light} from "../../src/light";
+import {point} from "../../src/tuple";
 
 @binding([Workspace])
 class MaterialsSteps {
@@ -32,19 +34,41 @@ class MaterialsSteps {
     public thenDiffuseEquals(matId: string, value: string) {
         const actual = this.workspace.materials[matId].diffuse;
         const expected = parseArg(value);
-        expect(actual).to.be.closeTo(expected, 0.0001);    }
+        expect(actual).to.be.closeTo(expected, 0.0001);
+    }
 
     @then(/^(\w+).specular = ([^,]+)$/)
     public thenSpecularEquals(matId: string, value: string) {
         const actual = this.workspace.materials[matId].specular;
         const expected = parseArg(value);
-        expect(actual).to.be.closeTo(expected, 0.0001);        }
+        expect(actual).to.be.closeTo(expected, 0.0001);
+    }
 
     @then(/^(\w+).shininess = ([^,]+)$/)
     public thenShininessEquals(matId: string, value: string) {
         const actual = this.workspace.materials[matId].shininess;
         const expected = parseArg(value);
-        expect(actual).to.be.closeTo(expected, 0.0001);       }
+        expect(actual).to.be.closeTo(expected, 0.0001);
+    }
+
+    @given(/^([^,]+) ← point_light\(point\(([^,]+), ([^,]+), ([^,]+)\), color\(([^,]+), ([^,]+), ([^,]+)\)\)$/)
+    public whenLightCreatedFromPointColor(lightId: string, x: string, y: string, z: string, r: string, g: string, b: string) {
+        this.workspace.lights[lightId] = new Light(
+            point(parseFloat(x), parseFloat(y), parseFloat(z)),
+            new Color(parseArg(r), parseArg(g), parseArg(b))
+        );
+    }
+
+    @when(/^([^,]+) ← lighting\(([^,]+), ([^,]+), ([^,]+), ([^,]+), ([^,]+)\)$/)
+    public lightingResult(resColorId:string, matId: string, lightId: string, positionId:string, eyeVectorId: string,  normalVectorId: string) {
+        this.workspace.colors[resColorId] = lighting(
+            this.workspace.materials[matId],
+            this.workspace.lights[lightId],
+            this.workspace.tuples[positionId],
+            this.workspace.tuples[eyeVectorId],
+            this.workspace.tuples[normalVectorId]
+        );
+    }
 }
 
 export = MaterialsSteps;

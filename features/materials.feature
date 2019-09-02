@@ -22,13 +22,13 @@ Scenario: The default material
 #  Then m.transparency = 0.0
 #    And m.refractive_index = 1.0
 #
-#Scenario: Lighting with the eye between the light and the surface
-#  Given eyev ← vector(0, 0, -1)
-#    And normalv ← vector(0, 0, -1)
-#    And light ← point_light(point(0, 0, -10), color(1, 1, 1))
-#  When result ← lighting(m, light, position, eyev, normalv)
-#  Then result = color(1.9, 1.9, 1.9)
-#
+Scenario: Lighting with the eye between the light and the surface
+  Given eyev ← vector(0, 0, -1)
+    And normalv ← vector(0, 0, -1)
+    And light ← point_light(point(0, 0, -10), color(1, 1, 1))
+  When result ← lighting(m, light, position, eyev, normalv)
+  Then result = color(1.9, 1.9, 1.9)
+
 #Scenario: Lighting with the eye between light and surface, eye offset 45°
 #  Given eyev ← vector(0, √2/2, -√2/2)
 #    And normalv ← vector(0, 0, -1)

@@ -1,6 +1,8 @@
 export type RGBElement = 'red' | 'green' | 'blue';
 
 export class Color {
+    static BLACK = new Color(0,0,0);
+
     static asString(c: Color): any {
         return c.red + ' ' + c.green + ' ' + c.blue;
     }

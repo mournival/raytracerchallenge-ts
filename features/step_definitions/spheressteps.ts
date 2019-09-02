@@ -123,6 +123,30 @@ class SpheresSteps {
         expect(Material.equals(actual, expected), shouldEqualMsg(actual, expected)).to.be.true;
     }
 
+    @given(/^(\w+).ambient ← ([^,]+)$/)
+    public givenAmbient(mId: string, value: string) {
+        this.workspace.materials[mId] = {
+            ...this.workspace.materials[mId],
+            ambient: parseArg(value)
+        };
+    }
+
+    @when(/^(\w+).material ← (\w+)$/)
+    public sphereMaterialSet(sphereId: string, mId: string) {
+        this.workspace.spheres[sphereId] = {
+            ...this.workspace.spheres[sphereId],
+            material: this.workspace.materials[mId]
+        };
+    }
+
+    @then(/^(\w+).material = (\w+)$/)
+    public sphereMaterialIs(sphereId: string, mId: string) {
+        const actual = this.workspace.spheres[sphereId].material;
+        const expected = this.workspace.materials[mId];
+
+        expect(Material.equals(actual, expected), shouldEqualMsg(actual, expected)).to.be.true;
+    }
+
 }
 
 export = SpheresSteps;

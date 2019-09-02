@@ -1,8 +1,8 @@
 import {before, binding, given, then, when} from 'cucumber-tsflow';
-import {shouldEqualMsg, Workspace} from './Workspace';
+import {parseArg, shouldEqualMsg, Workspace} from './Workspace';
 import {Light} from '../../src/light';
 import {expect} from 'chai';
-import {Tuple} from '../../src/tuple';
+import {point, Tuple} from '../../src/tuple';
 import {Color} from '../../src/color';
 
 @binding([Workspace])
@@ -32,6 +32,7 @@ class LightsSteps {
         const expected = this.workspace.colors[intensityId];
         expect(Color.equals(actual, expected), shouldEqualMsg(actual, expected)).to.be.true;
     }
+
 }
 
 export = LightsSteps;

@@ -49,11 +49,18 @@ class TupleSteps {
         ).to.be.true;
     }
 
-    @then(/^(\w+) = (\w+)\(([^,]+), ([^,]+), ([^,]+)\)$/)
+    @then(/^(\w+) = (tuple|point|vector)\(([^,]+), ([^,]+), ([^,]+)\)$/)
     public thenTypedTupleEquals(id: string, expectedType: string, x: string, y: string, z: string): void {
         let expected = TupleSteps.createExpected(expectedType, x, y, z);
         const actual = this.workspace.tuples[id];
         expect(Tuple.equals(actual, expected), shouldEqualMsg(actual, expected)).to.be.true;
+    }
+
+    @then(/^(\w+) = color\(([^,]+), ([^,]+), ([^,]+)\)$/)
+    public thencolorEquals(id: string, r: string, g: string, b: string): void {
+        let expected = new Color(parseArg(r), parseArg(g), parseArg(b));
+        const actual = this.workspace.colors[id];
+        expect(Color.equals(actual, expected), shouldEqualMsg(actual, expected)).to.be.true;
     }
 
     @then(/^(\w+) (.) (.+) = (\w*)\(([^,]+), ([^,]+), ([^,]+)[, ]*([^,]*)\)$/)
