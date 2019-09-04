@@ -1,6 +1,6 @@
 import {binding, given, then, when} from 'cucumber-tsflow';
 import {parseArg, shouldEqualMsg, Workspace} from './Workspace';
-import {default_world, World} from '../../src/world';
+import {default_world, intersect_world, World} from '../../src/world';
 import {expect} from 'chai';
 import {Color} from "../../src/color";
 import {Sphere} from "../../src/sphere";
@@ -58,6 +58,14 @@ class WorldsSteps {
         return expect(actual,
             'world: ' + JSON.stringify(this.workspace.worlds[worldId]) + ' should have '
             + JSON.stringify(this.workspace.spheres[objectId])).to.be.true;
+    }
+
+    @when(/^([^,]+) ← intersect_world\(([^,]+), ([^,]+)\)$/)
+    public whenIntersectWorld(xsId: string, worldId: string, rayId: string) {
+        this.workspace.intersections[xsId] = intersect_world(
+            this.workspace.worlds[worldId],
+            this.workspace.rays[rayId]
+        );
     }
 }
 

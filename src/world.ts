@@ -1,9 +1,11 @@
-import {Sphere} from "./sphere";
+import {intersect, Sphere} from "./sphere";
 import {Light} from "./light";
 import {point} from "./tuple";
 import {Color} from "./color";
 import {Matrix, scaling} from "./matrix";
 import {Material} from "./material";
+import {Ray} from "./ray";
+import {Intersection} from "../features/step_definitions/intersect";
 
 export class World {
     constructor(public readonly lights: Light[] = [], public readonly objects: Sphere[] = []) {
@@ -31,4 +33,12 @@ export function default_world(): World {
             new Sphere(scaling(0.5, 0.5, 0.5))
         ]
     );
+}
+
+export function intersect_world(w: World, r: Ray): Intersection[] {
+    const xss = w.objects.map(o => intersect(o, r));
+    const x: Intersection[] = [];
+    xss.forEach(xs => x.push(...xs));
+    x.sort((a, b) => a.t - b.t);
+    return x;
 }
