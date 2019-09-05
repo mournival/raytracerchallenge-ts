@@ -8,7 +8,7 @@ import {Ray} from "./ray";
 import {Intersection} from "../features/step_definitions/intersect";
 
 export class World {
-    constructor(public readonly lights: Light[] = [], public readonly objects: Sphere[] = []) {
+    constructor(public readonly lights: Light[] = [], public readonly objects: Array<Sphere> = []) {
     }
 
     public contains(o: Sphere | Light): boolean {
@@ -36,9 +36,10 @@ export function default_world(): World {
 }
 
 export function intersect_world(w: World, r: Ray): Intersection[] {
-    const xss = w.objects.map(o => intersect(o, r));
-    const x: Intersection[] = [];
-    xss.forEach(xs => x.push(...xs));
-    x.sort((a, b) => a.t - b.t);
-    return x;
+    // return w.objects.flatMap(o => intersect(o, r)).sort((a, b) => a.t - b.t); // Not sure why this fails ...
+
+    const xs: Intersection[] = [];
+    w.objects.map(o => intersect(o, r)).forEach(xss => xs.push(...xss));
+    xs.sort((a, b) => a.t - b.t);
+    return xs;
 }
