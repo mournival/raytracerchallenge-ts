@@ -1,6 +1,6 @@
 import {Ray, transform} from './ray';
 import {point, Tuple, vector} from './tuple';
-import {Intersection} from '../features/step_definitions/intersect';
+import {Intersection} from './intersection';
 import {Matrix} from './matrix';
 import {Material} from './material';
 

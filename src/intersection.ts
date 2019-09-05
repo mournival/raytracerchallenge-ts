@@ -1,4 +1,4 @@
-import {Sphere} from '../../src/sphere';
+import {Sphere} from './sphere';
 
 export type Interceptable = Sphere;
 

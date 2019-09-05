@@ -5,7 +5,7 @@ import {Color} from "./color";
 import {Matrix, scaling} from "./matrix";
 import {Material} from "./material";
 import {Ray} from "./ray";
-import {Intersection} from "../features/step_definitions/intersect";
+import {Intersection} from "./intersection";
 
 export class World {
     constructor(public readonly lights: Light[] = [], public readonly objects: Array<Sphere> = []) {

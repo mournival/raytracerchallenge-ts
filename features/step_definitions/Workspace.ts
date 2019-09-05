@@ -4,7 +4,7 @@ import {Canvas} from '../../src/canvas';
 import {Matrix} from '../../src/matrix';
 import {Ray} from '../../src/ray';
 import {Sphere} from '../../src/sphere';
-import {Intersection} from './intersect';
+import {Intersection} from '../../src/intersection';
 import {Light} from '../../src/light';
 import {Material} from '../../src/material';
 import {World} from '../../src/world';
@@ -33,8 +33,12 @@ interface SphereArray {
     [index: string]: Sphere;
 }
 
-interface IntersectionsArray {
+interface IntersectionArrayArray {
     [index: string]: Intersection[];
+}
+
+interface IntersectionArray {
+    [index: string]: Intersection;
 }
 
 interface LightsArray {
@@ -56,7 +60,8 @@ export class Workspace {
     public matrices: MatrixArray = {};
     public rays: RayArray = {};
     public spheres: SphereArray = {};
-    public intersections: IntersectionsArray = {};
+    public intersection: IntersectionArray = {};
+    public intersections: IntersectionArrayArray = {};
     public lights: LightsArray = {};
     public materials: MaterialsArray = {};
     public worlds: WorldArray = {};

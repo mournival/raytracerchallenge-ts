@@ -8,7 +8,7 @@ import {intersect, normal_at, Sphere} from '../sphere';
 import {Matrix} from '../matrix';
 import {lighting, Material} from '../material';
 import {Light} from '../light';
-import {Intersection} from "../../features/step_definitions/intersect";
+import {Intersection} from "../intersection";
 
 function saveFile() {
     let fs = require('fs');
