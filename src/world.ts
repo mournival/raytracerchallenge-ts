@@ -36,10 +36,11 @@ export function default_world(): World {
 }
 
 export function intersect_world(w: World, r: Ray): Intersection[] {
-    // return w.objects.flatMap(o => intersect(o, r)).sort((a, b) => a.t - b.t); // Not sure why this fails ...
+    return w.objects.flatMap(o => intersect(o, r)).sort((a, b) => a.t - b.t); // Require Node Version 11+
 
-    const xs: Intersection[] = [];
-    w.objects.map(o => intersect(o, r)).forEach(xss => xs.push(...xss));
-    xs.sort((a, b) => a.t - b.t);
-    return xs;
+    // for Node Version < 11
+    // const xs: Intersection[] = [];
+    // w.objects.map(o => intersect(o, r)).forEach(xss => xs.push(...xss));
+    // xs.sort((a, b) => a.t - b.t);
+    // return xs;
 }
