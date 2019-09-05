@@ -18,9 +18,9 @@ These instructions will get you a copy of the project up and running on your loc
 ### Prerequisites
 
 Assumed already installed:
-- Node.js w/ npm
+- Node.js Ver 12+ (w/ npm)  
 - Git
-- ...
+- <TBD>
 
 Clone this repo
 
@@ -35,9 +35,12 @@ To install the dependencies:
 npm install
 ```
 
-To run the demo code:
+To run the demo code, run any of:
 ```
 npm run particle
+npm run clock
+npm run ray-tracer1
+npm run sphere-shadow
 ```
 or 
 ```
@@ -88,6 +91,9 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 - Fix mutable Matrix
 - Fix mutable Canvas(?). Not entirely sure if this is the correct decision for the global model that may have 1M+ pixels.
  
+### 20190905
+Re: **20190830** 
+Decision: Except for Matrix (for now, at any rate), I am doing this with immutable data. 
 
 ### 20190830
 I have reached what feels like a major decision. While implementing spheres.feature, I got to:
