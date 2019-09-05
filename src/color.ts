@@ -1,7 +1,14 @@
 export type RGBElement = 'red' | 'green' | 'blue';
 
 export class Color {
-    static BLACK = new Color(0,0,0);
+    static BLACK = new Color(0, 0, 0);
+    static readonly EPSILON = 0.0001;
+
+    constructor(public readonly red: number,
+                public readonly green: number,
+                public readonly blue: number,
+    ) {
+    }
 
     static asString(c: Color): any {
         return c.red + ' ' + c.green + ' ' + c.blue;
@@ -16,8 +23,6 @@ export class Color {
         if (n >= 1) return 255;
         return Math.round(255 * n);
     }
-
-    static readonly EPSILON = 0.0001;
 
     static equals(lhs: Color, rhs: Color): boolean {
         return Math.abs(lhs.red - rhs.red) < Color.EPSILON &&
@@ -55,12 +60,6 @@ export class Color {
             lhs.green * rhs,
             lhs.blue * rhs
         );
-    }
-
-    constructor(public readonly red: number,
-                public readonly green: number,
-                public readonly blue: number,
-    ) {
     }
 
     getElement(e: RGBElement): number {

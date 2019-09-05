@@ -38,7 +38,7 @@ export class Matrix {
         const m_prime = new Matrix(this.rDim, this.cDim);
         const det = this.det;
         for (let r = 0; r < this.rDim; ++r) {
-            for (let c = 0; c <this.cDim; ++c) {
+            for (let c = 0; c < this.cDim; ++c) {
                 const cofactorC = this.cofactor(r, c);
                 m_prime.data[c][r] = cofactorC / det;
             }

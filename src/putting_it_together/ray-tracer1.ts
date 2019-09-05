@@ -8,7 +8,7 @@ import {intersect, normal_at, Sphere} from '../sphere';
 import {Matrix} from '../matrix';
 import {lighting, Material} from '../material';
 import {Light} from '../light';
-import {Intersection} from "../intersection";
+import {Intersection} from '../intersection';
 
 function saveFile() {
     let fs = require('fs');
@@ -47,7 +47,7 @@ const light_position = point(-10, 10, -10);
 const light_color = new Color(1, 1, 1);
 const light = new Light(light_position, light_color);
 
-const COLOR = new Color(0.5,0.5, 0.5);
+const COLOR = new Color(0.5, 0.5, 0.5);
 
 let p = canvas.width / 2;
 for (let n = 0; n < canvas.width; ++n) {

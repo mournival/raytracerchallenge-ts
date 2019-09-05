@@ -1,4 +1,4 @@
-import {before, binding, given, then, when} from 'cucumber-tsflow';
+import {binding, then, when} from 'cucumber-tsflow';
 import {Workspace} from './Workspace';
 import {expect} from 'chai';
 import {point, Tuple, vector} from '../../src/tuple';

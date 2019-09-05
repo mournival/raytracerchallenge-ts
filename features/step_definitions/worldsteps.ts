@@ -2,11 +2,11 @@ import {binding, given, then, when} from 'cucumber-tsflow';
 import {parseArg, shouldEqualMsg, Workspace} from './Workspace';
 import {default_world, intersect_world, World} from '../../src/world';
 import {expect} from 'chai';
-import {Color} from "../../src/color";
-import {Sphere} from "../../src/sphere";
-import {fail} from "assert";
-import {Matrix, scaling} from "../../src/matrix";
-import {Material} from "../../src/material";
+import {Color} from '../../src/color';
+import {Sphere} from '../../src/sphere';
+import {fail} from 'assert';
+import {Matrix, scaling} from '../../src/matrix';
+import {Material} from '../../src/material';
 
 @binding([Workspace])
 class WorldsSteps {

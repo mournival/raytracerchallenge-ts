@@ -1,4 +1,4 @@
-import {before, binding, given, then, when} from 'cucumber-tsflow';
+import {binding, given, then} from 'cucumber-tsflow';
 import {Workspace} from './Workspace';
 import {expect} from 'chai';
 import {Matrix, rotation_x, rotation_y, rotation_z, scaling, shearing, translation} from '../../src/matrix';

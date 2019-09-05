@@ -1,4 +1,4 @@
-import {before, binding, given, then, when} from 'cucumber-tsflow';
+import {binding, given, then, when} from 'cucumber-tsflow';
 import {parseArg, Workspace} from './Workspace';
 import {lighting, Material} from '../../src/material';
 import {expect} from 'chai';
@@ -60,7 +60,7 @@ class MaterialsSteps {
     }
 
     @when(/^([^,]+) ← lighting\(([^,]+), ([^,]+), ([^,]+), ([^,]+), ([^,]+)\)$/)
-    public lightingResult(resColorId:string, matId: string, lightId: string, positionId:string, eyeVectorId: string,  normalVectorId: string) {
+    public lightingResult(resColorId: string, matId: string, lightId: string, positionId: string, eyeVectorId: string, normalVectorId: string) {
         this.workspace.colors[resColorId] = lighting(
             this.workspace.materials[matId],
             this.workspace.lights[lightId],

@@ -1,4 +1,4 @@
-import {before, binding, given, then, when} from 'cucumber-tsflow';
+import {binding, given, then, when} from 'cucumber-tsflow';
 import {assert, expect} from 'chai';
 
 import {point, Tuple, vector, VectorElement} from '../../src/tuple';
@@ -10,6 +10,23 @@ import {Matrix} from '../../src/matrix';
 class TupleSteps {
 
     constructor(protected workspace: Workspace) {
+    }
+
+    private static createExpected(typ: string, xs: string, ys: string, zs: string, w = ''): Tuple {
+        const x = parseArg(xs);
+        const y = parseArg(ys);
+        const z = parseArg(zs);
+        if (typ === 'vector') {
+            return vector(x, y, z);
+        }
+        if (typ === 'point') {
+            return point(x, y, z);
+        }
+        if (typ === 'tuple') {
+            return new Tuple(x, y, z, parseArg(w));
+        }
+        assert.fail('Unexpected type');
+        return new Tuple(NaN, NaN, NaN, NaN);
     }
 
     @then(/^(\w+)\.([xyzw]) = (.*)$/)
@@ -75,6 +92,50 @@ class TupleSteps {
         }
     }
 
+    @then(/^-(\w+) = tuple\(([^,]+), ([^,]+), ([^,]+), ([^,]+)\)$/)
+    public thenNegateTest(id: string, x: string, y: string, z: string, w: string): void {
+        expect(
+            Tuple.equals(this.workspace.tuples[id].negative, new Tuple(parseArg(x), parseArg(y), parseArg(z), parseArg(w)))
+        ).to.be.true;
+    }
+
+    @then(/^magnitude\((.*)\) = (.*)$/)
+    public thenMagnitudeEquals(id: string, m: string): void {
+        let mag = parseArg(m);
+        expect(this.workspace.tuples[id].magnitude).to.be.eq(mag);
+    }
+
+    @then(/^normalize\((.*)\) = (approximately )?vector\(([^,]+), ([^,]+), ([^,]+)\)$/)
+    public thenVectorEquals(id: string, approx: string, x: string, y: string, z: string): void {
+        let actualVal = this.workspace.tuples[id].normalize;
+        let expectedVal = vector(parseArg(x), parseArg(y), parseArg(z));
+        expect(Tuple.equals(actualVal, expectedVal)).to.be.true;
+    }
+
+    @when(/^(\w+) ← normalize\((\w+)\)$/)
+    public whenNormed(id: string, src: string): void {
+        this.workspace.tuples[id] = this.workspace.tuples[src].normalize;
+    }
+
+    @then(/^dot\((.*), (.*)\) = ([^,]+)$/)
+    public thenDotEquals(lhs: string, rhs: string, product: string): void {
+        expect(
+            Math.abs(Tuple.dot(this.workspace.tuples[lhs], this.workspace.tuples[rhs]) - parseArg(product)) < Tuple.EPSILON
+        ).to.be.true;
+    }
+
+    @when(/^(\w+) ← reflect\((\w+), (\w+)\)/)
+    public thenVectorOperation(id: string, vId: string, nId: string): void {
+        this.workspace.tuples[id] = Tuple.reflect(this.workspace.tuples[vId], this.workspace.tuples[nId]);
+    }
+
+    @then(/^cross\((.*), (.*)\) = vector\(([^,]+), ([^,]+), ([^,]+)\)$/)
+    public thenCrossEquals(lhs: string, rhs: string, x: string, y: string, z: string): void {
+        let actualVal = Tuple.cross(this.workspace.tuples[lhs], this.workspace.tuples[rhs]);
+        let expectedVal = vector(parseArg(x), parseArg(y), parseArg(z));
+        expect(Tuple.equals(actualVal, expectedVal)).to.be.true;
+    }
+
     private colorOp(op: string, lhs: string, rhs: string, x: string, y: string, z: string) {
         switch (op) {
             case '+':
@@ -135,67 +196,6 @@ class TupleSteps {
             default:
                 assert.fail('Unexpected op code');
         }
-    }
-
-    @then(/^-(\w+) = tuple\(([^,]+), ([^,]+), ([^,]+), ([^,]+)\)$/)
-    public thenNegateTest(id: string, x: string, y: string, z: string, w: string): void {
-        expect(
-            Tuple.equals(this.workspace.tuples[id].negative, new Tuple(parseArg(x), parseArg(y), parseArg(z), parseArg(w)))
-        ).to.be.true;
-    }
-
-    @then(/^magnitude\((.*)\) = (.*)$/)
-    public thenMagnitudeEquals(id: string, m: string): void {
-        let mag = parseArg(m);
-        expect(this.workspace.tuples[id].magnitude).to.be.eq(mag);
-    }
-
-    @then(/^normalize\((.*)\) = (approximately )?vector\(([^,]+), ([^,]+), ([^,]+)\)$/)
-    public thenVectorEquals(id: string, approx: string, x: string, y: string, z: string): void {
-        let actualVal = this.workspace.tuples[id].normalize;
-        let expectedVal = vector(parseArg(x), parseArg(y), parseArg(z));
-        expect(Tuple.equals(actualVal, expectedVal)).to.be.true;
-    }
-
-    @when(/^(\w+) ← normalize\((\w+)\)$/)
-    public whenNormed(id: string, src: string): void {
-        this.workspace.tuples[id] = this.workspace.tuples[src].normalize;
-    }
-
-    @then(/^dot\((.*), (.*)\) = ([^,]+)$/)
-    public thenDotEquals(lhs: string, rhs: string, product: string): void {
-        expect(
-            Math.abs(Tuple.dot(this.workspace.tuples[lhs], this.workspace.tuples[rhs]) - parseArg(product)) < Tuple.EPSILON
-        ).to.be.true;
-    }
-
-    @when(/^(\w+) ← reflect\((\w+), (\w+)\)/)
-    public thenVectorOperation(id: string, vId: string, nId: string): void {
-        this.workspace.tuples[id] = Tuple.reflect(this.workspace.tuples[vId], this.workspace.tuples[nId]);
-    }
-
-    @then(/^cross\((.*), (.*)\) = vector\(([^,]+), ([^,]+), ([^,]+)\)$/)
-    public thenCrossEquals(lhs: string, rhs: string, x: string, y: string, z: string): void {
-        let actualVal = Tuple.cross(this.workspace.tuples[lhs], this.workspace.tuples[rhs]);
-        let expectedVal = vector(parseArg(x), parseArg(y), parseArg(z));
-        expect(Tuple.equals(actualVal, expectedVal)).to.be.true;
-    }
-
-    private static createExpected(typ: string, xs: string, ys: string, zs: string, w = ''): Tuple {
-        const x = parseArg(xs);
-        const y = parseArg(ys);
-        const z = parseArg(zs);
-        if (typ === 'vector') {
-            return vector(x, y, z);
-        }
-        if (typ === 'point') {
-            return point(x, y, z);
-        }
-        if (typ === 'tuple') {
-            return new Tuple(x, y, z, parseArg(w));
-        }
-        assert.fail('Unexpected type');
-        return new Tuple(NaN, NaN, NaN, NaN);
     }
 }
 

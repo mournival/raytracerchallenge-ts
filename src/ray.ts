@@ -11,5 +11,5 @@ export function position(r: Ray, t: number) {
 }
 
 export function transform(r: Ray, m: Matrix): Ray {
-    return new Ray(Matrix.multiplyVector(m , r.origin), Matrix.multiplyVector(m , r.direction));
+    return new Ray(Matrix.multiplyVector(m, r.origin), Matrix.multiplyVector(m, r.direction));
 }

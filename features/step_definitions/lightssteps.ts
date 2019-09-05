@@ -1,8 +1,8 @@
-import {before, binding, given, then, when} from 'cucumber-tsflow';
-import {parseArg, shouldEqualMsg, Workspace} from './Workspace';
+import {binding, then, when} from 'cucumber-tsflow';
+import {shouldEqualMsg, Workspace} from './Workspace';
 import {Light} from '../../src/light';
 import {expect} from 'chai';
-import {point, Tuple} from '../../src/tuple';
+import {Tuple} from '../../src/tuple';
 import {Color} from '../../src/color';
 
 @binding([Workspace])

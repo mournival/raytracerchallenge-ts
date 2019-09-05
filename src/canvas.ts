@@ -2,6 +2,22 @@ import {Color} from './color';
 
 export class Canvas {
 
+    data: Color[][] = [];
+
+    constructor(public readonly width: number, public readonly height: number) {
+        for (let h = 0; h < height; h++) {
+            let row: Color[] = [];
+            for (let w = 0; w < width; w++) {
+                row[w] = new Color(0, 0, 0);
+            }
+            this.data[h] = row;
+        }
+    }
+
+    get colors(): Color[][] {
+        return this.data;
+    }
+
     static write_pixel(canvas: Canvas, row: number, col: number, color: Color): void {
         canvas.colors[row][col] = color;
     }
@@ -38,22 +54,6 @@ export class Canvas {
         ppm.push('');
 
         return ppm;
-    }
-
-    data: Color[][] = [];
-
-    constructor(public readonly width: number, public readonly height: number) {
-        for (let h = 0; h < height; h++) {
-            let row: Color[] = [];
-            for (let w = 0; w < width; w++) {
-                row[w] = new Color(0, 0, 0);
-            }
-            this.data[h] = row;
-        }
-    }
-
-    get colors(): Color[][] {
-        return this.data;
     }
 
 

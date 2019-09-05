@@ -2,9 +2,7 @@ import {binding, then, when} from 'cucumber-tsflow';
 import {parseArg, shouldEqualMsg, Workspace} from './Workspace';
 import {Intersection} from '../../src/intersection';
 import {expect} from 'chai';
-import {Tuple} from '../../src/tuple';
-import {Color} from '../../src/color';
-import {Sphere} from "../../src/sphere";
+import {Sphere} from '../../src/sphere';
 
 @binding([Workspace])
 class IntersectionsSteps {

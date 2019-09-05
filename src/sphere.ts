@@ -6,10 +6,11 @@ import {Material} from './material';
 
 export class Sphere {
 
+    constructor(public readonly transform: Matrix = Matrix.identity(4), public readonly material = new Material()) {
+    }
+
     public static equals(lhs: Sphere, rhs: Sphere): boolean {
         return Matrix.equals(lhs.transform, rhs.transform) && Material.equals(lhs.material, rhs.material);
-    }
-    constructor(public readonly transform: Matrix = Matrix.identity(4), public readonly material = new Material() ) {
     }
 }
 

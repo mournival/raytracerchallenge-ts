@@ -1,4 +1,4 @@
-import {before, binding, given, then, when} from 'cucumber-tsflow';
+import {before, binding, given, then} from 'cucumber-tsflow';
 import {parseArg, Workspace} from './Workspace';
 import {expect} from 'chai';
 import {Matrix} from '../../src/matrix';
@@ -9,6 +9,20 @@ import {fail} from 'assert';
 class MatricesSteps {
 
     constructor(protected workspace: Workspace) {
+    }
+
+    private static createMatrixFromDataTable(dataTable: { rawTable: [][] }) {
+        const data = dataTable.rawTable;
+        const rows = data.length;
+        const cols = data[0].length;
+
+        const expected = new Matrix(rows, cols);
+        for (let r = 0; r < rows; ++r) {
+            for (let c = 0; c < cols; ++c) {
+                expected.set(r, c, parseArg(data[r][c]));
+            }
+        }
+        return expected;
     }
 
     @before()
@@ -190,20 +204,6 @@ class MatricesSteps {
     @given(/^(\w+) ← identity_matrix\((\w+)\)$/)
     public givenIdentity(matId: string, dim: string) {
         this.workspace.matrices[matId] = Matrix.identity(parseInt(dim));
-    }
-
-    private static createMatrixFromDataTable(dataTable: { rawTable: [][] }) {
-        const data = dataTable.rawTable;
-        const rows = data.length;
-        const cols = data[0].length;
-
-        const expected = new Matrix(rows, cols);
-        for (let r = 0; r < rows; ++r) {
-            for (let c = 0; c < cols; ++c) {
-                expected.set(r, c, parseArg(data[r][c]));
-            }
-        }
-        return expected;
     }
 
 
