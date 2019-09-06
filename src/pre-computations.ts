@@ -19,10 +19,6 @@ export class PreComputations extends Intersection {
 }
 
 export function prepare_computations(i: Intersection, r: Ray): PreComputations {
-    return new PreComputations(
-        i,
-        position(r, i.t),
-        r.direction.negative,
-        normal_at(i.obj, position(r, i.t))
-    );
+    const p = position(r, i.t);
+    return new PreComputations(i, p, r.direction.negative, normal_at(i.obj, p));
 }
