@@ -1,12 +1,15 @@
 import {binding, given, then, when} from 'cucumber-tsflow';
 import {parseArg, shouldEqualMsg, Workspace} from './Workspace';
-import {default_world, intersect_world, World} from '../../src/world';
+import {default_world, intersect_world, shade_hit, World} from '../../src/world';
 import {expect} from 'chai';
 import {Color} from '../../src/color';
 import {Sphere} from '../../src/sphere';
 import {fail} from 'assert';
 import {Matrix, scaling} from '../../src/matrix';
 import {Material} from '../../src/material';
+import {PreComputations} from "../../src/pre-computations";
+import {Light} from "../../src/light";
+import {point} from "../../src/tuple";
 
 @binding([Workspace])
 class WorldsSteps {
@@ -67,6 +70,36 @@ class WorldsSteps {
             this.workspace.rays[rayId]
         );
     }
+
+    @given(/^([^,]+) ← the first object in ([^,]+)$/)
+    public givenFirstObjectInWorld(objId: string, worldId: string) {
+        this.workspace.spheres[objId] = this.workspace.worlds[worldId].objects[0];
+    }
+
+    @when(/^([^,]+) ← shade_hit\(([^,]+), ([^,]+)\)$/)
+    public whenShadeHit(colorId: string, worldId: string, pcId: string) {
+        this.workspace.colors[colorId] = shade_hit(
+            this.workspace.worlds[worldId],
+            this.workspace.intersection[pcId] as PreComputations
+        );
+    }
+
+    @given(/^([^,]+).light ← point_light\(point\(([^,]+), ([^,]+), ([^,]+)\), color\(([^,]+), ([^,]+), ([^,]+)\)\)$/)
+    public givenWorldLight(worldid: string, x: string, y: string, z: string, r: string, g: string, b: string) {
+        this.workspace.worlds[worldid] = new World(
+            [
+                new Light(point(parseArg(x), parseArg(y), parseArg(z)), new Color(parseArg(r), parseArg(g), parseArg(b)))
+            ],
+            this.workspace.worlds[worldid].objects
+        );
+    }
+
+    @given(/^([^,]+) ← the second object in ([^,]+)$/)
+    public givenSecondObjectInWorld(objId: string, worldId: string) {
+        this.workspace.spheres[objId] = this.workspace.worlds[worldId].objects[1];
+    }
+
+
 }
 
 function parseRawTable(data: string[][]): Sphere {

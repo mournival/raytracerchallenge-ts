@@ -8,7 +8,6 @@ import {Intersection} from '../../src/intersection';
 import {Light} from '../../src/light';
 import {Material} from '../../src/material';
 import {World} from '../../src/world';
-import {PreComputations} from '../../src/pre-computations';
 
 interface TupleArray {
     [index: string]: Tuple;
@@ -54,11 +53,6 @@ interface WorldArray {
     [index: string]: World;
 }
 
-interface PreCompsArray {
-    [index: string]: PreComputations;
-
-}
-
 export class Workspace {
     public tuples: TupleArray = {};
     public canvases: CanvasArray = {};
@@ -71,7 +65,6 @@ export class Workspace {
     public lights: LightsArray = {};
     public materials: MaterialsArray = {};
     public worlds: WorldArray = {};
-    public precomps: PreCompsArray = {};
 }
 
 export function shouldEqualMsg(actual: Object, expected: Object): string {

@@ -31,7 +31,7 @@ class TupleSteps {
 
     @then(/^(\w+)\.([xyzw]) = (.*)$/)
     public tupleFieldEquals(id: string, field: VectorElement, value: string) {
-        expect(this.workspace.tuples[id].getElements(field)).to.eq(parseArg(value));
+        expect(this.workspace.tuples[id].getElement(field)).to.eq(parseArg(value));
     }
 
     @then(/^(\w+)\.(red|green|blue) = (.*)$/)

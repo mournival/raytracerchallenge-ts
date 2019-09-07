@@ -73,12 +73,18 @@ class IntersectionsSteps {
     }
 
     @then(/^([^,[]+)\.normalv = vector\(([^,]+), ([^,]+), ([^,]+)\)$/)
-    public thenPCNomralvEqualsInormalv(pcId: string, x: string, y: string, z: string) {
+    public thenPCNormalvEqualsInormalv(pcId: string, x: string, y: string, z: string) {
         const actual = (this.workspace.intersection[pcId] as PreComputations).normalv;
         const expected = vector(parseArg(x), parseArg(y), parseArg(z));
         expect(Tuple.equals(actual, expected), shouldEqualMsg(actual, expected)).to.be.true;
     }
 
+    @then(/^([^,[]+)\.inside = ([^,]+)$/)
+    public thenPCInsideEquals(pcId: string, inside: string) {
+        const actual = (this.workspace.intersection[pcId] as PreComputations).inside;
+        const expected = inside === 'true';
+        expect(actual).to.be.equal(expected);
+    }
 }
 
 export = IntersectionsSteps;

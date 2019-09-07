@@ -51,7 +51,7 @@ class MaterialsSteps {
         expect(actual).to.be.closeTo(expected, 0.0001);
     }
 
-    @given(/^([^,]+) ← point_light\(point\(([^,]+), ([^,]+), ([^,]+)\), color\(([^,]+), ([^,]+), ([^,]+)\)\)$/)
+    @given(/^([^,.]+) ← point_light\(point\(([^,]+), ([^,]+), ([^,]+)\), color\(([^,]+), ([^,]+), ([^,]+)\)\)$/)
     public whenLightCreatedFromPointColor(lightId: string, x: string, y: string, z: string, r: string, g: string, b: string) {
         this.workspace.lights[lightId] = new Light(
             point(parseFloat(x), parseFloat(y), parseFloat(z)),

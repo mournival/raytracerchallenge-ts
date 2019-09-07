@@ -11,7 +11,7 @@ class LightsSteps {
     constructor(protected workspace: Workspace) {
     }
 
-    @when(/^([^,]+) ← point_light\(([^,]+), ([^,]+)\)$/)
+    @when(/^([^,.]+) ← point_light\(([^,]+), ([^,]+)\)$/)
     public whenLightCreated(lightId: string, posId: string, intensityId: string) {
         this.workspace.lights[lightId] = new Light(
             this.workspace.tuples[posId],
