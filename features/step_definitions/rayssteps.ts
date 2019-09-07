@@ -10,7 +10,7 @@ class RaysSteps {
     constructor(protected workspace: Workspace) {
     }
 
-    @when(/^(\w+) ← ray\((\w+), (\w+)\)$/)
+    @when(/^([\w\d_]+) ← ray\((\w+), (\w+)\)$/)
     public whenRay(rayId: string, originId: string, directionId: string) {
         this.workspace.rays[rayId] = new Ray(
             this.workspace.tuples[originId],
@@ -32,7 +32,7 @@ class RaysSteps {
         expect(Tuple.equals(actual, expected)).to.be.true;
     }
 
-    @when(/^(\w+) ← ray\(point\(([^,]+), ([^,]+), ([^,]+)\), vector\(([^,]+), ([^,]+), ([^,]+)\)\)$/)
+    @when(/^([\w\d_]+) ← ray\(point\(([^,]+), ([^,]+), ([^,]+)\), vector\(([^,]+), ([^,]+), ([^,]+)\)\)$/)
     public whenRayFromPointVector(rayId: string, px: string, py: string, pz: string, vx: string, vy: string, vz: string,) {
         this.workspace.rays[rayId] = new Ray(
             point(parseFloat(px), parseFloat(py), parseFloat(pz)),
@@ -47,7 +47,7 @@ class RaysSteps {
         expect(Tuple.equals(actual, expected)).to.be.true;
     }
 
-    @when(/^(\w+) ← transform\(([^,]+), ([^,]+)\)$/)
+    @when(/^([\w\d_]+) ← transform\(([^,]+), ([^,]+)\)$/)
     public whenTransformRay(r2Id: string, rId: string, tId: string,) {
         this.workspace.rays[r2Id] = transform(
             this.workspace.rays[rId],

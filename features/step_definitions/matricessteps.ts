@@ -81,7 +81,7 @@ class MatricesSteps {
         expect(Matrix.equals(actual, A)).to.be.true;
     }
 
-    @then(/^identity_matrix \* (\w+) = (\w+)$/)
+    @then(/^identity_matrix \* ([\w\d_]+) = (\w+)$/)
     public multiplyIdentityMatrixVectorEqualsSame(vectorAId: string, vectorBId: string) {
         const a = this.workspace.tuples[vectorAId];
         const actual = Matrix.multiplyVector(Matrix.identity(4), a);
@@ -95,7 +95,7 @@ class MatricesSteps {
         expect(Matrix.equals(actual, expected)).to.be.true;
     }
 
-    @given(/^(\w+) ← transpose\((\w+)\)$/)
+    @given(/^([\w\d_]+) ← transpose\((\w+)\)$/)
     public givenTransposeIdentity(matAId: string, matBId: string) {
         this.workspace.matrices[matAId] = this.workspace.matrices[matBId].transpose;
     }
@@ -121,7 +121,7 @@ class MatricesSteps {
         expect(Matrix.equals(actual, expected)).to.be.true;
     }
 
-    @given(/^(\w+) ← submatrix\((\w+), (\d+), (\d+)\)$/)
+    @given(/^([\w\d_]+) ← submatrix\((\w+), (\d+), (\d+)\)$/)
     public createSubmatrix(subMatId: string, matId: string, r: string, c: string) {
         return this.workspace.matrices[subMatId] = this.workspace.matrices[matId].subMatrix(parseInt(r), parseInt(c));
     }
@@ -152,7 +152,7 @@ class MatricesSteps {
         expect(actual).to.be.false;
     }
 
-    @given(/^(\w+) ← inverse\((\w+)\)$/)
+    @given(/^([\w\d_]+) ← inverse\((\w+)\)$/)
     public givenInverse(matBId: string, matAId: string) {
         this.workspace.matrices[matBId] = this.workspace.matrices[matAId].inverse;
     }
@@ -177,7 +177,7 @@ class MatricesSteps {
         expect(Matrix.equals(actual, expectedA)).to.be.true;
     }
 
-    @given(/^(\w+) ← (\w+) \* (\w+)$/)
+    @given(/^([\w\d_]+) ← (\w+) \* (\w+)$/)
     public givenAProduct(matCId: string, lhsId: string, rhsId: string) {
         if (this.workspace.matrices[rhsId]) {
             this.workspace.matrices[matCId] = Matrix.multiply(this.workspace.matrices[lhsId], this.workspace.matrices[rhsId]);
@@ -188,7 +188,7 @@ class MatricesSteps {
         }
     }
 
-    @given(/^(\w+) ← (\w+) \* (\w+) \* (\w+)$/)
+    @given(/^([\w\d_]+) ← (\w+) \* (\w+) \* (\w+)$/)
     public givenAChainedProduct(matCId: string, m1Id: string, m2Id: string, m3Id: string) {
         this.workspace.matrices[matCId] = Matrix.multiply(
             Matrix.multiply(this.workspace.matrices[m1Id], this.workspace.matrices[m2Id]), this.workspace.matrices[m3Id]);
@@ -201,7 +201,7 @@ class MatricesSteps {
         expect(Matrix.equals(actual, expected)).to.be.true;
     }
 
-    @given(/^(\w+) ← identity_matrix\((\w+)\)$/)
+    @given(/^([\w\d_]+) ← identity_matrix\((\w+)\)$/)
     public givenIdentity(matId: string, dim: string) {
         this.workspace.matrices[matId] = Matrix.identity(parseInt(dim));
     }

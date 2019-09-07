@@ -3,9 +3,10 @@ import {Light} from './light';
 import {point} from './tuple';
 import {Color} from './color';
 import {Matrix, scaling} from './matrix';
-import {Material} from './material';
+import {lighting, Material} from './material';
 import {Ray} from './ray';
 import {Intersection} from './intersection';
+import {PreComputations} from "./pre-computations";
 
 export class World {
     constructor(public readonly lights: Light[] = [], public readonly objects: Array<Sphere> = []) {
@@ -43,4 +44,8 @@ export function intersect_world(w: World, r: Ray): Intersection[] {
     // w.objects.map(o => intersect(o, r)).forEach(xss => xs.push(...xss));
     // xs.sort((a, b) => a.t - b.t);
     // return xs;
+}
+
+export function shade_hit(w: World, pc: PreComputations) : Color {
+    return lighting(pc.object.material, w.lights[0], pc.point, pc.eyev, pc.normalv);
 }

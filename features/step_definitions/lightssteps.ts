@@ -11,7 +11,7 @@ class LightsSteps {
     constructor(protected workspace: Workspace) {
     }
 
-    @when(/^([^,.]+) ← point_light\(([^,]+), ([^,]+)\)$/)
+    @when(/^([\w\d_]+) ← point_light\(([^,]+), ([^,]+)\)$/)
     public whenLightCreated(lightId: string, posId: string, intensityId: string) {
         this.workspace.lights[lightId] = new Light(
             this.workspace.tuples[posId],
@@ -19,14 +19,14 @@ class LightsSteps {
         );
     }
 
-    @then(/^([^,]+).position = ([^,]+)$/)
+    @then(/^([\w\d_]+).position = ([^,]+)$/)
     public thenPositionEquals(lightId: string, posId: string) {
         const actual = this.workspace.lights[lightId].position;
         const expected = this.workspace.tuples[posId];
         expect(Tuple.equals(actual, expected), shouldEqualMsg(actual, expected)).to.be.true;
     }
 
-    @then(/^([^,]+).intensity = ([^,]+)$/)
+    @then(/^([\w\d_]+).intensity = ([^,]+)$/)
     public thenIntensityEquals(lightId: string, intensityId: string) {
         const actual = this.workspace.lights[lightId].intensity;
         const expected = this.workspace.colors[intensityId];

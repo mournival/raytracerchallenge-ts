@@ -49,38 +49,38 @@ class TupleSteps {
         expect(this.workspace.tuples[id].isVector).to.eq(not !== 'not ');
     }
 
-    @given(/^(\w+) ← (tuple|point|vector)\(([^,]+), ([^,]+), ([^,]+)[, ]*(.*)\)$/)
+    @given(/^([\w\d_]+) ← (tuple|point|vector)\(([^,]+), ([^,]+), ([^,]+)[, ]*(.*)\)$/)
     public givenATupleType(id: string, expectedType: string, x: string, y: string, z: string, w: string): void {
         this.workspace.tuples[id] = TupleSteps.createExpected(expectedType, x, y, z, w);
     }
 
-    @given(/^(\w+) ← (color)\(([^,]+), ([^,]+), ([^,]+)\)$/)
+    @given(/^([\w\d_]+) ← (color)\(([^,]+), ([^,]+), ([^,]+)\)$/)
     public givenAColor(id: string, expectedType: string, x: string, y: string, z: string): void {
         this.workspace.colors[id] = new Color(parseArg(x), parseArg(y), parseArg(z));
     }
 
-    @then(/^(\w+) = tuple\(([^,]+), ([^,]+), ([^,]+), ([^,]+)\)$/)
+    @then(/^([\w\d_]+) = tuple\(([^,]+), ([^,]+), ([^,]+), ([^,]+)\)$/)
     public thenTupleEquals(id: string, x: string, y: string, z: string, w: string): void {
         expect(
             Tuple.equals(this.workspace.tuples[id], new Tuple(parseArg(x), parseArg(y), parseArg(z), parseArg(w)))
         ).to.be.true;
     }
 
-    @then(/^(\w+) = (tuple|point|vector)\(([^,]+), ([^,]+), ([^,]+)\)$/)
+    @then(/^([\w\d_]+) = (tuple|point|vector)\(([^,]+), ([^,]+), ([^,]+)\)$/)
     public thenTypedTupleEquals(id: string, expectedType: string, x: string, y: string, z: string): void {
         let expected = TupleSteps.createExpected(expectedType, x, y, z);
         const actual = this.workspace.tuples[id];
         expect(Tuple.equals(actual, expected), shouldEqualMsg(actual, expected)).to.be.true;
     }
 
-    @then(/^(\w+) = color\(([^,]+), ([^,]+), ([^,]+)\)$/)
+    @then(/^([\w\d_]+) = color\(([^,]+), ([^,]+), ([^,]+)\)$/)
     public thencolorEquals(id: string, r: string, g: string, b: string): void {
         let expected = new Color(parseArg(r), parseArg(g), parseArg(b));
         const actual = this.workspace.colors[id];
         expect(Color.equals(actual, expected), shouldEqualMsg(actual, expected)).to.be.true;
     }
 
-    @then(/^(\w+) (.) (.+) = (\w*)\(([^,]+), ([^,]+), ([^,]+)[, ]*([^,]*)\)$/)
+    @then(/^([\w\d_]+) (.) (.+) = (\w*)\(([^,]+), ([^,]+), ([^,]+)[, ]*([^,]*)\)$/)
     public testMixedOperation(lhs: string, op: string, rhs: string, expectedType: string, x: string, y: string, z: string, w: string): void {
         switch (expectedType) {
             case 'color':
@@ -92,44 +92,44 @@ class TupleSteps {
         }
     }
 
-    @then(/^-(\w+) = tuple\(([^,]+), ([^,]+), ([^,]+), ([^,]+)\)$/)
+    @then(/^-([\w\d_]+) = tuple\(([^,]+), ([^,]+), ([^,]+), ([^,]+)\)$/)
     public thenNegateTest(id: string, x: string, y: string, z: string, w: string): void {
         expect(
             Tuple.equals(this.workspace.tuples[id].negative, new Tuple(parseArg(x), parseArg(y), parseArg(z), parseArg(w)))
         ).to.be.true;
     }
 
-    @then(/^magnitude\((.*)\) = (.*)$/)
+    @then(/^magnitude\(([\w\d_]+)\) = (.*)$/)
     public thenMagnitudeEquals(id: string, m: string): void {
         let mag = parseArg(m);
         expect(this.workspace.tuples[id].magnitude).to.be.eq(mag);
     }
 
-    @then(/^normalize\((.*)\) = (approximately )?vector\(([^,]+), ([^,]+), ([^,]+)\)$/)
+    @then(/^normalize\(([\w\d_]+)\) = (approximately )?vector\(([^,]+), ([^,]+), ([^,]+)\)$/)
     public thenVectorEquals(id: string, approx: string, x: string, y: string, z: string): void {
         let actualVal = this.workspace.tuples[id].normalize;
         let expectedVal = vector(parseArg(x), parseArg(y), parseArg(z));
         expect(Tuple.equals(actualVal, expectedVal)).to.be.true;
     }
 
-    @when(/^(\w+) ← normalize\((\w+)\)$/)
+    @when(/^([\w\d_]+) ← normalize\(([\w\d_]+)\)$/)
     public whenNormed(id: string, src: string): void {
         this.workspace.tuples[id] = this.workspace.tuples[src].normalize;
     }
 
-    @then(/^dot\((.*), (.*)\) = ([^,]+)$/)
+    @then(/^dot\(([\w\d_]+), ([\w\d_]+)\) = ([^,]+)$/)
     public thenDotEquals(lhs: string, rhs: string, product: string): void {
         expect(
             Math.abs(Tuple.dot(this.workspace.tuples[lhs], this.workspace.tuples[rhs]) - parseArg(product)) < Tuple.EPSILON
         ).to.be.true;
     }
 
-    @when(/^(\w+) ← reflect\((\w+), (\w+)\)/)
+    @when(/^([\w\d_]+) ← reflect\(([\w\d_]+), ([\w\d_]+)\)/)
     public thenVectorOperation(id: string, vId: string, nId: string): void {
         this.workspace.tuples[id] = Tuple.reflect(this.workspace.tuples[vId], this.workspace.tuples[nId]);
     }
 
-    @then(/^cross\((.*), (.*)\) = vector\(([^,]+), ([^,]+), ([^,]+)\)$/)
+    @then(/^cross\(([\w\d_]+), ([\w\d_]+)\) = vector\(([^,]+), ([^,]+), ([^,]+)\)$/)
     public thenCrossEquals(lhs: string, rhs: string, x: string, y: string, z: string): void {
         let actualVal = Tuple.cross(this.workspace.tuples[lhs], this.workspace.tuples[rhs]);
         let expectedVal = vector(parseArg(x), parseArg(y), parseArg(z));

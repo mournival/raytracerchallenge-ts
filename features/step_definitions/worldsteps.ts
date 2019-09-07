@@ -17,7 +17,7 @@ class WorldsSteps {
     constructor(protected workspace: Workspace) {
     }
 
-    @when(/^([^,]+) ← world\(\)$/)
+    @when(/^([\w\d_]+) ← world\(\)$/)
     public whenWorldCreated(worldId: string) {
         this.workspace.worlds[worldId] = new World();
     }
@@ -36,17 +36,17 @@ class WorldsSteps {
         expect(actual, shouldEqualMsg(actual, expected)).to.equal(expected);
     }
 
-    @given(/^([^,]+) ← sphere\(\) with:$/)
+    @given(/^([\w\d_]+) ← sphere\(\) with:$/)
     public givenSphereByProperties(sphereId: string, dataTable: { rawTable: [][] }) {
         this.workspace.spheres[sphereId] = parseRawTable(dataTable.rawTable);
     }
 
-    @when(/^([^,]+) ← default_world\(\)$/)
+    @when(/^([\w\d_]+) ← default_world\(\)$/)
     public whenDefaultWorld(worldId: string) {
         this.workspace.worlds[worldId] = default_world();
     }
 
-    @then(/^([^,]+).light = ([^,]+)$/)
+    @then(/^([\w\d_]+).light = ([^,]+)$/)
     public thenWorldLightEquals(worldId: string, lightId: string) {
         const actual = this.workspace.worlds[worldId].contains(this.workspace.lights[lightId]);
         return expect(actual,
@@ -63,7 +63,7 @@ class WorldsSteps {
             + JSON.stringify(this.workspace.spheres[objectId])).to.be.true;
     }
 
-    @when(/^([^,]+) ← intersect_world\(([^,]+), ([^,]+)\)$/)
+    @when(/^([\w\d_]+) ← intersect_world\(([^,]+), ([^,]+)\)$/)
     public whenIntersectWorld(xsId: string, worldId: string, rayId: string) {
         this.workspace.intersections[xsId] = intersect_world(
             this.workspace.worlds[worldId],
@@ -71,12 +71,12 @@ class WorldsSteps {
         );
     }
 
-    @given(/^([^,]+) ← the first object in ([^,]+)$/)
+    @given(/^([\w\d_]+) ← the first object in ([^,]+)$/)
     public givenFirstObjectInWorld(objId: string, worldId: string) {
         this.workspace.spheres[objId] = this.workspace.worlds[worldId].objects[0];
     }
 
-    @when(/^([^,]+) ← shade_hit\(([^,]+), ([^,]+)\)$/)
+    @when(/^([\w\d_]+) ← shade_hit\(([^,]+), ([^,]+)\)$/)
     public whenShadeHit(colorId: string, worldId: string, pcId: string) {
         this.workspace.colors[colorId] = shade_hit(
             this.workspace.worlds[worldId],
@@ -84,7 +84,7 @@ class WorldsSteps {
         );
     }
 
-    @given(/^([^,]+).light ← point_light\(point\(([^,]+), ([^,]+), ([^,]+)\), color\(([^,]+), ([^,]+), ([^,]+)\)\)$/)
+    @given(/^([\w\d_]+).light ← point_light\(point\(([^,]+), ([^,]+), ([^,]+)\), color\(([^,]+), ([^,]+), ([^,]+)\)\)$/)
     public givenWorldLight(worldid: string, x: string, y: string, z: string, r: string, g: string, b: string) {
         this.workspace.worlds[worldid] = new World(
             [
@@ -94,7 +94,7 @@ class WorldsSteps {
         );
     }
 
-    @given(/^([^,]+) ← the second object in ([^,]+)$/)
+    @given(/^([\w\d_]+) ← the second object in ([^,]+)$/)
     public givenSecondObjectInWorld(objId: string, worldId: string) {
         this.workspace.spheres[objId] = this.workspace.worlds[worldId].objects[1];
     }

@@ -12,7 +12,7 @@ class IntersectionsSteps {
     constructor(protected workspace: Workspace) {
     }
 
-    @when(/^([^,]+) ← intersection\(([^,]+), ([^,]+)\)$/)
+    @when(/^([\w\d_]+) ← intersection\(([^,]+), ([^,]+)\)$/)
     public whenIntersectionCreated(intersectionId: string, t: string, objId: string) {
         this.workspace.intersection[intersectionId] = new Intersection(
             this.workspace.spheres[objId],
@@ -20,14 +20,14 @@ class IntersectionsSteps {
         );
     }
 
-    @then(/^([^,[]+)\.t = ([^t]+)$/)
+    @then(/^([\w\d_]+)\.t = ([^t]+)$/)
     public thenDistanceEqualsV(intersectionId: string, t: string) {
         const actual = this.workspace.intersection[intersectionId].t;
         const expected = parseArg(t);
         expect(actual).to.be.closeTo(expected, 0.0001);
     }
 
-    @then(/^([^,[]+)\.t = ([^,]+).t$/)
+    @then(/^([\w\d_]+)\.t = ([\w\d_]+).t$/)
     public thenDistanceEqualsIt(pcId: string, intersectId: string) {
         const actual = this.workspace.intersection[pcId].t;
         const expected = this.workspace.intersection[intersectId].t;
@@ -35,14 +35,14 @@ class IntersectionsSteps {
     }
 
 
-    @then(/^([^,[]+)\.object = ([^,.]+)$/)
+    @then(/^([\w\d_]+)\.object = ([^,.]+)$/)
     public thenObjectEquals(intersectionId: string, objId: string) {
         const actual = this.workspace.intersection[intersectionId].obj;
         const expected = this.workspace.spheres[objId];
         expect(Sphere.equals(actual, expected), shouldEqualMsg(actual, expected)).to.be.true;
     }
 
-    @then(/^([^,[]+)\.object = ([^,]+).object$/)
+    @then(/^([\w\d_]+)\.object = ([^,]+).object$/)
     public thenObjectEqualsIobj(pcId: string, intersectId: string) {
         const actual = this.workspace.intersection[pcId].obj;
         const expected = this.workspace.intersection[intersectId].obj;
@@ -50,7 +50,7 @@ class IntersectionsSteps {
     }
 
 
-    @given(/^([^,]+) ← prepare_computations\(([^,]+), ([^,]+)\)$/)
+    @given(/^([\w\d_]+) ← prepare_computations\(([^,]+), ([^,]+)\)$/)
     public givenPreComps(pcId: string, intersectId: string, rayId: string) {
         this.workspace.intersection[pcId] = prepare_computations(
             this.workspace.intersection[intersectId],
@@ -58,28 +58,28 @@ class IntersectionsSteps {
         );
     }
 
-    @then(/^([^,[]+)\.point = point\(([^,]+), ([^,]+), ([^,]+)\)/)
+    @then(/^([\w\d_]+)\.point = point\(([^,]+), ([^,]+), ([^,]+)\)/)
     public thenPCPointEqualsIpoint(pcId: string, x: string, y: string, z: string) {
         const actual = (this.workspace.intersection[pcId] as PreComputations).point;
         const expected = point(parseArg(x), parseArg(y), parseArg(z));
         expect(Tuple.equals(actual, expected), shouldEqualMsg(actual, expected)).to.be.true;
     }
 
-    @then(/^([^,[]+)\.eyev = vector\(([^,]+), ([^,]+), ([^,]+)\)$/)
+    @then(/^([\w\d_]+)\.eyev = vector\(([^,]+), ([^,]+), ([^,]+)\)$/)
     public thenPCEyevEqualsIeyev(pcId: string, x: string, y: string, z: string) {
         const actual = (this.workspace.intersection[pcId] as PreComputations).eyev;
         const expected = vector(parseArg(x), parseArg(y), parseArg(z));
         expect(Tuple.equals(actual, expected), shouldEqualMsg(actual, expected)).to.be.true;
     }
 
-    @then(/^([^,[]+)\.normalv = vector\(([^,]+), ([^,]+), ([^,]+)\)$/)
+    @then(/^([\w\d_]+)\.normalv = vector\(([^,]+), ([^,]+), ([^,]+)\)$/)
     public thenPCNormalvEqualsInormalv(pcId: string, x: string, y: string, z: string) {
         const actual = (this.workspace.intersection[pcId] as PreComputations).normalv;
         const expected = vector(parseArg(x), parseArg(y), parseArg(z));
         expect(Tuple.equals(actual, expected), shouldEqualMsg(actual, expected)).to.be.true;
     }
 
-    @then(/^([^,[]+)\.inside = ([^,]+)$/)
+    @then(/^([\w\d_]+)\.inside = ([^,]+)$/)
     public thenPCInsideEquals(pcId: string, inside: string) {
         const actual = (this.workspace.intersection[pcId] as PreComputations).inside;
         const expected = inside === 'true';

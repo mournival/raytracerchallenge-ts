@@ -18,7 +18,7 @@ class CanvasSteps {
     constructor(protected workspace: Workspace) {
     }
 
-    @given(/^(\w+) ← canvas\(([^,]+), ([^,]+)\)$/)
+    @given(/^([\w\d_]+) ← canvas\(([^,]+), ([^,]+)\)$/)
     public givenACanvas(id: string, x: string, y: string): void {
         this.workspace.canvases[id] = new Canvas(parseArg(x), parseArg(y));
     }
@@ -57,7 +57,7 @@ class CanvasSteps {
         ).to.be.true;
     }
 
-    @when(/^(\w+) ← canvas_to_ppm\((\w+)\)$/)
+    @when(/^([\w\d_]+) ← canvas_to_ppm\((\w+)\)$/)
     public createPPMFromCanvas(ppmId: string, canvasId: string) {
         this.ppm[ppmId] = Canvas.canvas_to_ppm(this.workspace.canvases[canvasId]);
     }

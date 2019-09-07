@@ -17,12 +17,12 @@ class SpheresSteps {
         this.workspace.matrices['identity_matrix'] = Matrix.identity(4);
     }
 
-    @given(/^(\w+) ← sphere\(\)$/)
+    @given(/^([\w\d_]+) ← sphere\(\)$/)
     public givenASphere(sphereId: string) {
         this.workspace.spheres[sphereId] = new Sphere();
     }
 
-    @when(/^(\w+) ← intersect\((\w+), (\w+)\)$/)
+    @when(/^([\w\d_]+) ← intersect\((\w+), (\w+)\)$/)
     public whenRayIntersectsSphere(interactionId: string, sphereId: string, rayId: string) {
         this.workspace.intersections[interactionId] = intersect(
             this.workspace.spheres[sphereId],
@@ -88,7 +88,7 @@ class SpheresSteps {
         this.workspace.spheres[sphereId] = set_transform(s, t);
     }
 
-    @when(/^(\w+) ← normal_at\((\w+), point\(([^,]+), ([^,]+), ([^,]+)\)\)$/)
+    @when(/^([\w\d_]+) ← normal_at\((\w+), point\(([^,]+), ([^,]+), ([^,]+)\)\)$/)
     public whenNormalAt(normalId: string, sphereId: string, x: string, y: string, z: string) {
         this.workspace.tuples[normalId] = normal_at(
             this.workspace.spheres[sphereId],
@@ -103,19 +103,19 @@ class SpheresSteps {
         expect(Tuple.equals(actual, expected)).to.be.true;
     }
 
-    @given(/^(\w+) ← scaling\(([^,]+), ([^,]+), ([^,]+)\) \* rotation_z\(([^,]+)\)$/)
+    @given(/^([\w\d_]+) ← scaling\(([^,]+), ([^,]+), ([^,]+)\) \* rotation_z\(([^,]+)\)$/)
     public givensScaling(tId: string, x: string, y: string, z: string, rot: string) {
         this.workspace.matrices[tId] = Matrix.multiply(
             scaling(parseArg(x), parseArg(y), parseArg(z)),
             rotation_z(parseArg(rot)));
     }
 
-    @when(/^(\w+) ← (\w+).material$/)
+    @when(/^([\w\d_]+) ← (\w+).material$/)
     public materialIs(mId: string, sphereId: string) {
         this.workspace.materials[mId] = this.workspace.spheres[sphereId].material;
     }
 
-    @then(/^(\w+) = material\(\)$/)
+    @then(/^([\w\d_]+) = material\(\)$/)
     public thenSphereMaterial(mId: string) {
         const actual = this.workspace.materials[mId];
         const expected = new Material();

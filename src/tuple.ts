@@ -84,7 +84,7 @@ export class Tuple {
         return Tuple.subtract(v, a);
     }
 
-    getElements(e: VectorElement): number {
+    getElement(e: VectorElement): number {
         switch (e) {
             case 'x':
                 return this.x;
