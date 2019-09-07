@@ -1,6 +1,6 @@
 import {binding, given, then, when} from 'cucumber-tsflow';
 import {parseArg, shouldEqualMsg, Workspace} from './Workspace';
-import {default_world, intersect_world, shade_hit, World} from '../../src/world';
+import {color_at, default_world, intersect_world, shade_hit, World} from '../../src/world';
 import {expect} from 'chai';
 import {Color} from '../../src/color';
 import {Sphere} from '../../src/sphere';
@@ -99,6 +99,10 @@ class WorldsSteps {
         this.workspace.spheres[objId] = this.workspace.worlds[worldId].objects[1];
     }
 
+    @when(/^([\w\d_]+) ← color_at\(([\w\d_]+), ([\w\d_]+)\)$/)
+    public whenColorAt(colorID: string, worldId: string, rayId: string) {
+        this.workspace.colors[colorID] = color_at(this.workspace.worlds[worldId], this.workspace.rays[rayId]);
+    }
 
 }
 

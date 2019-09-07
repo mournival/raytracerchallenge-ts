@@ -6,7 +6,7 @@ import {Matrix, scaling} from './matrix';
 import {lighting, Material} from './material';
 import {Ray} from './ray';
 import {Intersection} from './intersection';
-import {PreComputations} from "./pre-computations";
+import {PreComputations, prepare_computations} from "./pre-computations";
 
 export class World {
     constructor(public readonly lights: Light[] = [], public readonly objects: Array<Sphere> = []) {
@@ -46,6 +46,14 @@ export function intersect_world(w: World, r: Ray): Intersection[] {
     // return xs;
 }
 
-export function shade_hit(w: World, pc: PreComputations) : Color {
+export function shade_hit(w: World, pc: PreComputations): Color {
     return lighting(pc.object.material, w.lights[0], pc.point, pc.eyev, pc.normalv);
+}
+
+export function color_at(w: World, r: Ray): Color {
+    const xs = intersect_world(w, r);
+    if (xs.length === 0) {
+        return Color.BLACK;
+    }
+    return shade_hit(w, prepare_computations(xs[0], r));
 }
