@@ -14,56 +14,6 @@ export class Matrix {
         }
     }
 
-    public get det(): number {
-        if (this.rDim === 2) {
-            return this.det2();
-        }
-
-        let dt: number = 0;
-        for (let c = 0; c < this.cDim; ++c) {
-            dt = dt + this.data[0][c] * this.cofactor(0, c);
-        }
-        return dt;
-    }
-
-    public get invertible(): boolean {
-        return Math.abs(this.det) > Matrix.EPSILON;
-    }
-
-    public get inverse(): Matrix {
-        if (!this.invertible) {
-            throw 'Cannot invert this matrix';
-        }
-
-        const m_prime = new Matrix(this.rDim, this.cDim);
-        const det = this.det;
-        for (let r = 0; r < this.rDim; ++r) {
-            for (let c = 0; c < this.cDim; ++c) {
-                const cofactorC = this.cofactor(r, c);
-                m_prime.data[c][r] = cofactorC / det;
-            }
-        }
-        return m_prime;
-    }
-
-    public get transpose(): Matrix {
-        let mPrime = new Matrix(this.cDim, this.rDim);
-        for (let r = 0; r < this.rDim; ++r) {
-            for (let c = 0; c < this.cDim; ++c) {
-                mPrime.data[c][r] = this.data[r][c];
-            }
-        }
-        return mPrime;
-    }
-
-    public get cDim(): number {
-        return this.data[0].length;
-    }
-
-    public get rDim(): number {
-        return this.data.length;
-    }
-
     // static add(lhs: Matrix, rhs: Matrix): Matrix {
     //     const ldata = lhs.data;
     //     const rdata = rhs.data;
@@ -142,9 +92,60 @@ export class Matrix {
             lhs.data[r][3] * rhs.w;
     }
 
+    public get inverse(): Matrix {
+        if (!this.invertible) {
+            throw 'Cannot invert this matrix';
+        }
+
+        const m_prime = new Matrix(this.rDim, this.cDim);
+        const det = this.det;
+        for (let r = 0; r < this.rDim; ++r) {
+            for (let c = 0; c < this.cDim; ++c) {
+                const cofactorC = this.cofactor(r, c);
+                m_prime.data[c][r] = cofactorC / det;
+            }
+        }
+        return m_prime;
+    }
+
+    public get invertible(): boolean {
+        return Math.abs(this.det) > Matrix.EPSILON;
+    }
+
+    public get det(): number {
+        if (this.rDim === 2) {
+            return this.det2();
+        }
+
+        let dt: number = 0;
+        for (let c = 0; c < this.cDim; ++c) {
+            dt = dt + this.data[0][c] * this.cofactor(0, c);
+        }
+        return dt;
+    }
+
+    private det2(): number {
+        const d = this.data;
+        return d[0][0] * d[1][1] - d[0][1] * d[1][0];
+    }
+
+    public get transpose(): Matrix {
+        let mPrime = new Matrix(this.cDim, this.rDim);
+        for (let r = 0; r < this.rDim; ++r) {
+            for (let c = 0; c < this.cDim; ++c) {
+                mPrime.data[c][r] = this.data[r][c];
+            }
+        }
+        return mPrime;
+    }
+
     public cofactor(r: number, c: number): number {
         const coeff = (r + c) % 2 === 0 ? 1 : -1;
         return coeff * this.minor(r, c);
+    }
+
+    public minor(r: number, c: number): number {
+        return this.subMatrix(r, c).det;
     }
 
     public subMatrix(row: number, col: number): Matrix {
@@ -163,8 +164,12 @@ export class Matrix {
         return mMinor;
     }
 
-    public minor(r: number, c: number): number {
-        return this.subMatrix(r, c).det;
+    public get cDim(): number {
+        return this.data[0].length;
+    }
+
+    public get rDim(): number {
+        return this.data.length;
     }
 
     get(row: number, col: number): number {
@@ -175,10 +180,6 @@ export class Matrix {
         this.data[row][col] = value;
     }
 
-    private det2(): number {
-        const d = this.data;
-        return d[0][0] * d[1][1] - d[0][1] * d[1][0];
-    }
 }
 
 export function translation(x: number, y: number, z: number): Matrix {

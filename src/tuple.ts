@@ -11,6 +11,14 @@ export class Tuple {
     ) {
     }
 
+    public get normalize(): Tuple {
+        return Tuple.multiply(this, 1 / this.magnitude);
+    }
+
+    public get magnitude(): number {
+        return Math.sqrt(Tuple.dot(this, this));
+    }
+
     public get isPoint(): boolean {
         return 1.0 - Tuple.EPSILON < this.w &&
             this.w < 1.0 + Tuple.EPSILON;
@@ -22,14 +30,6 @@ export class Tuple {
 
     public get negative(): Tuple {
         return Tuple.multiply(this, -1);
-    }
-
-    public get magnitude(): number {
-        return Math.sqrt(Tuple.dot(this, this));
-    }
-
-    public get normalize(): Tuple {
-        return Tuple.multiply(this, 1 / this.magnitude);
     }
 
     static equals(lhs: Tuple, rhs: Tuple): boolean {

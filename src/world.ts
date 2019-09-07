@@ -23,17 +23,12 @@ export class World {
     }
 }
 
-export function default_world(): World {
-    return new World(
-        [
-            new Light(point(-10, 10, -10), new Color(1, 1, 1))
-        ],
-        [
-            new Sphere(Matrix.identity(4),
-                new Material(new Color(0.8, 1.0, 0.6), 0.1, 0.7, 0.2)),
-            new Sphere(scaling(0.5, 0.5, 0.5))
-        ]
-    );
+export function color_at(w: World, r: Ray): Color {
+    const xs = intersect_world(w, r);
+    if (xs.length === 0) {
+        return Color.BLACK;
+    }
+    return shade_hit(w, prepare_computations(xs[0], r));
 }
 
 export function intersect_world(w: World, r: Ray): Intersection[] {
@@ -50,10 +45,15 @@ export function shade_hit(w: World, pc: PreComputations): Color {
     return lighting(pc.object.material, w.lights[0], pc.point, pc.eyev, pc.normalv);
 }
 
-export function color_at(w: World, r: Ray): Color {
-    const xs = intersect_world(w, r);
-    if (xs.length === 0) {
-        return Color.BLACK;
-    }
-    return shade_hit(w, prepare_computations(xs[0], r));
+export function default_world(): World {
+    return new World(
+        [
+            new Light(point(-10, 10, -10), new Color(1, 1, 1))
+        ],
+        [
+            new Sphere(Matrix.identity(4),
+                new Material(new Color(0.8, 1.0, 0.6), 0.1, 0.7, 0.2)),
+            new Sphere(scaling(0.5, 0.5, 0.5))
+        ]
+    );
 }
