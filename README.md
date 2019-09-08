@@ -86,11 +86,28 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 ### TODO
 
-- Figure TypeScript method / function overloading (if possible)
+- ✓ Figure TypeScript method / function overloading (if possible) [Probably figured this out]
 - Create file utils to save canvas either as global or Canvas static or Canvas method.
 - Fix mutable Matrix
 - Fix mutable Canvas(?). Not entirely sure if this is the correct decision for the global model that may have 1M+ pixels.
+- Refactor worldsteps.ts wrt inner/outer/world mutability
  
+### 20190908 
+Back to issues with mutabilty. Scenario in world.feature:
+```
+  Scenario: The color with an intersection behind the ray
+    Given w ← default_world()
+     And outer ← the first object in w
+     And outer.material.ambient ← 1
+     And inner ← the second object in w
+     And inner.material.ambient ← 1
+     And r ← ray(point(0, 0, 0.75), vector(0, 0, -1))
+    When c ← color_at(w, r)
+    Then c = inner.material.color
+
+```
+
+This is painful in the worldsteps.ts because I actually have to update both the world w and the helper objects inner|outer. Need to rethink this.
 ### 20190905
 Re: **20190830** 
 Decision: Except for Matrix (for now, at any rate), I am doing this with immutable data. 
