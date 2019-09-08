@@ -7,9 +7,9 @@ import {Sphere} from '../../src/sphere';
 import {fail} from 'assert';
 import {Matrix, scaling} from '../../src/matrix';
 import {Material} from '../../src/material';
-import {PreComputations} from "../../src/pre-computations";
-import {Light} from "../../src/light";
-import {point} from "../../src/tuple";
+import {PreComputations} from '../../src/pre-computations';
+import {Light} from '../../src/light';
+import {point} from '../../src/tuple';
 
 @binding([Workspace])
 class WorldsSteps {
@@ -102,6 +102,59 @@ class WorldsSteps {
     @when(/^([\w\d_]+) ← color_at\(([\w\d_]+), ([\w\d_]+)\)$/)
     public whenColorAt(colorID: string, worldId: string, rayId: string) {
         this.workspace.colors[colorID] = color_at(this.workspace.worlds[worldId], this.workspace.rays[rayId]);
+    }
+
+    @then(/^outer.material.ambient ← ([^,]+)$/)
+    public thenOuterAmbientEquals(value: string) {
+        const w = this.workspace.worlds['w'];
+
+        const o = w.objects[0];
+        const outer = new Sphere(
+            o.transform,
+            new Material(o.material.color,
+                parseArg(value),
+                o.material.diffuse,
+                o.material.specular,
+                o.material.shininess)
+        );
+
+        const objs = [
+            outer,
+            w.objects[1],
+        ];
+        this.workspace.spheres['outer'] = outer;
+        this.workspace.worlds['w'] = new World(w.lights, objs);
+    }
+
+    @then(/^inner.material.ambient ← ([^,]+)$/)
+    public thenInnerAmbientEquals(value: string) {
+        const w = this.workspace.worlds['w'];
+
+        const o = w.objects[1];
+        const inner = new Sphere(
+            o.transform,
+            new Material(o.material.color,
+                parseArg(value),
+                o.material.diffuse,
+                o.material.specular,
+                o.material.shininess)
+        );
+
+        const objs = [
+            w.objects[0],
+            inner,
+        ];
+        this.workspace.spheres['inner'] = inner;
+        this.workspace.worlds['w'] = new World(w.lights, objs);
+    }
+
+
+    @then(/^([\w\d_]+) = ([^,]+).material.color$/)
+    public thenColorEquals(colorId: string, objId: string) {
+        const actual = this.workspace.colors[colorId];
+        const expected = this.workspace.spheres[objId].material.color;
+
+        expect(Color.equals(actual, expected), shouldEqualMsg(actual, expected)).to.be.true;
     }
 
 }

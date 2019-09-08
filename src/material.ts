@@ -29,16 +29,18 @@ export function lighting(material: Material, light: Light, point: Tuple, eyev: T
     let specular: Color = Color.BLACK;
     let diffuse: Color = Color.BLACK;
 
-    if (light_dot_normal >= 0) {
-        diffuse = Color.multiplyScalar(effective_color, material.diffuse * light_dot_normal);
-        const reflectv = Tuple.reflect(lightv.negative, normalv);
-        const reflect_dot_eye = Tuple.dot(reflectv, eyev);
-        if (reflect_dot_eye <= 0) {
-            specular = Color.BLACK;
-        } else {
-            const factor = Math.pow(reflect_dot_eye, material.shininess);
-            specular = Color.multiplyScalar(light.intensity, material.specular * factor);
-        }
+    if (light_dot_normal < 0) {
+        return ambient;
+    }
+
+    diffuse = Color.multiplyScalar(effective_color, material.diffuse * light_dot_normal);
+    const reflectv = Tuple.reflect(lightv.negative, normalv);
+    const reflect_dot_eye = Tuple.dot(reflectv, eyev);
+    if (reflect_dot_eye <= 0) {
+        specular = Color.BLACK;
+    } else {
+        const factor = Math.pow(reflect_dot_eye, material.shininess);
+        specular = Color.multiplyScalar(light.intensity, material.specular * factor);
     }
 
     return Color.add(ambient, Color.add(diffuse, specular));
