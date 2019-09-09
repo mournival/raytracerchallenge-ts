@@ -14,23 +14,55 @@ export class Matrix {
         }
     }
 
-    // static add(lhs: Matrix, rhs: Matrix): Matrix {
-    //     const ldata = lhs.data;
-    //     const rdata = rhs.data;
-    //     if ((lrDim != rrDim) || (ldata[0].length != rdata[0].length))
-    //         throw 'Can\'t add matrices of different dimensions';
-    //
-    //     const m = new Matrix(lrDim, ldata[0].length);
-    //     for (let r = 0; r < lrDim; ++r)
-    //         for (let c = 0; c < ldata[0].length; ++c)
-    //             m.data[r][c] = ldata[r][c] + rdata[r][c];
-    //
-    //     return m;
-    // }
-    //
-    // static copy(m: Matrix): Matrix {
-    //     return Matrix.add(m, new Matrix(m.rDim, m.data[0].length));
-    // }
+    public get inverse(): Matrix {
+        if (!this.invertible) {
+            throw 'Cannot invert this matrix';
+        }
+
+        const m_prime = new Matrix(this.rDim, this.cDim);
+        const det = this.det;
+        for (let r = 0; r < this.rDim; ++r) {
+            for (let c = 0; c < this.cDim; ++c) {
+                const cofactorC = this.cofactor(r, c);
+                m_prime.data[c][r] = cofactorC / det;
+            }
+        }
+        return m_prime;
+    }
+
+    public get invertible(): boolean {
+        return Math.abs(this.det) > Matrix.EPSILON;
+    }
+
+    public get det(): number {
+        if (this.rDim === 2) {
+            return this.det2();
+        }
+
+        let dt: number = 0;
+        for (let c = 0; c < this.cDim; ++c) {
+            dt = dt + this.data[0][c] * this.cofactor(0, c);
+        }
+        return dt;
+    }
+
+    public get transpose(): Matrix {
+        let mPrime = new Matrix(this.cDim, this.rDim);
+        for (let r = 0; r < this.rDim; ++r) {
+            for (let c = 0; c < this.cDim; ++c) {
+                mPrime.data[c][r] = this.data[r][c];
+            }
+        }
+        return mPrime;
+    }
+
+    public get cDim(): number {
+        return this.data[0].length;
+    }
+
+    public get rDim(): number {
+        return this.data.length;
+    }
 
     static equals(lhs: Matrix, rhs: Matrix): boolean {
         if (lhs.rDim !== rhs.rDim ||
@@ -92,53 +124,6 @@ export class Matrix {
             lhs.data[r][3] * rhs.w;
     }
 
-    public get inverse(): Matrix {
-        if (!this.invertible) {
-            throw 'Cannot invert this matrix';
-        }
-
-        const m_prime = new Matrix(this.rDim, this.cDim);
-        const det = this.det;
-        for (let r = 0; r < this.rDim; ++r) {
-            for (let c = 0; c < this.cDim; ++c) {
-                const cofactorC = this.cofactor(r, c);
-                m_prime.data[c][r] = cofactorC / det;
-            }
-        }
-        return m_prime;
-    }
-
-    public get invertible(): boolean {
-        return Math.abs(this.det) > Matrix.EPSILON;
-    }
-
-    public get det(): number {
-        if (this.rDim === 2) {
-            return this.det2();
-        }
-
-        let dt: number = 0;
-        for (let c = 0; c < this.cDim; ++c) {
-            dt = dt + this.data[0][c] * this.cofactor(0, c);
-        }
-        return dt;
-    }
-
-    private det2(): number {
-        const d = this.data;
-        return d[0][0] * d[1][1] - d[0][1] * d[1][0];
-    }
-
-    public get transpose(): Matrix {
-        let mPrime = new Matrix(this.cDim, this.rDim);
-        for (let r = 0; r < this.rDim; ++r) {
-            for (let c = 0; c < this.cDim; ++c) {
-                mPrime.data[c][r] = this.data[r][c];
-            }
-        }
-        return mPrime;
-    }
-
     public cofactor(r: number, c: number): number {
         const coeff = (r + c) % 2 === 0 ? 1 : -1;
         return coeff * this.minor(r, c);
@@ -149,8 +134,7 @@ export class Matrix {
     }
 
     public subMatrix(row: number, col: number): Matrix {
-        const mMinor = new Matrix(this.rDim - 1, this.cDim
-            - 1);
+        const mMinor = new Matrix(this.rDim - 1, this.cDim - 1);
 
         for (let r = 0; r < this.rDim; ++r) {
             if (r != row) {
@@ -164,20 +148,17 @@ export class Matrix {
         return mMinor;
     }
 
-    public get cDim(): number {
-        return this.data[0].length;
-    }
-
-    public get rDim(): number {
-        return this.data.length;
-    }
-
     get(row: number, col: number): number {
         return this.data[row][col];
     }
 
     set(row: number, col: number, value: number): void {
         this.data[row][col] = value;
+    }
+
+    private det2(): number {
+        const d = this.data;
+        return d[0][0] * d[1][1] - d[0][1] * d[1][0];
     }
 
 }
@@ -252,7 +233,7 @@ export function shearing(x_y: number, x_z: number, y_x: number, y_z: number, z_x
     return m;
 }
 
-export function view_transform(from: Tuple, to: Tuple, up:Tuple): Matrix {
+export function view_transform(from: Tuple, to: Tuple, up: Tuple): Matrix {
     const forward = Tuple.subtract(to, from).normalize;
     const left = Tuple.cross(forward, up.normalize);
     const true_up = Tuple.cross(left, forward);
