@@ -70,7 +70,7 @@ npm test
 
 * **Kristian Holvoet** - *Initial work* - [kholvoet](https://github.com/kholvoet)
 
-See also the list of [contributors](https://github.com/your/project/contributors) who participated in this project.
+See also the list of [contributors](https://github.com/kholvoet/contributors) who participated in this project.
 
 ## License
 
@@ -93,7 +93,7 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 - Refactor worldsteps.ts wrt inner/outer/world mutability
  
 ### 20190908 
-Back to issues with mutabilty. Scenario in world.feature:
+Back to issues with mutability. Scenario in world.feature:
 ```
   Scenario: The color with an intersection behind the ray
     Given w ← default_world()

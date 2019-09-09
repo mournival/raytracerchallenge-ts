@@ -1,8 +1,18 @@
 import {binding, given, then} from 'cucumber-tsflow';
-import {Workspace} from './Workspace';
+import {shouldEqualMsg, Workspace} from './Workspace';
 import {expect} from 'chai';
-import {Matrix, rotation_x, rotation_y, rotation_z, scaling, shearing, translation} from '../../src/matrix';
+import {
+    Matrix,
+    rotation_x,
+    rotation_y,
+    rotation_z,
+    scaling,
+    shearing,
+    translation,
+    view_transform
+} from '../../src/matrix';
 import {Tuple} from '../../src/tuple';
+import {when} from 'cucumber-tsflow/dist';
 
 
 @binding([Workspace])
@@ -49,6 +59,31 @@ class TransformationsSteps {
             parseFloat(x_y), parseFloat(x_z), parseFloat(y_x),
             parseFloat(y_z), parseFloat(z_x), parseFloat(z_y)
         );
+    }
+
+    @when(/^([\w]+) ← view_transform\(([\w]+), ([\w]+), ([\w]+)\)$/)
+    public whenViewTransformation(tId: string, fromId: string, toId: string, upId: string) {
+        this.workspace.matrices[tId] = view_transform(
+            this.workspace.tuples[fromId],
+            this.workspace.tuples[toId],
+            this.workspace.tuples[upId]
+        );
+    }
+
+    @then(/^([\w]+) = scaling\(([^,]+), ([^,]+), ([^,]+)\)$/)
+    public thenEqualsScaling(tId: string, x: string, y: string, z: string) {
+        const actual = this.workspace.matrices[tId];
+        const expected = scaling(parseFloat(x), parseFloat(y), parseFloat(z));
+
+        expect(Matrix.equals(actual, expected), shouldEqualMsg(actual, expected)).to.be.true;
+    }
+
+    @then(/^([\w]+) = translation\(([^,]+), ([^,]+), ([^,]+)\)$/)
+    public thenEqualsTranslation(tId: string, x: string, y: string, z: string) {
+        const actual = this.workspace.matrices[tId];
+        const expected = translation(parseFloat(x), parseFloat(y), parseFloat(z));
+
+        expect(Matrix.equals(actual, expected), shouldEqualMsg(actual, expected)).to.be.true;
     }
 }
 

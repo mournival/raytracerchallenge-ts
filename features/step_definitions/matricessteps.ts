@@ -1,5 +1,5 @@
 import {before, binding, given, then} from 'cucumber-tsflow';
-import {parseArg, Workspace} from './Workspace';
+import {parseArg, shouldEqualMsg, Workspace} from './Workspace';
 import {expect} from 'chai';
 import {Matrix} from '../../src/matrix';
 import {Tuple} from '../../src/tuple';
@@ -71,13 +71,15 @@ class MatricesSteps {
     public matrixMultiplicationEquals(matAId: string, matBId: string, dataTable: { rawTable: [][] }) {
         const expected = MatricesSteps.createMatrixFromDataTable(dataTable);
         const actual = Matrix.multiply(this.workspace.matrices[matAId], this.workspace.matrices[matBId]);
-        expect(Matrix.equals(actual, expected)).to.be.true;
+
+        expect(Matrix.equals(actual, expected), shouldEqualMsg(actual, expected)).to.be.true;
     }
 
     @then(/^(\w+) \* identity_matrix = (\w+)$/)
     public multiplyIdentityMatrixEqualsSame(matAId: string, matBId: string) {
         const A = this.workspace.matrices[matAId];
         const actual = Matrix.multiply(A, Matrix.identity(4));
+
         expect(Matrix.equals(actual, A)).to.be.true;
     }
 
@@ -92,7 +94,7 @@ class MatricesSteps {
     public transposeM(matAId: string, dataTable: { rawTable: [][] }) {
         const actual = this.workspace.matrices[matAId].transpose;
         const expected = MatricesSteps.createMatrixFromDataTable(dataTable);
-        expect(Matrix.equals(actual, expected)).to.be.true;
+        expect(Matrix.equals(actual, expected), shouldEqualMsg(actual, expected)).to.be.true;
     }
 
     @given(/^([\w\d_]+) ← transpose\((\w+)\)$/)
@@ -100,11 +102,11 @@ class MatricesSteps {
         this.workspace.matrices[matAId] = this.workspace.matrices[matBId].transpose;
     }
 
-    @then(/^A = identity_matrix$/)
-    public transposeI() {
-        const actual = Matrix.identity(4).transpose;
+    @then(/^([\w\d_]+) = identity_matrix$/)
+    public mEqualsI(matId: string) {
+        const actual = this.workspace.matrices[matId];
         const expected = Matrix.identity(4);
-        expect(Matrix.equals(actual, expected)).to.be.true;
+        expect(Matrix.equals(actual, expected), shouldEqualMsg(actual, expected)).to.be.true;
     }
 
     @then(/^determinant\((\w+)\) = (.*)$/)
@@ -118,7 +120,7 @@ class MatricesSteps {
     public subMatrixEquals(matId: string, r: string, c: string, dimZ: string, dimY: string, dataTable: { rawTable: [][] }) {
         const actual = this.workspace.matrices[matId].subMatrix(parseInt(r), parseInt(c));
         const expected = MatricesSteps.createMatrixFromDataTable(dataTable);
-        expect(Matrix.equals(actual, expected)).to.be.true;
+        expect(Matrix.equals(actual, expected), shouldEqualMsg(actual, expected)).to.be.true;
     }
 
     @given(/^([\w\d_]+) ← submatrix\((\w+), (\d+), (\d+)\)$/)
@@ -161,7 +163,7 @@ class MatricesSteps {
     public matrixResultEquals(matBId: string, dataTable: { rawTable: [][] }) {
         const expected = MatricesSteps.createMatrixFromDataTable(dataTable);
         const actual = this.workspace.matrices[matBId];
-        expect(Matrix.equals(actual, expected)).to.be.true;
+        expect(Matrix.equals(actual, expected), shouldEqualMsg(actual, expected)).to.be.true;
     }
 
     @then(/^inverse\((\w+)\) is the following (\d+)x(\d+) matrix:$/)

@@ -251,3 +251,23 @@ export function shearing(x_y: number, x_z: number, y_x: number, y_z: number, z_x
 
     return m;
 }
+
+export function view_transform(from: Tuple, to: Tuple, up:Tuple): Matrix {
+    const forward = Tuple.subtract(to, from).normalize;
+    const left = Tuple.cross(forward, up.normalize);
+    const true_up = Tuple.cross(left, forward);
+
+    const t = Matrix.identity(4);
+    t.set(0, 0, left.x);
+    t.set(0, 1, left.y);
+    t.set(0, 2, left.z);
+
+    t.set(1, 0, true_up.x);
+    t.set(1, 1, true_up.y);
+    t.set(1, 2, true_up.z);
+
+    t.set(2, 0, -forward.x);
+    t.set(2, 1, -forward.y);
+    t.set(2, 2, -forward.z);
+    return Matrix.multiply(t, translation(-from.x, -from.y, -from.z));
+}
