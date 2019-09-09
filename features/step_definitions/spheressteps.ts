@@ -55,7 +55,7 @@ class SpheresSteps {
 
     @then(/^(\w+).transform = ([^,]+)$/)
     public thenSphereTransform(sphereId: string, mId: string) {
-        const actual = this.workspace.spheres[sphereId].transform;
+        const actual = this.workspace.spheres[sphereId] ? this.workspace.spheres[sphereId].transform : this.workspace.cameras[sphereId].transform;
         const expected = this.workspace.matrices[mId];
 
         expect(Matrix.equals(actual, expected), shouldEqualMsg(actual, expected)).to.be.true;
