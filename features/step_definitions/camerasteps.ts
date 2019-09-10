@@ -48,6 +48,23 @@ class CameraSteps {
         expect(actual).to.be.closeTo(expected, 0.0001);
     }
 
+    @given(/^(\w+) ← camera\((\d+), (\d+), ([^,]+)\)$/)
+    public givenCamera(key: string, hsize: string, vsize: string, fov: string) {
+        this.workspace.cameras[key] = new Camera(
+            parseArg(hsize),
+            parseArg(vsize),
+            parseArg(fov)
+        );
+    }
+
+    @then(/^(\w+).pixel_size = ([-+]?[0-9π]*[\./]?[0-9]+)$/)
+    public thenPixelSizeEquals(key: string, value: string) {
+        const actual = this.workspace.cameras[key].pixel_size;
+        const expected = parseArg(value);
+
+        expect(actual).to.be.closeTo(expected, 0.0001);
+    }
+
 }
 
 export = CameraSteps;

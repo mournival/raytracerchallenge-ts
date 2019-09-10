@@ -84,6 +84,9 @@ export function shouldEqualMsg(actual: Object, expected: Object): string {
 }
 
 export function parseArg(s: string): number {
+    if (typeof s === 'number')
+        return s;
+
     s = s.trim();
 
     // int
