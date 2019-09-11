@@ -1,5 +1,5 @@
 import {binding, then, when} from 'cucumber-tsflow';
-import {Workspace} from './Workspace';
+import {parseArg, shouldEqualMsg, Workspace} from './Workspace';
 import {expect} from 'chai';
 import {point, Tuple, vector} from '../../src/tuple';
 import {position, Ray, transform} from '../../src/ray';
@@ -58,15 +58,15 @@ class RaysSteps {
     @then(/^(\w+).origin = point\(([^,]+), ([^,]+), ([^,]+)\)$/)
     public thenRayOriginPoint(rayId: string, px: string, py: string, pz: string) {
         const actual = this.workspace.rays[rayId].origin;
-        const expected = point(parseFloat(px), parseFloat(py), parseFloat(pz));
-        expect(Tuple.equals(actual, expected)).to.be.true;
+        const expected = point(parseArg(px), parseArg(py), parseArg(pz));
+        expect(Tuple.equals(actual, expected), shouldEqualMsg(actual, expected)).to.be.true;
     }
 
-    @then(/^(\w+).direction = vector\(([^,]+), ([^,]+), ([^,]+)$/)
+    @then(/^(\w+).direction = vector\(([^,]+), ([^,]+), ([^,]+)\)$/)
     public thenRayDirectionVector(rayId: string, vx: string, vy: string, vz: string) {
         const actual = this.workspace.rays[rayId].direction;
-        const expected = vector(parseFloat(vx), parseFloat(vy), parseFloat(vz));
-        expect(Tuple.equals(actual, expected)).to.be.true;
+        const expected = vector(parseArg(vx), parseArg(vy), parseArg(vz));
+        expect(Tuple.equals(actual, expected), shouldEqualMsg(actual, expected)).to.be.true;
     }
 }
 

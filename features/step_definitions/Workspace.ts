@@ -97,11 +97,6 @@ export function parseArg(s: string): number {
     if (s.match(/^([+-]?\d*?\.\d*)$/))
         return parseFloat(s);
 
-    // rational
-    if (s.match(/^[+-]?\d+\s*\/\s*\d+$/)) {
-        const matchArray = s.split('/');
-        return parseInt(matchArray[0]) / parseInt(matchArray[1]);
-    }
     // √
     if (s.match(/^√\d+\s*\/\s*\d+$/)) {
         const matchArray = s.split('/');
@@ -111,14 +106,21 @@ export function parseArg(s: string): number {
         const matchArray = s.split('/');
         return -Math.sqrt(parseInt(matchArray[0].slice(2))) / parseInt(matchArray[1]);
     }
-    if (s.match(/^√\d+$/)) {
-        const matchArray = s.split('/');
-        return Math.sqrt(parseInt(matchArray[0].slice(1)));
-    }
+
     // π
     if (s.match(/^π\s*\/\s*\d+$/)) {
         const matchArray = s.split('/');
         return Math.PI / parseInt(matchArray[1]);
+    }
+
+    // rational
+    if (s.match(/^[+-]?\d+\s*\/\s*\d+$/)) {
+        const matchArray = s.split('/');
+        return parseInt(matchArray[0]) / parseInt(matchArray[1]);
+    }
+    if (s.match(/^√\d+$/)) {
+        const matchArray = s.split('/');
+        return Math.sqrt(parseInt(matchArray[0].slice(1)));
     }
 
     // irrational ratio

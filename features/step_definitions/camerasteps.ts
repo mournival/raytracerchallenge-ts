@@ -1,7 +1,8 @@
 import {binding, given, then, when} from 'cucumber-tsflow';
 import {parseArg, Workspace} from './Workspace';
-import {Camera} from "../../src/camera";
+import {Camera, ray_for_pixel} from "../../src/camera";
 import {expect} from 'chai';
+import {Matrix, rotation_y, translation} from "../../src/matrix";
 
 @binding([Workspace])
 class CameraSteps {
@@ -63,6 +64,23 @@ class CameraSteps {
         const expected = parseArg(value);
 
         expect(actual).to.be.closeTo(expected, 0.0001);
+    }
+
+    @when(/^(\w+) ← ray_for_pixel\(([^,]+), ([^,]+), ([^,]+)\)$/)
+    public whenRayForPixelIs(rayId: string, cameraId: string, px: string, py: string) {
+        this.workspace.rays[rayId] = ray_for_pixel(
+            this.workspace.cameras[cameraId],
+            parseArg(px),
+            parseArg(py)
+        );
+    }
+
+    // c.transform ← rotation_y\(π/4\) \* translation\(0, -2, 5\)
+    @when(/^(\w+).transform ← rotation_y\(([^,]+)\) \* translation\(([^,]+), ([^,]+), ([^,]+)\)$/)
+    public whenRotatedTranslationIs(cameraId: string, theta: string, x: string, y: string, z: string) {
+        const t = Matrix.multiply(rotation_y(parseArg(theta)), translation(parseArg(x), parseArg(y), parseArg(z)));
+        const c  = this.workspace.cameras[cameraId];
+        this.workspace.cameras[cameraId] = new Camera(c.hsize, c.vsize, c.field_of_view, t);
     }
 
 }

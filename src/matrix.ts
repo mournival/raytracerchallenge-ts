@@ -196,12 +196,12 @@ export function rotation_x(r_x: number): Matrix {
 export function rotation_y(r_y: number): Matrix {
     const m = Matrix.identity(4);
     const cos = Math.cos(r_y);
-    m.set(0, 1, cos);
+    m.set(0, 0, cos);
     m.set(2, 2, cos);
 
     const sin = Math.sin(r_y);
     m.set(0, 2, sin);
-    m.set(2, 1, -sin);
+    m.set(2, 0, -sin);
 
     return m;
 }
