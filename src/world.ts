@@ -32,7 +32,7 @@ export function color_at(w: World, r: Ray): Color {
 }
 
 export function intersect_world(w: World, r: Ray): Intersection[] {
-    return w.objects.flatMap(o => intersect(o, r)).sort((a, b) => a.t - b.t).filter( i => i.t >= 0); // Require Node Version 11+
+    return w.objects.flatMap(o => intersect(o, r)).filter(i => i.t >= 0).sort((a, b) => a.t - b.t); // Require Node Version 11+
 
     // for Node Version < 11
     // const xs: Intersection[] = [];

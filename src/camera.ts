@@ -1,6 +1,8 @@
 import {Matrix} from './matrix';
-import {point, Tuple} from "./tuple";
-import {Ray} from "./ray";
+import {point, Tuple} from './tuple';
+import {Ray} from './ray';
+import {Canvas} from './canvas';
+import {color_at, World} from './world';
 
 export class Camera {
 
@@ -34,4 +36,17 @@ export function ray_for_pixel(c: Camera, px: number, py: number): Ray {
     const direction = Tuple.subtract(pixel, origin).normalize;
     return new Ray(origin, direction);
 
+}
+
+export function render(camera: Camera, world: World): Canvas {
+    const image = new Canvas(camera.hsize, camera.vsize);
+    for (let y = 0; y < camera.vsize; ++y) {
+        for (let x = 0; x < camera.hsize; ++x) {
+            const ray = ray_for_pixel(camera, x, y);
+            const color = color_at(world, ray);
+            Canvas.write_pixel(image, x, y, color);
+        }
+    }
+
+    return image;
 }

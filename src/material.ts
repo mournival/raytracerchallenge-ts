@@ -23,17 +23,16 @@ export class Material {
 
 export function lighting(material: Material, light: Light, point: Tuple, eyev: Tuple, normalv: Tuple): Color {
     const effective_color = Color.multiply(material.color, light.intensity);
-    const lightv = Tuple.subtract(light.position, point).normalize;
     const ambient = Color.multiplyScalar(effective_color, material.ambient);
-    const light_dot_normal = Tuple.dot(lightv, normalv);
-    let specular: Color = Color.BLACK;
-    let diffuse: Color = Color.BLACK;
 
+    const lightv = Tuple.subtract(light.position, point).normalize;
+    const light_dot_normal = Tuple.dot(lightv, normalv);
     if (light_dot_normal < 0) {
         return ambient;
     }
+    let diffuse: Color = Color.multiplyScalar(effective_color, material.diffuse * light_dot_normal);
 
-    diffuse = Color.multiplyScalar(effective_color, material.diffuse * light_dot_normal);
+    let specular: Color = Color.BLACK;
     const reflectv = Tuple.reflect(lightv.negative, normalv);
     const reflect_dot_eye = Tuple.dot(reflectv, eyev);
     if (reflect_dot_eye <= 0) {

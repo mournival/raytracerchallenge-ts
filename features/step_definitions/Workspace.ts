@@ -8,7 +8,7 @@ import {Intersection} from '../../src/intersection';
 import {Light} from '../../src/light';
 import {Material} from '../../src/material';
 import {World} from '../../src/world';
-import {Camera} from "../../src/camera";
+import {Camera} from '../../src/camera';
 
 interface TupleArray {
     [index: string]: Tuple;
