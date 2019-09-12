@@ -44,7 +44,7 @@ export function render(camera: Camera, world: World): Canvas {
         for (let x = 0; x < camera.hsize; ++x) {
             const ray = ray_for_pixel(camera, x, y);
             const color = color_at(world, ray);
-            Canvas.write_pixel(image, x, y, color);
+            Canvas.write_pixel(image, y, x, color);
         }
     }
 

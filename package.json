@@ -8,6 +8,7 @@
     "particle": "./node_modules/ts-node/dist/bin.js src/putting_it_together/particle.ts",
     "clock": "./node_modules/ts-node/dist/bin.js src/putting_it_together/clock.ts",
     "ray-tracer1": "./node_modules/ts-node/dist/bin.js src/putting_it_together/ray-tracer1.ts",
+    "ray-tracer2": "./node_modules/ts-node/dist/bin.js src/putting_it_together/ray-tracer2.ts",
     "sphere-shadow": "./node_modules/ts-node/dist/bin.js src/putting_it_together/sphere-shadow.ts",
     "test": "tsc && cucumber-js features/"
   },
