@@ -32,7 +32,8 @@ export function color_at(w: World, r: Ray): Color {
 }
 
 export function intersect_world(w: World, r: Ray): Intersection[] {
-    return w.objects.flatMap(o => intersect(o, r)).filter(i => i.t >= 0).sort((a, b) => a.t - b.t); // Require Node Version 11+
+    // Require Node Version 11+
+    return w.objects.flatMap(o => intersect(o, r)).filter(i => i.t >= 0).sort((a, b) => a.t - b.t);
 
     // for Node Version < 11
     // const xs: Intersection[] = [];
@@ -42,7 +43,7 @@ export function intersect_world(w: World, r: Ray): Intersection[] {
 }
 
 export function shade_hit(w: World, pc: PreComputations): Color {
-    return lighting(pc.object.material, w.lights[0], pc.point, pc.eyev, pc.normalv);
+    return lighting(pc.object.material, w.lights[0], pc.point, pc.eyev, pc.normalv, is_shadowed(w, pc.over_point));
 }
 
 export function default_world(): World {
@@ -65,6 +66,6 @@ export function is_shadowed(w: World, p: Tuple): boolean {
     const direction = v.normalize;
     const r = new Ray(p, direction);
     const intersections = intersect_world(w, r);
-    
+
     return intersections.length > 0 && intersections[0].t < distance;
 }
