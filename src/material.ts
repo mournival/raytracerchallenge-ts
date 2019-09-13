@@ -21,9 +21,13 @@ export class Material {
     }
 }
 
-export function lighting(material: Material, light: Light, point: Tuple, eyev: Tuple, normalv: Tuple): Color {
+export function lighting(material: Material, light: Light, point: Tuple, eyev: Tuple, normalv: Tuple, inShadow = false): Color {
     const effective_color = Color.multiply(material.color, light.intensity);
     const ambient = Color.multiplyScalar(effective_color, material.ambient);
+
+    if (inShadow) {
+        return ambient;
+    }
 
     const lightv = Tuple.subtract(light.position, point).normalize;
     const light_dot_normal = Tuple.dot(lightv, normalv);

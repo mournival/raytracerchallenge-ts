@@ -62,6 +62,11 @@ interface CameraArray {
     [index: string]: Camera;
 }
 
+interface BooleanArray {
+    [index: string]: boolean;
+}
+
+
 export class Workspace {
     public tuples: TupleArray = {};
     public canvases: CanvasArray = {};
@@ -76,6 +81,7 @@ export class Workspace {
     public worlds: WorldArray = {};
     public numbers: NumberArray = {};
     public cameras: CameraArray = {};
+    public tests: BooleanArray = {};
 
 }
 

@@ -1,6 +1,6 @@
 import {intersect, Sphere} from './sphere';
 import {Light} from './light';
-import {point} from './tuple';
+import {point, Tuple} from './tuple';
 import {Color} from './color';
 import {Matrix, scaling} from './matrix';
 import {lighting, Material} from './material';
@@ -56,4 +56,15 @@ export function default_world(): World {
             new Sphere(scaling(0.5, 0.5, 0.5))
         ]
     );
+
+}
+
+export function is_shadowed(w: World, p: Tuple): boolean {
+    const v = Tuple.subtract(w.lights[0].position, p);
+    const distance = v.magnitude;
+    const direction = v.normalize;
+    const r = new Ray(p, direction);
+    const intersections = intersect_world(w, r);
+    
+    return intersections.length > 0 && intersections[0].t < distance;
 }

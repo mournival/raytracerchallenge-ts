@@ -1,6 +1,6 @@
 import {binding, given, then, when} from 'cucumber-tsflow';
 import {parseArg, shouldEqualMsg, Workspace} from './Workspace';
-import {color_at, default_world, intersect_world, shade_hit, World} from '../../src/world';
+import {color_at, default_world, intersect_world, is_shadowed, shade_hit, World} from '../../src/world';
 import {expect} from 'chai';
 import {Color} from '../../src/color';
 import {Sphere} from '../../src/sphere';
@@ -157,6 +157,17 @@ class WorldsSteps {
         expect(Color.equals(actual, expected), shouldEqualMsg(actual, expected)).to.be.true;
     }
 
+    @then(/^is_shadowed\(([\w\d_]+), ([\w\d_]+)\) is false$/)
+    public thenIsShadowedIsFalse(worldId: string, pointId: string) {
+        const actual = is_shadowed(this.workspace.worlds[worldId], this.workspace.tuples[pointId]);
+        expect(actual).to.be.false;
+    }
+
+    @then(/^is_shadowed\(([\w\d_]+), ([\w\d_]+)\) is true$/)
+    public thenIsShadowedIsTrue(worldId: string, pointId: string) {
+        const actual = is_shadowed(this.workspace.worlds[worldId], this.workspace.tuples[pointId]);
+        expect(actual).to.be.true;
+    }
 }
 
 function parseRawTable(data: string[][]): Sphere {

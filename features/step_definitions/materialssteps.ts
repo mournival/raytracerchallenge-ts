@@ -69,6 +69,24 @@ class MaterialsSteps {
             this.workspace.tuples[normalVectorId]
         );
     }
+
+    @given(/^([\w\d_]+) ← true$/)
+    public givenInShadow(testVar: string) {
+        this.workspace.tests[testVar] = true;
+    }
+
+    @when(/^([\w\d_]+) ← lighting\(([^,]+), ([^,]+), ([^,]+), ([^,]+), ([^,]+), ([^,]+)\)$/)
+    public lightingResultWShadow(resColorId: string, matId: string, lightId: string, positionId: string,
+                                 eyeVectorId: string, normalVectorId: string, shadowTestId: string) {
+        this.workspace.colors[resColorId] = lighting(
+            this.workspace.materials[matId],
+            this.workspace.lights[lightId],
+            this.workspace.tuples[positionId],
+            this.workspace.tuples[eyeVectorId],
+            this.workspace.tuples[normalVectorId],
+            this.workspace.tests[shadowTestId]
+        );
+    }
 }
 
 export = MaterialsSteps;

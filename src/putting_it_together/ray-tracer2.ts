@@ -79,7 +79,7 @@ const world = new World([
         left
     ]);
 
-const camera = new Camera(400, 200, Math.PI / 3,
+const camera = new Camera(1920 / 2, 1080 / 2, Math.PI / 3,
     view_transform(
         point(0, 1.5, -5),
         point(0, 1, 0),
