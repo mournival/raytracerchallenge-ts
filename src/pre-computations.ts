@@ -4,6 +4,8 @@ import {Tuple} from './tuple';
 import {normal_at, Sphere} from './sphere';
 
 export class PreComputations extends Intersection {
+    public over_point: Tuple;
+
     constructor(public readonly i: Intersection,
                 public readonly p: Tuple,
                 public readonly eyev: Tuple,
@@ -11,6 +13,8 @@ export class PreComputations extends Intersection {
                 public readonly inside: boolean
     ) {
         super(i.obj, i.t);
+        this.over_point = Tuple.add(p, Tuple.multiply(normalv, Tuple.EPSILON));
+
     }
 
     public get point(): Tuple {
@@ -27,6 +31,7 @@ export function prepare_computations(i: Intersection, r: Ray): PreComputations {
     const p = position(r, i.t);
     const normalv = normal_at(i.obj, p);
     const eyev = r.direction.negative;
+
     if (Tuple.dot(normalv, eyev) < 0) {
         return new PreComputations(i, p, eyev, normalv.negative, true);
     }

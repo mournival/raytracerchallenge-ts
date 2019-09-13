@@ -85,6 +85,21 @@ class IntersectionsSteps {
         const expected = inside === 'true';
         expect(actual).to.be.equal(expected);
     }
+
+    @then(/^([\w\d_]+)\.over_point\.z < -EPSILON\/2$/)
+    public thenCompsOverPointLess(pcId: string) {
+        const actual = (this.workspace.intersection[pcId] as PreComputations).over_point.z;
+
+        expect(actual).to.be.lessThan(-Tuple.EPSILON / 2);
+    }
+
+    @then(/^([\w\d_]+)\.point\.z > [^.]+\.over_point\.z$/)
+    public thenCompsOverPointGreater(pcId: string) {
+        const actual = (this.workspace.intersection[pcId] as PreComputations).point.z;
+        const expected = (this.workspace.intersection[pcId] as PreComputations).over_point.z;
+
+        expect(actual).to.be.greaterThan(expected);
+    }
 }
 
 export = IntersectionsSteps;

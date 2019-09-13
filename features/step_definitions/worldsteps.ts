@@ -5,11 +5,12 @@ import {expect} from 'chai';
 import {Color} from '../../src/color';
 import {Sphere} from '../../src/sphere';
 import {fail} from 'assert';
-import {Matrix, scaling} from '../../src/matrix';
+import {Matrix, scaling, translation} from '../../src/matrix';
 import {Material} from '../../src/material';
 import {PreComputations} from '../../src/pre-computations';
 import {Light} from '../../src/light';
 import {point} from '../../src/tuple';
+import {transform} from '../../src/ray';
 
 @binding([Workspace])
 class WorldsSteps {
@@ -171,7 +172,6 @@ class WorldsSteps {
 }
 
 function parseRawTable(data: string[][]): Sphere {
-
     const rows = data.length;
     const cold = data[0].length;
     let color: Color = new Color(1, 1, 1);
@@ -192,10 +192,16 @@ function parseRawTable(data: string[][]): Sphere {
                 specular = parseArg(data[r][1]);
                 break;
             case 'transform':
-                t = scaling(0.5, 0.5, 0.5);
+                if (data[r][1].match('scaling')) {
+                    t = scaling(0.5, 0.5, 0.5);
+                } else if (data[r][1].match('translation')) {
+                    t = translation(0, 0, 1);
+                }
                 break;
             default:
+                console.log('Hmmm....');
                 fail('Unexpected field');
+                break;
         }
     }
     const m = new Material(color, ambient, diffuse, specular, shininess);
