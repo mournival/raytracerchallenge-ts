@@ -92,6 +92,17 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 - Fix mutable Canvas(?). Not entirely sure if this is the correct decision for the global model that may have 1M+ pixels.
 - Refactor worldsteps.ts wrt inner/outer/world mutability
  
+### 20190914
+More imutability: 
+```
+Scenario: Assigning a transformation
+  Given s ← test_shape()
+  When set_transform(s, translation(2, 3, 4))
+  Then s.transform = translation(2, 3, 4)
+```
+
+Have to update s in workspace. But maybe I am getting used to this.
+
 ### 20190908 
 Back to issues with mutability. Scenario in world.feature:
 ```

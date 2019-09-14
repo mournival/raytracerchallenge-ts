@@ -9,6 +9,7 @@ import {Light} from '../../src/light';
 import {Material} from '../../src/material';
 import {World} from '../../src/world';
 import {Camera} from '../../src/camera';
+import {Shape} from '../../src/shape';
 
 interface TupleArray {
     [index: string]: Tuple;
@@ -28,10 +29,6 @@ interface MatrixArray {
 
 interface RayArray {
     [index: string]: Ray;
-}
-
-interface SphereArray {
-    [index: string]: Sphere;
 }
 
 interface IntersectionArrayArray {
@@ -66,6 +63,9 @@ interface BooleanArray {
     [index: string]: boolean;
 }
 
+interface ShapeArray {
+    [index: string]: Shape;
+}
 
 export class Workspace {
     public tuples: TupleArray = {};
@@ -73,7 +73,7 @@ export class Workspace {
     public colors: ColorArray = {};
     public matrices: MatrixArray = {};
     public rays: RayArray = {};
-    public spheres: SphereArray = {};
+    public shapes: ShapeArray = {};
     public intersection: IntersectionArray = {};
     public intersections: IntersectionArrayArray = {};
     public lights: LightsArray = {};

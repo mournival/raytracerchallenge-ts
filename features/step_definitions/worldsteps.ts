@@ -38,8 +38,8 @@ class WorldsSteps {
     }
 
     @given(/^([\w\d_]+) ← sphere\(\) with:$/)
-    public givenSphereByProperties(sphereId: string, dataTable: { rawTable: [][] }) {
-        this.workspace.spheres[sphereId] = parseRawTable(dataTable.rawTable);
+    public givenSphereByProperties(shapeId: string, dataTable: { rawTable: [][] }) {
+        this.workspace.shapes[shapeId] = parseRawTable(dataTable.rawTable);
     }
 
     @when(/^([\w\d_]+) ← default_world\(\)$/)
@@ -58,10 +58,10 @@ class WorldsSteps {
 
     @then(/^([^,]+) contains ([^, ]+)$/)
     public thenWorldContainsSphere(worldId: string, objectId: string) {
-        const actual = this.workspace.worlds[worldId].contains(this.workspace.spheres[objectId]);
+        const actual = this.workspace.worlds[worldId].contains(this.workspace.shapes[objectId]);
         return expect(actual,
             'world: ' + JSON.stringify(this.workspace.worlds[worldId]) + ' should have '
-            + JSON.stringify(this.workspace.spheres[objectId])).to.be.true;
+            + JSON.stringify(this.workspace.shapes[objectId])).to.be.true;
     }
 
     @when(/^([\w\d_]+) ← intersect_world\(([^,]+), ([^,]+)\)$/)
@@ -74,7 +74,7 @@ class WorldsSteps {
 
     @given(/^([\w\d_]+) ← the first object in ([^,]+)$/)
     public givenFirstObjectInWorld(objId: string, worldId: string) {
-        this.workspace.spheres[objId] = this.workspace.worlds[worldId].objects[0];
+        this.workspace.shapes[objId] = this.workspace.worlds[worldId].objects[0];
     }
 
     @when(/^([\w\d_]+) ← shade_hit\(([^,]+), ([^,]+)\)$/)
@@ -97,7 +97,7 @@ class WorldsSteps {
 
     @given(/^([\w\d_]+) ← the second object in ([^,]+)$/)
     public givenSecondObjectInWorld(objId: string, worldId: string) {
-        this.workspace.spheres[objId] = this.workspace.worlds[worldId].objects[1];
+        this.workspace.shapes[objId] = this.workspace.worlds[worldId].objects[1];
     }
 
     @when(/^([\w\d_]+) ← color_at\(([\w\d_]+), ([\w\d_]+)\)$/)
@@ -123,7 +123,7 @@ class WorldsSteps {
             outer,
             w.objects[1],
         ];
-        this.workspace.spheres['outer'] = outer;
+        this.workspace.shapes['outer'] = outer;
         this.workspace.worlds['w'] = new World(w.lights, objs);
     }
 
@@ -145,7 +145,7 @@ class WorldsSteps {
             w.objects[0],
             inner,
         ];
-        this.workspace.spheres['inner'] = inner;
+        this.workspace.shapes['inner'] = inner;
         this.workspace.worlds['w'] = new World(w.lights, objs);
     }
 
@@ -153,7 +153,7 @@ class WorldsSteps {
     @then(/^([\w\d_]+) = ([^,]+).material.color$/)
     public thenColorEquals(colorId: string, objId: string) {
         const actual = this.workspace.colors[colorId];
-        const expected = this.workspace.spheres[objId].material.color;
+        const expected = this.workspace.shapes[objId].material.color;
 
         expect(Color.equals(actual, expected), shouldEqualMsg(actual, expected)).to.be.true;
     }
@@ -173,7 +173,7 @@ class WorldsSteps {
     @given(/^([\w\d_]+) is added to ([\w\d_]+)$/)
     public givenObjectAddedToWorld(objectId: string, worldId: string) {
         const w = this.workspace.worlds[worldId];
-        const o = this.workspace.spheres[objectId];
+        const o = this.workspace.shapes[objectId];
         this.workspace.worlds[worldId] = new World(w.lights, [...w.objects, o]);
     }
 }

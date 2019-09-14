@@ -15,7 +15,7 @@ class IntersectionsSteps {
     @when(/^([\w\d_]+) ← intersection\(([^,]+), ([^,]+)\)$/)
     public whenIntersectionCreated(intersectionId: string, t: string, objId: string) {
         this.workspace.intersection[intersectionId] = new Intersection(
-            this.workspace.spheres[objId],
+            this.workspace.shapes[objId],
             parseArg(t)
         );
     }
@@ -38,7 +38,7 @@ class IntersectionsSteps {
     @then(/^([\w\d_]+)\.object = ([^,.]+)$/)
     public thenObjectEquals(intersectionId: string, objId: string) {
         const actual = this.workspace.intersection[intersectionId].obj;
-        const expected = this.workspace.spheres[objId];
+        const expected = this.workspace.shapes[objId];
         expect(Sphere.equals(actual, expected), shouldEqualMsg(actual, expected)).to.be.true;
     }
 

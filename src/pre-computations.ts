@@ -4,7 +4,7 @@ import {Tuple} from './tuple';
 import {normal_at, Sphere} from './sphere';
 
 export class PreComputations extends Intersection {
-    public over_point: Tuple;
+    public readonly over_point: Tuple;
 
     constructor(public readonly i: Intersection,
                 public readonly p: Tuple,

@@ -3,8 +3,9 @@ import {point, Tuple, vector} from './tuple';
 import {Intersection} from './intersection';
 import {Matrix} from './matrix';
 import {Material} from './material';
+import {Shape} from "./shape";
 
-export class Sphere {
+export class Sphere implements Shape{
 
     constructor(public readonly transform: Matrix = Matrix.identity(4), public readonly material = new Material()) {
     }

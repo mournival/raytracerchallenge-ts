@@ -18,14 +18,14 @@ class SpheresSteps {
     }
 
     @given(/^([\w\d_]+) ← sphere\(\)$/)
-    public givenASphere(sphereId: string) {
-        this.workspace.spheres[sphereId] = new Sphere();
+    public givenASphere(shapeId: string) {
+        this.workspace.shapes[shapeId] = new Sphere();
     }
 
     @when(/^([\w\d_]+) ← intersect\((\w+), (\w+)\)$/)
-    public whenRayIntersectsSphere(interactionId: string, sphereId: string, rayId: string) {
+    public whenRayIntersectsSphere(interactionId: string, shapeId: string, rayId: string) {
         this.workspace.intersections[interactionId] = intersect(
-            this.workspace.spheres[sphereId],
+            this.workspace.shapes[shapeId],
             this.workspace.rays[rayId]
         );
     }
@@ -48,30 +48,30 @@ class SpheresSteps {
     @then(/^(\w+)\[(\d+)].object = ([^,]+)$/)
     public thenIntersectionObject(intersectionsId: string, intersectionIndex: string, objectId: string) {
         const actual = this.workspace.intersections[intersectionsId][parseInt(intersectionIndex)].obj;
-        const expected = this.workspace.spheres[objectId];
+        const expected = this.workspace.shapes[objectId];
 
         expect(actual).to.be.equal(expected);
     }
 
     @then(/^(\w+).transform = ([^,]+)$/)
-    public thenSphereTransform(sphereId: string, mId: string) {
-        const actual = this.workspace.spheres[sphereId] ? this.workspace.spheres[sphereId].transform : this.workspace.cameras[sphereId].transform;
+    public thenSphereTransform(shapeId: string, mId: string) {
+        const actual = this.workspace.shapes[shapeId] ? this.workspace.shapes[shapeId].transform : this.workspace.cameras[shapeId].transform;
         const expected = this.workspace.matrices[mId];
 
         expect(Matrix.equals(actual, expected), shouldEqualMsg(actual, expected)).to.be.true;
     }
 
     @then(/^set_transform\((\w+), (\w+)\)$/)
-    public whenSetTransform(sphereId: string, matrixId: string) {
+    public whenSetTransform(shapeId: string, matrixId: string) {
         const t = this.workspace.matrices[matrixId];
-        this.workspace.spheres[sphereId] = new Sphere(t);
+        this.workspace.shapes[shapeId] = new Sphere(t);
     }
 
     @then(/^set_transform\((\w+), scaling\(([^,]+), ([^,]+), ([^,]+)\)\)$/)
-    public whenSetTransformScaling(sphereId: string, x: string, y: string, z: string) {
-        const s = this.workspace.spheres[sphereId];
+    public whenSetTransformScaling(shapeId: string, x: string, y: string, z: string) {
+        const s = this.workspace.shapes[shapeId];
         const t = scaling(parseArg(x), parseArg(y), parseArg(z));
-        this.workspace.spheres[sphereId] = set_transform(s, t);
+        this.workspace.shapes[shapeId] = set_transform(s, t);
     }
 
     @then(/^(\w+)\[(\d+)].t = ([^,]+)$/)
@@ -82,16 +82,16 @@ class SpheresSteps {
     }
 
     @then(/^set_transform\((\w+), translation\(([^,]+), ([^,]+), ([^,]+)\)\)$/)
-    public whenSetTransformTranslation(sphereId: string, x: string, y: string, z: string) {
-        const s = this.workspace.spheres[sphereId];
+    public whenSetTransformTranslation(shapeId: string, x: string, y: string, z: string) {
+        const s = this.workspace.shapes[shapeId];
         const t = translation(parseArg(x), parseArg(y), parseArg(z));
-        this.workspace.spheres[sphereId] = set_transform(s, t);
+        this.workspace.shapes[shapeId] = set_transform(s, t);
     }
 
     @when(/^([\w\d_]+) ← normal_at\((\w+), point\(([^,]+), ([^,]+), ([^,]+)\)\)$/)
-    public whenNormalAt(normalId: string, sphereId: string, x: string, y: string, z: string) {
+    public whenNormalAt(normalId: string, shapeId: string, x: string, y: string, z: string) {
         this.workspace.tuples[normalId] = normal_at(
-            this.workspace.spheres[sphereId],
+            this.workspace.shapes[shapeId],
             point(parseArg(x), parseArg(y), parseArg(z))
         );
     }
@@ -111,8 +111,8 @@ class SpheresSteps {
     }
 
     @when(/^([\w\d_]+) ← (\w+).material$/)
-    public materialIs(mId: string, sphereId: string) {
-        this.workspace.materials[mId] = this.workspace.spheres[sphereId].material;
+    public materialIs(mId: string, shapeId: string) {
+        this.workspace.materials[mId] = this.workspace.shapes[shapeId].material;
     }
 
     @then(/^([\w\d_]+) = material\(\)$/)
@@ -132,16 +132,16 @@ class SpheresSteps {
     }
 
     @when(/^(\w+).material ← (\w+)$/)
-    public sphereMaterialSet(sphereId: string, mId: string) {
-        this.workspace.spheres[sphereId] = {
-            ...this.workspace.spheres[sphereId],
+    public sphereMaterialSet(shapeId: string, mId: string) {
+        this.workspace.shapes[shapeId] = {
+            ...this.workspace.shapes[shapeId],
             material: this.workspace.materials[mId]
         };
     }
 
     @then(/^(\w+).material = (\w+)$/)
-    public sphereMaterialIs(sphereId: string, mId: string) {
-        const actual = this.workspace.spheres[sphereId].material;
+    public sphereMaterialIs(shapeId: string, mId: string) {
+        const actual = this.workspace.shapes[shapeId].material;
         const expected = this.workspace.materials[mId];
 
         expect(Material.equals(actual, expected), shouldEqualMsg(actual, expected)).to.be.true;
