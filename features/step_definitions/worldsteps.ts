@@ -169,6 +169,13 @@ class WorldsSteps {
         const actual = is_shadowed(this.workspace.worlds[worldId], this.workspace.tuples[pointId]);
         expect(actual).to.be.true;
     }
+
+    @given(/^([\w\d_]+) is added to ([\w\d_]+)$/)
+    public givenObjectAddedToWorld(objectId: string, worldId: string) {
+        const w = this.workspace.worlds[worldId];
+        const o = this.workspace.spheres[objectId];
+        this.workspace.worlds[worldId] = new World(w.lights, [...w.objects, o]);
+    }
 }
 
 function parseRawTable(data: string[][]): Sphere {
