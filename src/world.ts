@@ -1,4 +1,4 @@
-import {intersect, Sphere} from './sphere';
+import {Sphere} from './sphere';
 import {Light} from './light';
 import {point, Tuple} from './tuple';
 import {Color} from './color';
@@ -7,12 +7,13 @@ import {lighting, Material} from './material';
 import {Ray} from './ray';
 import {Intersection} from './intersection';
 import {PreComputations, prepare_computations} from './pre-computations';
+import {InterceptableShape, Shape} from './shape';
 
 export class World {
-    constructor(public readonly lights: Light[] = [], public readonly objects: Sphere[] = []) {
+    constructor(public readonly lights: Light[] = [], public readonly objects: InterceptableShape[] = []) {
     }
 
-    public contains(o: Sphere | Light): boolean {
+    public contains(o: Shape | Light): boolean {
         if (o instanceof Sphere) {
             return this.objects.find(os => Sphere.equals(os, o)) != undefined;
         }
@@ -33,11 +34,11 @@ export function color_at(w: World, r: Ray): Color {
 
 export function intersect_world(w: World, r: Ray): Intersection[] {
     // Require Node Version 11+
-    return w.objects.flatMap(o => intersect(o, r)).filter(i => i.t >= 0).sort((a, b) => a.t - b.t);
+    return w.objects.flatMap(o => o.intersect(r)).filter(i => i.t >= 0).sort((a, b) => a.t - b.t);
 
     // for Node Version < 11
     // const xs: Intersection[] = [];
-    // w.objects.map(o => intersect(o, r)).forEach(xss => xs.push(...xss));
+    // w.objects.map(o => o.intersect(r)).forEach(xss => xs.push(...xss));
     // xs.sort((a, b) => a.t - b.t);
     // return xs;
 }

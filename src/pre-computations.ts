@@ -1,7 +1,8 @@
 import {position, Ray} from './ray';
 import {Intersection} from './intersection';
 import {Tuple} from './tuple';
-import {normal_at, Sphere} from './sphere';
+import {normal_at} from './sphere';
+import {InterceptableShape} from './shape';
 
 export class PreComputations extends Intersection {
     public readonly over_point: Tuple;
@@ -21,7 +22,7 @@ export class PreComputations extends Intersection {
         return this.p;
     }
 
-    public get object(): Sphere {
+    public get object(): InterceptableShape {
         return this.obj;
     }
 

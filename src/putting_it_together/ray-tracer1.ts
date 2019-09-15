@@ -4,7 +4,7 @@ import {point, Tuple} from '../tuple';
 import {Canvas} from '../canvas';
 import {Color} from '../color';
 import {position, Ray} from '../ray';
-import {intersect, normal_at, Sphere} from '../sphere';
+import {normal_at, Sphere} from '../sphere';
 import {Matrix} from '../matrix';
 import {lighting, Material} from '../material';
 import {Light} from '../light';
@@ -62,7 +62,7 @@ for (let y = 0; y < canvas.height; ++y) {
         const world_x = -half + pixel_size * x;
         const pos = point(world_x, world_y, wall_z);
         const ray = new Ray(ray_origin, Tuple.subtract(pos, ray_origin).normalize);
-        const xs = intersect(sphere, ray);
+        const xs = sphere.intersect(ray);
         if (xs.length > 0) {
             const intersection = hit(xs);
             const point = position(ray, intersection.t);

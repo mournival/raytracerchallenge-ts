@@ -1,8 +1,11 @@
-import {Sphere} from './sphere';
+import {Ray} from './ray';
+import {InterceptableShape} from './shape';
 
-export type Interceptable = Sphere;
+export interface Interceptable {
+    intersect(r: Ray): Intersection[];
+}
 
 export class Intersection {
-    constructor(public readonly obj: Interceptable, public readonly t: number) {
+    constructor(public readonly obj: InterceptableShape, public readonly t: number) {
     }
 }

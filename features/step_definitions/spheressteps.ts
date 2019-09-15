@@ -1,7 +1,7 @@
 import {before, binding, given, then, when} from 'cucumber-tsflow';
 import {parseArg, shouldEqualMsg, Workspace} from './Workspace';
 import {expect} from 'chai';
-import {intersect, normal_at, set_transform, Sphere} from '../../src/sphere';
+import {normal_at, set_transform, Sphere} from '../../src/sphere';
 import {Matrix, rotation_z, scaling, translation} from '../../src/matrix';
 import {point, Tuple} from '../../src/tuple';
 import {Material} from '../../src/material';
@@ -24,10 +24,10 @@ class SpheresSteps {
 
     @when(/^([\w\d_]+) ← intersect\((\w+), (\w+)\)$/)
     public whenRayIntersectsSphere(interactionId: string, shapeId: string, rayId: string) {
-        this.workspace.intersections[interactionId] = intersect(
-            this.workspace.shapes[shapeId],
-            this.workspace.rays[rayId]
-        );
+        this.workspace.intersections[interactionId] =
+            this.workspace.shapes[shapeId].intersect(
+                this.workspace.rays[rayId]
+            );
     }
 
     @then(/^(\w+).count = (\d+)$/)
@@ -55,7 +55,9 @@ class SpheresSteps {
 
     @then(/^(\w+).transform = ([^,]+)$/)
     public thenSphereTransform(shapeId: string, mId: string) {
-        const actual = this.workspace.shapes[shapeId] ? this.workspace.shapes[shapeId].transform : this.workspace.cameras[shapeId].transform;
+        const actual = this.workspace.shapes[shapeId]
+            ? this.workspace.shapes[shapeId].transform
+            : this.workspace.cameras[shapeId].transform;
         const expected = this.workspace.matrices[mId];
 
         expect(Matrix.equals(actual, expected), shouldEqualMsg(actual, expected)).to.be.true;

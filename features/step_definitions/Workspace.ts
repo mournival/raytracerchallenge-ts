@@ -9,7 +9,7 @@ import {Light} from '../../src/light';
 import {Material} from '../../src/material';
 import {World} from '../../src/world';
 import {Camera} from '../../src/camera';
-import {Shape} from '../../src/shape';
+import {InterceptableShape, Shape} from '../../src/shape';
 
 interface TupleArray {
     [index: string]: Tuple;
@@ -64,7 +64,7 @@ interface BooleanArray {
 }
 
 interface ShapeArray {
-    [index: string]: Shape;
+    [index: string]: InterceptableShape;
 }
 
 export class Workspace {
