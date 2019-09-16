@@ -92,6 +92,13 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 - Fix mutable Canvas(?). Not entirely sure if this is the correct decision for the global model that may have 1M+ pixels.
 - Refactor worldsteps.ts wrt inner/outer/world mutability
  
+### 20190916
+Chapter 9: Panes / Refactoring Shapes
+
+I think this is major departure from the book. I am not going to use a class hiearchy of shapes, with an abstract base class to handle shapes. I am going to use interfaces. I may have free functions that can be reused in multiple class implementation of interfaces, though. In typescript interfaces have no implementation, but classes do. As far as I can tell, that is the only difference. 
+
+I am having some difficulties with cloning / copy with mod (e.g, updating a translation matrix a material, or saved_ray ray properites. In point of fact, it more a diffuclty with the test as written, and not the actual ray tracer. THAT seems fine and straight foreward. I still have mutable matrices, as a set element method is much more straight forward than an copy methods I can figure out. Similar with the canvas (copying a 1920x1080 canvas to updat 1 cell seem excessive). Ultimately, I do need to cache the results to persist them (save a .pmm file), so that is a tradeoff I can accept.
+
 ### 20190914
 More imutability: 
 ```
