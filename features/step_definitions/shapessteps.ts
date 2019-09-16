@@ -2,7 +2,7 @@ import {binding, given, then} from 'cucumber-tsflow';
 import {parseArg, shouldEqualMsg, Workspace} from './Workspace';
 import {expect} from 'chai';
 import {Matrix, translation} from '../../src/matrix';
-import {test_shape} from '../../src/shape';
+import {isShape, test_shape} from '../../src/shape';
 
 @binding([Workspace])
 class ShapeSteps {
@@ -21,6 +21,12 @@ class ShapeSteps {
         const expected = translation(parseArg(x), parseArg(y), parseArg(z));
 
         expect(Matrix.equals(actual, expected), shouldEqualMsg(actual, expected)).to.be.true;
+    }
+
+    @then(/^([\w\d_]+) is a shape$/)
+    public thenIsAShape(shapeId: string) {
+        // This is trivially true since to be in the store, it need to be a shape
+        expect(isShape(this.workspace.shapes[shapeId])).to.be.true;
     }
 
 }

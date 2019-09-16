@@ -26,3 +26,7 @@ export function test_shape(): InterceptableShape {
     return new TestShape();
 }
 
+export function isShape(arg: any): arg is Shape {
+    return true;
+}
+
