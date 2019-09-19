@@ -5,7 +5,7 @@ import {InterceptableShape} from "./shape";
 import {Ray} from "./ray";
 import {Intersection} from "./intersection";
 
-export class Plane implements InterceptableShape{
+export class Plane implements InterceptableShape {
 
     constructor(
         public readonly transform: Matrix = Matrix.identity(4),
@@ -14,7 +14,11 @@ export class Plane implements InterceptableShape{
     }
 
     intersect(r: Ray): Intersection[] {
-        return [];
+        if (Math.abs(r.direction.y) < Tuple.EPSILON) {
+            return [];
+        }
+
+        return [new Intersection(this, -r.origin.y / r.direction.y)];
     }
 }
 
