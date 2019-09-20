@@ -13,8 +13,11 @@ export interface InterceptableShape extends Shape, Interceptable {
 }
 
 export class TestShape implements InterceptableShape {
-    readonly material: Material = new Material();
-    readonly transform: Matrix = Matrix.identity();
+    constructor(
+        public readonly transform: Matrix = Matrix.identity(4),
+        public readonly material = new Material()
+    ) {
+    }
 
     intersect(r: Ray): Intersection[] {
         return [];

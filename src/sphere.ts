@@ -1,9 +1,10 @@
 import {Ray, transform} from './ray';
 import {point, Tuple, vector} from './tuple';
-import {Interceptable, Intersection} from './intersection';
+import {Intersection} from './intersection';
 import {Matrix} from './matrix';
 import {Material} from './material';
-import {InterceptableShape, Shape} from './shape';
+import {InterceptableShape, TestShape} from './shape';
+import {Plane} from './plane';
 
 export class Sphere implements InterceptableShape {
 
@@ -38,17 +39,23 @@ export class Sphere implements InterceptableShape {
 
 }
 
-export function set_transform(s: Sphere, t: Matrix): Sphere {
-    return new Sphere(t);
+export function set_transform(s: InterceptableShape, t: Matrix): InterceptableShape {
+    if (s instanceof Sphere)
+        return new Sphere(t);
+
+    if (s instanceof Plane)
+        return new Plane(t);
+
+    if (s instanceof TestShape)
+        return new TestShape(t);
+
+    throw 'Unknown class for set_transform: ' + typeof s;
 }
 
-export function normal_at(s: Interceptable, world_point: Tuple): Tuple {
-    if (s instanceof Sphere) {
-        const transInv = s.transform.inverse;
-        const object_point = Matrix.multiplyVector(transInv, world_point);
-        const object_normal = Tuple.subtract(object_point, point(0, 0, 0));
-        const world_normal = Matrix.multiplyVector(transInv.transpose, object_normal);
-        return vector(world_normal.x, world_normal.y, world_normal.z).normalize;
-    }
-    return vector(0, 0, 0);
+export function normal_at(s: InterceptableShape, world_point: Tuple): Tuple {
+    const transInv = s.transform.inverse;
+    const object_point = Matrix.multiplyVector(transInv, world_point);
+    const object_normal = Tuple.subtract(object_point, point(0, 0, 0));
+    const world_normal = Matrix.multiplyVector(transInv.transpose, object_normal);
+    return vector(world_normal.x, world_normal.y, world_normal.z).normalize;
 }

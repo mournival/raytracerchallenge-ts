@@ -1,8 +1,8 @@
 import {binding, given} from 'cucumber-tsflow';
 import {parseArg, Workspace} from './Workspace';
-import {normal_at, Plane} from "../../src/plane";
-import {then, when} from "cucumber-tsflow/dist";
-import {point} from "../../src/tuple";
+import {normal_at, Plane} from '../../src/plane';
+import {then, when} from 'cucumber-tsflow/dist';
+import {point} from '../../src/tuple';
 import {expect} from 'chai';
 
 @binding([Workspace])
