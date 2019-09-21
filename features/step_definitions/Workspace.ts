@@ -9,6 +9,7 @@ import {Material} from '../../src/material';
 import {World} from '../../src/world';
 import {Camera} from '../../src/camera';
 import {Shape} from '../../src/shape';
+import {Pattern} from '../../src/pattern';
 
 interface TupleArray {
     [index: string]: Tuple;
@@ -66,6 +67,10 @@ interface ShapeArray {
     [index: string]: Shape;
 }
 
+interface PatternArray {
+    [index: string]: Pattern;
+}
+
 export class Workspace {
     public tuples: TupleArray = {};
     public canvases: CanvasArray = {};
@@ -81,7 +86,7 @@ export class Workspace {
     public numbers: NumberArray = {};
     public cameras: CameraArray = {};
     public tests: BooleanArray = {};
-
+    public patterns: PatternArray = {};
 }
 
 export function shouldEqualMsg(actual: Object, expected: Object): string {
