@@ -4,7 +4,7 @@ import {point, Tuple} from '../tuple';
 import {Canvas} from '../canvas';
 import {Color} from '../color';
 import {position, Ray} from '../ray';
-import {normal_at, Sphere} from '../sphere';
+import {Sphere} from '../sphere';
 import {Matrix} from '../matrix';
 import {lighting, Material} from '../material';
 import {Light} from '../light';
@@ -66,7 +66,7 @@ for (let y = 0; y < canvas.height; ++y) {
         if (xs.length > 0) {
             const intersection = hit(xs);
             const point = position(ray, intersection.t);
-            const normal = normal_at(intersection.obj, point);
+            const normal = intersection.obj.normal_at(point);
             const eye = ray.direction.negative;
             const color = lighting(intersection.obj.material, light, point, eye, normal);
             Canvas.write_pixel(canvas, x, y, color);

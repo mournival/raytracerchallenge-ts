@@ -3,13 +3,12 @@ import {Color} from '../../src/color';
 import {Canvas} from '../../src/canvas';
 import {Matrix} from '../../src/matrix';
 import {Ray} from '../../src/ray';
-import {Sphere} from '../../src/sphere';
 import {Intersection} from '../../src/intersection';
 import {Light} from '../../src/light';
 import {Material} from '../../src/material';
 import {World} from '../../src/world';
 import {Camera} from '../../src/camera';
-import {InterceptableShape, Shape} from '../../src/shape';
+import {Shape} from '../../src/shape';
 
 interface TupleArray {
     [index: string]: Tuple;
@@ -64,7 +63,7 @@ interface BooleanArray {
 }
 
 interface ShapeArray {
-    [index: string]: InterceptableShape;
+    [index: string]: Shape;
 }
 
 export class Workspace {

@@ -7,10 +7,10 @@ import {lighting, Material} from './material';
 import {Ray} from './ray';
 import {Intersection} from './intersection';
 import {PreComputations, prepare_computations} from './pre-computations';
-import {InterceptableShape, Shape} from './shape';
+import {Shape} from './shape';
 
 export class World {
-    constructor(public readonly lights: Light[] = [], public readonly objects: InterceptableShape[] = []) {
+    constructor(public readonly lights: Light[] = [], public readonly objects: Shape[] = []) {
     }
 
     public contains(o: Shape | Light): boolean {

@@ -23,7 +23,7 @@ Feature: Abstract Shapes
     Then s.material = m
 
 # I am very uncertain as to the need for these tests. In particular, the tests drive a particular
-# design: a mutable object that updates saved_ray after every intesect check. Why?
+# design: a mutable object that updates saved_ray after every intersect check. Why?
 #Scenario: Intersecting a scaled shape with a ray
 #  Given r ← ray(point(0, 0, -5), vector(0, 0, 1))
 #    And s ← test_shape()

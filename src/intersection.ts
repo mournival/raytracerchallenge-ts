@@ -1,11 +1,11 @@
 import {Ray} from './ray';
-import {InterceptableShape} from './shape';
+import {Shape} from './shape';
 
 export interface Interceptable {
     intersect(r: Ray): Intersection[];
 }
 
 export class Intersection {
-    constructor(public readonly obj: InterceptableShape, public readonly t: number) {
+    constructor(public readonly obj: Shape, public readonly t: number) {
     }
 }

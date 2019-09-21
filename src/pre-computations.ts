@@ -1,8 +1,7 @@
 import {position, Ray} from './ray';
 import {Intersection} from './intersection';
 import {Tuple} from './tuple';
-import {normal_at} from './sphere';
-import {InterceptableShape} from './shape';
+import {Shape} from './shape';
 
 export class PreComputations extends Intersection {
     public readonly over_point: Tuple;
@@ -22,7 +21,7 @@ export class PreComputations extends Intersection {
         return this.p;
     }
 
-    public get object(): InterceptableShape {
+    public get object(): Shape {
         return this.obj;
     }
 
@@ -30,7 +29,7 @@ export class PreComputations extends Intersection {
 
 export function prepare_computations(i: Intersection, r: Ray): PreComputations {
     const p = position(r, i.t);
-    const normalv = normal_at(i.obj, p);
+    const normalv = i.obj.normal_at(p);
     const eyev = r.direction.negative;
 
     if (Tuple.dot(normalv, eyev) < 0) {

@@ -1,7 +1,7 @@
 import {before, binding, given, then, when} from 'cucumber-tsflow';
 import {parseArg, shouldEqualMsg, Workspace} from './Workspace';
 import {expect} from 'chai';
-import {normal_at, set_transform, Sphere} from '../../src/sphere';
+import {set_material, set_transform, Sphere} from '../../src/sphere';
 import {Matrix, rotation_z, scaling, translation} from '../../src/matrix';
 import {point, Tuple} from '../../src/tuple';
 import {Material} from '../../src/material';
@@ -92,8 +92,7 @@ class SpheresSteps {
 
     @when(/^([\w\d_]+) ← normal_at\((\w+), point\(([^,]+), ([^,]+), ([^,]+)\)\)$/)
     public whenNormalAt(normalId: string, shapeId: string, x: string, y: string, z: string) {
-        this.workspace.tuples[normalId] = normal_at(
-            this.workspace.shapes[shapeId],
+        this.workspace.tuples[normalId] = this.workspace.shapes[shapeId].normal_at(
             point(parseArg(x), parseArg(y), parseArg(z))
         );
     }
@@ -135,10 +134,10 @@ class SpheresSteps {
 
     @when(/^(\w+).material ← (\w+)$/)
     public sphereMaterialSet(shapeId: string, mId: string) {
-        this.workspace.shapes[shapeId] = {
-            ...this.workspace.shapes[shapeId],
-            material: this.workspace.materials[mId]
-        };
+        this.workspace.shapes[shapeId] =
+            set_material(this.workspace.shapes[shapeId],
+                this.workspace.materials[mId]
+            );
     }
 
     @then(/^(\w+).material = (\w+)$/)
