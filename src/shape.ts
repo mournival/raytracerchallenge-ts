@@ -12,7 +12,13 @@ export abstract class Shape implements Interceptable {
     }
 
     abstract local_intersection(r: Ray): Intersection[];
+
     abstract local_normal_at(pt: Tuple): Tuple;
+
+    abstract local_replace_transform(t: Matrix): Shape;
+
+    abstract local_replace_material(m: Material): Shape;
+
 
     normal_at(point: Tuple): Tuple {
         const inverseTransform = this.transform.inverse;
@@ -29,8 +35,17 @@ export abstract class Shape implements Interceptable {
         return this.local_intersection(transform(r, this.transform.inverse));
     }
 
-
-
+    replace(prop: Matrix | Material): Shape {
+        if (typeof prop === 'object') {
+            if (prop instanceof Matrix) {
+                return this.local_replace_transform(prop);
+            }
+            if (prop instanceof Material) {
+                return this.local_replace_material(prop);
+            }
+        }
+        throw 'Unknown replace for : ' + typeof prop;
+    }
 }
 
 export class TestShape extends Shape {
@@ -53,6 +68,15 @@ export class TestShape extends Shape {
         return [];
 
     }
+
+    local_replace_transform(t: Matrix): Shape {
+        return new TestShape(t);
+    }
+
+    local_replace_material(m: Material): Shape {
+        return new TestShape(this.transform, m);
+    }
+
 
 }
 

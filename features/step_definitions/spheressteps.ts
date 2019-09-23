@@ -1,7 +1,7 @@
 import {before, binding, given, then, when} from 'cucumber-tsflow';
 import {parseArg, shouldEqualMsg, Workspace} from './Workspace';
 import {expect} from 'chai';
-import {set_material, set_transform, Sphere} from '../../src/sphere';
+import {Sphere} from '../../src/sphere';
 import {Matrix, rotation_z, scaling, translation} from '../../src/matrix';
 import {point, Tuple} from '../../src/tuple';
 import {Material} from '../../src/material';
@@ -73,7 +73,7 @@ class SpheresSteps {
     public whenSetTransformScaling(shapeId: string, x: string, y: string, z: string) {
         const s = this.workspace.shapes[shapeId];
         const t = scaling(parseArg(x), parseArg(y), parseArg(z));
-        this.workspace.shapes[shapeId] = set_transform(s, t);
+        this.workspace.shapes[shapeId] = s.replace(t);
     }
 
     @then(/^(\w+)\[(\d+)].t = ([^,]+)$/)
@@ -87,7 +87,7 @@ class SpheresSteps {
     public whenSetTransformTranslation(shapeId: string, x: string, y: string, z: string) {
         const s = this.workspace.shapes[shapeId];
         const t = translation(parseArg(x), parseArg(y), parseArg(z));
-        this.workspace.shapes[shapeId] = set_transform(s, t);
+        this.workspace.shapes[shapeId] = s.replace(t);
     }
 
     @when(/^([\w\d_]+) ← normal_at\((\w+), point\(([^,]+), ([^,]+), ([^,]+)\)\)$/)
@@ -126,16 +126,17 @@ class SpheresSteps {
 
     @given(/^(\w+).ambient ← ([^,]+)$/)
     public givenAmbient(mId: string, value: string) {
-        this.workspace.materials[mId] = {
-            ...this.workspace.materials[mId],
-            ambient: parseArg(value)
-        };
+        const m = this.workspace.materials[mId];
+
+        this.workspace.materials[mId] = new Material(
+            m.color, parseArg(value), m.diffuse, m.specular, m.shininess
+        );
     }
 
     @when(/^(\w+).material ← (\w+)$/)
     public sphereMaterialSet(shapeId: string, mId: string) {
         this.workspace.shapes[shapeId] =
-            set_material(this.workspace.shapes[shapeId],
+            this.workspace.shapes[shapeId].replace(
                 this.workspace.materials[mId]
             );
     }

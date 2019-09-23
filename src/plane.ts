@@ -25,5 +25,13 @@ export class Plane extends Shape {
     local_normal_at(pt: Tuple): Tuple {
         return vector(0, 1, 0);
     }
+
+    local_replace_transform(t: Matrix): Shape {
+        return new Plane(t);
+    }
+
+    local_replace_material(m: Material): Shape {
+        return  new Plane(this.transform, m);
+    }
 }
 

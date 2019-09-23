@@ -1,10 +1,9 @@
-import {Ray, transform} from './ray';
+import {Ray} from './ray';
 import {point, Tuple, vector} from './tuple';
 import {Intersection} from './intersection';
 import {Matrix} from './matrix';
 import {Material} from './material';
-import {Shape, TestShape} from './shape';
-import {Plane} from './plane';
+import {Shape} from './shape';
 
 export class Sphere extends Shape {
 
@@ -42,30 +41,12 @@ export class Sphere extends Shape {
         return vector(object_normal.x, object_normal.y, object_normal.z).normalize;
     }
 
-}
-
-export function set_transform(s: Shape, t: Matrix): Shape {
-    if (s instanceof Sphere)
+    local_replace_transform(t: Matrix): Shape {
         return new Sphere(t);
+    }
 
-    if (s instanceof Plane)
-        return new Plane(t);
+    local_replace_material(m: Material): Shape {
+        return new Sphere(this.transform, m);
+    }
 
-    if (s instanceof TestShape)
-        return new TestShape(t);
-
-    throw 'Unknown class for set_transform: ' + typeof s;
-}
-
-export function set_material(s: Shape, m: Material): Shape {
-    if (s instanceof Sphere)
-        return new Sphere(s.transform, m);
-
-    if (s instanceof Plane)
-        return new Plane(s.transform, m);
-
-    if (s instanceof TestShape)
-        return new TestShape(s.transform, m);
-
-    throw 'Unknown class for set_transform: ' + typeof s;
 }
