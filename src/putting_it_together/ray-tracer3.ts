@@ -4,7 +4,7 @@ import {point, vector} from '../tuple';
 import {Canvas} from '../canvas';
 import {Color} from '../color';
 import {Sphere} from '../sphere';
-import {Matrix, rotation_x, rotation_y, scaling, translation, view_transform} from '../matrix';
+import {Matrix, rotation_x, rotation_y, rotation_z, scaling, translation, view_transform} from '../matrix';
 import {Material} from '../material';
 import {Light} from '../light';
 import {World} from '../world';
@@ -45,6 +45,12 @@ const right_wall = new Plane(
     ), floor.material
 );
 
+const ceiling = new Plane(
+    Matrix.multiply(translation(0, 15, 0), rotation_z(-quarterPi)),
+    new Material(new Color(1, 0.9, 0.9), 0.1, 0.9, 0))
+;
+
+
 const middle = new Sphere(
     translation(-0.5, 1, 0.5),
     new Material(
@@ -69,8 +75,9 @@ const world = new World([
     ],
     [
         floor,
-        left_wall,
+        // left_wall,
         // right_wall,
+        ceiling,
         middle,
         right,
         left
@@ -78,7 +85,7 @@ const world = new World([
 
 const camera = new Camera(1920 / 2, 1080 / 2, Math.PI / 3,
     view_transform(
-        point(0, 1.5, -5),
+        point(0, 1.0, -8),
         point(0, 1, 0),
         vector(0, 1, 0)
     )
