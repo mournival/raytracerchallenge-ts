@@ -126,11 +126,8 @@ class SpheresSteps {
 
     @given(/^(\w+).ambient ← ([^,]+)$/)
     public givenAmbient(mId: string, value: string) {
-        const m = this.workspace.materials[mId];
-
-        this.workspace.materials[mId] = new Material(
-            m.color, parseArg(value), m.diffuse, m.specular, m.shininess
-        );
+        const m = this.workspace.materials[mId].replace('ambient', parseArg(value));
+        this.workspace.materials[mId] = m;
     }
 
     @when(/^(\w+).material ← (\w+)$/)

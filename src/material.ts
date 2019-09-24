@@ -1,6 +1,7 @@
 import {Color} from './color';
 import {Light} from './light';
 import {Tuple} from './tuple';
+import {Pattern} from './pattern';
 
 export class Material {
     public static EPSILON = 0.001;
@@ -9,7 +10,8 @@ export class Material {
                 public readonly ambient = 0.1,
                 public readonly diffuse = 0.9,
                 public readonly specular = 0.9,
-                public readonly shininess = 200.0) {
+                public readonly shininess = 200.0,
+                public readonly pattern: Pattern | null = null) {
     }
 
     public static equals(lhs: Material, rhs: Material): boolean {
@@ -19,10 +21,38 @@ export class Material {
             Math.abs(lhs.specular - rhs.specular) < this.EPSILON &&
             Math.abs(lhs.shininess - rhs.shininess) < this.EPSILON;
     }
+
+    public replace(field: string, value: Color | Pattern | number): Material {
+        switch (field) {
+            case 'pattern':
+                return new Material(this.color, this.ambient, this.diffuse, this.specular, this.shininess, value as Pattern);
+                break;
+            case 'color':
+                return new Material(value as Color, this.ambient, this.diffuse, this.specular, this.shininess, this.pattern);
+                break;
+            case 'ambient':
+                return new Material(this.color, value as number, this.diffuse, this.specular, this.shininess, this.pattern);
+                break;
+            case 'diffuse':
+                return new Material(this.color, this.ambient, value as number, this.specular, this.shininess, this.pattern);
+                break;
+            case 'specular':
+                return new Material(this.color, this.ambient, this.diffuse, value as number, this.shininess, this.pattern);
+                break;
+            case 'shininess':
+                return new Material(this.color, this.ambient, this.diffuse, this.specular, value as number, this.pattern);
+                break;
+            default:
+                throw 'Unexpected field: ' + field;
+
+        }
+    }
+
 }
 
 export function lighting(material: Material, light: Light, point: Tuple, eyev: Tuple, normalv: Tuple, inShadow = false): Color {
-    const effective_color = Color.multiply(material.color, light.intensity);
+    const color = material.pattern ? material.pattern.stripe_at(point) : material.color;
+    const effective_color = Color.multiply(color, light.intensity);
     const ambient = Color.multiplyScalar(effective_color, material.ambient);
 
     if (inShadow) {

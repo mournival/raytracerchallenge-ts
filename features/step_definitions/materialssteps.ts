@@ -5,6 +5,7 @@ import {expect} from 'chai';
 import {Color} from '../../src/color';
 import {Light} from '../../src/light';
 import {point} from '../../src/tuple';
+import {Pattern} from '../../src/pattern';
 
 @binding([Workspace])
 class MaterialsSteps {
@@ -82,6 +83,44 @@ class MaterialsSteps {
             this.workspace.materials[matId],
             this.workspace.lights[lightId],
             this.workspace.tuples[positionId],
+            this.workspace.tuples[eyeVectorId],
+            this.workspace.tuples[normalVectorId],
+            this.workspace.tests[shadowTestId]
+        );
+    }
+
+    @given(/^([\w\d_]+).pattern ← stripe_pattern\(color\(([\w\d_]+), ([\w\d_]+), ([\w\d_]+)\), color\(([\w\d_]+), ([\w\d_]+), ([\w\d_]+)\)\)$/)
+    public givenPattern(matId: string, ar: string, ag: string, ab: string, br: string, bg: string, bb: string) {
+        const m = this.workspace.materials[matId].replace('pattern',
+            new Pattern(
+                new Color(parseArg(ar), parseArg(ag), parseArg(ab)),
+                new Color(parseArg(br), parseArg(bg), parseArg(bb)
+                )
+            )
+        );
+
+        this.workspace.materials[matId] = m;
+    }
+
+    @given(/^([\w\d_]+).diffuse ← ([^,]+)$/)
+    public givenDiffuse(matId: string, value: string) {
+        const m = this.workspace.materials[matId].replace('diffuse', parseArg(value));
+        this.workspace.materials[matId] = m;
+    }
+
+    @given(/^([\w\d_]+).specular ← ([^,]+)$/)
+    public givenSpecular(matId: string, value: string) {
+        const m = this.workspace.materials[matId].replace('specular', parseArg(value));
+        this.workspace.materials[matId] = m;
+    }
+
+    @when(/^([\w\d_]+) ← lighting\(([^,]+), ([^,]+), point\(([^,]+), ([^,]+), ([^,]+)\), ([^,]+), ([^,]+), ([^,]+)\)$/)
+    public lightingByPointResultWShadow(resColorId: string, matId: string, lightId: string, x: string, y: string, z: string,
+                                        eyeVectorId: string, normalVectorId: string, shadowTestId: string) {
+        this.workspace.colors[resColorId] = lighting(
+            this.workspace.materials[matId],
+            this.workspace.lights[lightId],
+            point(parseArg(x), parseArg(y), parseArg(z)),
             this.workspace.tuples[eyeVectorId],
             this.workspace.tuples[normalVectorId],
             this.workspace.tests[shadowTestId]
