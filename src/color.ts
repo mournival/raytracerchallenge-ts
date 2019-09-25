@@ -2,6 +2,9 @@ export type RGBElement = 'red' | 'green' | 'blue';
 
 export class Color {
     static BLACK = new Color(0, 0, 0);
+    static WHITE = new Color(1, 1, 1);
+
+
     static readonly EPSILON = 0.0001;
 
     constructor(public readonly red: number,

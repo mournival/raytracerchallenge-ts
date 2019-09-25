@@ -87,6 +87,19 @@ export class Workspace {
     public cameras: CameraArray = {};
     public tests: BooleanArray = {};
     public patterns: PatternArray = {};
+
+    getTransform(shapeId: string) {
+        let actual = new Matrix(0, 0);
+
+        if (this.shapes[shapeId]) {
+            actual = this.shapes[shapeId].transform;
+        } else if (this.cameras[shapeId]) {
+            actual = this.cameras[shapeId].transform;
+        } else if (this.patterns[shapeId]) {
+            actual = this.patterns[shapeId].transform;
+        }
+        return actual;
+    }
 }
 
 export function shouldEqualMsg(actual: Object, expected: Object): string {
@@ -137,3 +150,4 @@ export function parseArg(s: string): number {
     throw 'Parse error: ' + s;
 
 }
+

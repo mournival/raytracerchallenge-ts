@@ -1,10 +1,11 @@
 import {binding, given} from 'cucumber-tsflow';
 import {parseArg, shouldEqualMsg, Workspace} from './Workspace';
-import {then} from 'cucumber-tsflow/dist';
+import {then, when} from 'cucumber-tsflow/dist';
 import {expect} from 'chai';
-import {stripe_pattern} from '../../src/pattern';
+import {stripe_at_object, stripe_pattern, test_pattern} from '../../src/pattern';
 import {Color} from '../../src/color';
 import {point} from '../../src/tuple';
+import {scaling, translation} from "../../src/matrix";
 
 @binding([Workspace])
 class PatternSteps {
@@ -43,6 +44,36 @@ class PatternSteps {
         expect(Color.equals(actual, expected), shouldEqualMsg(actual, expected)).to.be.true;
     }
 
+    @when(/^([\w\d_]+) ← stripe_at_object\(([\w\d_]+), ([\w\d_]+), point\(([^,]+), ([^,]+), ([^,]+)\)\)$/)
+    public stripeAtObjectIs(colorId: string, patternId: string, shapeId: string, x: string, y: string, z: string) {
+        this.workspace.colors[colorId] = stripe_at_object(
+            this.workspace.patterns[patternId],
+            this.workspace.shapes[shapeId],
+            point(parseArg(x), parseArg(y), parseArg(z))
+        );
+    }
+
+    @then(/^([\w\d_]+) = white$/)
+    public thenColorIsWhite(colorId: string) {
+        this.workspace.colors[colorId] = Color.WHITE;
+    }
+
+    @given(/^set_pattern_transform\(([\w\d_]+), scaling\(([^,]+), ([^,]+), ([^,]+)\)\)$/)
+    public givenSetPatternScalingTransform(patternId: string, x: string, y: string, z: string) {
+        const p = this.workspace.patterns[patternId];
+        this.workspace.patterns[patternId] = stripe_pattern(p.a, p.b, scaling(parseArg(x), parseArg(y), parseArg(z)))
+    }
+
+    @given(/^set_pattern_transform\(([\w\d_]+), translation\(([^,]+), ([^,]+), ([^,]+)\)\)$/)
+    public givenSetPatterntrTanslationTransform(patternId: string, x: string, y: string, z: string) {
+        const p = this.workspace.patterns[patternId];
+        this.workspace.patterns[patternId] = stripe_pattern(p.a, p.b, translation(parseArg(x), parseArg(y), parseArg(z)))
+    }
+
+    @given(/^([\w\d_]+) ← test_pattern\(\)$/)
+    public givenTestPattern(patternId: string) {
+        this.workspace.patterns[patternId] = test_pattern();
+    }
 }
 
 export = PatternSteps;

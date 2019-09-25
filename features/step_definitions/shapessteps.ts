@@ -16,8 +16,8 @@ class ShapeSteps {
     }
 
     @then(/^([\w\d_]+).transform = translation\(([^,]+), ([^,]+), ([^,]+)\)$/)
-    public thenShapeTransformIs(shapeId: string, x: string, y: string, z: string) {
-        const actual = this.workspace.shapes[shapeId].transform;
+    public thenShapeTransformIs(objectId: string, x: string, y: string, z: string) {
+        const actual = this.workspace.getTransform(objectId);
         const expected = translation(parseArg(x), parseArg(y), parseArg(z));
 
         expect(Matrix.equals(actual, expected), shouldEqualMsg(actual, expected)).to.be.true;
