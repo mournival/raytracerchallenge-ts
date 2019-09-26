@@ -5,7 +5,7 @@ import {expect} from 'chai';
 import {Color} from '../../src/color';
 import {Light} from '../../src/light';
 import {point} from '../../src/tuple';
-import {Pattern} from '../../src/pattern';
+import {Pattern, stripe_pattern} from '../../src/pattern';
 
 @binding([Workspace])
 class MaterialsSteps {
@@ -92,7 +92,7 @@ class MaterialsSteps {
     @given(/^([\w\d_]+).pattern ← stripe_pattern\(color\(([\w\d_]+), ([\w\d_]+), ([\w\d_]+)\), color\(([\w\d_]+), ([\w\d_]+), ([\w\d_]+)\)\)$/)
     public givenPattern(matId: string, ar: string, ag: string, ab: string, br: string, bg: string, bb: string) {
         const m = this.workspace.materials[matId].replace('pattern',
-            new Pattern(
+            stripe_pattern(
                 new Color(parseArg(ar), parseArg(ag), parseArg(ab)),
                 new Color(parseArg(br), parseArg(bg), parseArg(bb)
                 )

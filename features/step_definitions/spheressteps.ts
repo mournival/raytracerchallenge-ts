@@ -143,6 +143,8 @@ class SpheresSteps {
 
         expect(Material.equals(actual, expected), shouldEqualMsg(actual, expected)).to.be.true;
     }
+
+
 }
 
 export = SpheresSteps;

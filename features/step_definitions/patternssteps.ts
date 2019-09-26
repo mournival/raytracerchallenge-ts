@@ -2,10 +2,10 @@ import {binding, given} from 'cucumber-tsflow';
 import {parseArg, shouldEqualMsg, Workspace} from './Workspace';
 import {then, when} from 'cucumber-tsflow/dist';
 import {expect} from 'chai';
-import {stripe_at_object, stripe_pattern, test_pattern} from '../../src/pattern';
+import {pattern_at_shape, stripe_pattern, test_pattern} from '../../src/pattern';
 import {Color} from '../../src/color';
 import {point} from '../../src/tuple';
-import {scaling, translation} from "../../src/matrix";
+import {scaling, translation} from '../../src/matrix';
 
 @binding([Workspace])
 class PatternSteps {
@@ -38,7 +38,7 @@ class PatternSteps {
 
     @then(/^stripe_at\(([\w\d_]+), point\(([^,]+), ([^,]+), ([^,]+)\)\) = ([\w\d_]+)$/)
     public thenStripeAtIs(patternId: string, x: string, y: string, z: string, colorId: string) {
-        const actual = this.workspace.patterns[patternId].stripe_at(point(parseArg(x), parseArg(y), parseArg(z)));
+        const actual = this.workspace.patterns[patternId].pattern_at(point(parseArg(x), parseArg(y), parseArg(z)));
         const expected = this.workspace.colors[colorId];
 
         expect(Color.equals(actual, expected), shouldEqualMsg(actual, expected)).to.be.true;
@@ -46,7 +46,7 @@ class PatternSteps {
 
     @when(/^([\w\d_]+) ← stripe_at_object\(([\w\d_]+), ([\w\d_]+), point\(([^,]+), ([^,]+), ([^,]+)\)\)$/)
     public stripeAtObjectIs(colorId: string, patternId: string, shapeId: string, x: string, y: string, z: string) {
-        this.workspace.colors[colorId] = stripe_at_object(
+        this.workspace.colors[colorId] = pattern_at_shape(
             this.workspace.patterns[patternId],
             this.workspace.shapes[shapeId],
             point(parseArg(x), parseArg(y), parseArg(z))
@@ -61,18 +61,27 @@ class PatternSteps {
     @given(/^set_pattern_transform\(([\w\d_]+), scaling\(([^,]+), ([^,]+), ([^,]+)\)\)$/)
     public givenSetPatternScalingTransform(patternId: string, x: string, y: string, z: string) {
         const p = this.workspace.patterns[patternId];
-        this.workspace.patterns[patternId] = stripe_pattern(p.a, p.b, scaling(parseArg(x), parseArg(y), parseArg(z)))
+        this.workspace.patterns[patternId] = this.workspace.patterns[patternId].replace(scaling(parseArg(x), parseArg(y), parseArg(z)));
     }
 
     @given(/^set_pattern_transform\(([\w\d_]+), translation\(([^,]+), ([^,]+), ([^,]+)\)\)$/)
     public givenSetPatterntrTanslationTransform(patternId: string, x: string, y: string, z: string) {
         const p = this.workspace.patterns[patternId];
-        this.workspace.patterns[patternId] = stripe_pattern(p.a, p.b, translation(parseArg(x), parseArg(y), parseArg(z)))
+        this.workspace.patterns[patternId] = this.workspace.patterns[patternId].replace(translation(parseArg(x), parseArg(y), parseArg(z)));
     }
 
     @given(/^([\w\d_]+) ← test_pattern\(\)$/)
     public givenTestPattern(patternId: string) {
         this.workspace.patterns[patternId] = test_pattern();
+    }
+
+    @when(/^([\w\d_]+) ← pattern_at_shape\(([\w\d_]+), ([\w\d_]+), point\(([^,]+), ([^,]+), ([^,]+)\)\)$/)
+    public patternColorAtShapeis(colorId: string, patternId: string, shapeId: string, x: string, y: string, z: string) {
+        this.workspace.colors[colorId] = pattern_at_shape(
+            this.workspace.patterns[patternId],
+            this.workspace.shapes[shapeId],
+            point(parseArg(x), parseArg(y), parseArg(z))
+        );
     }
 }
 

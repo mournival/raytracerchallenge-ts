@@ -62,28 +62,28 @@ Scenario: Assigning a transformation
   When set_pattern_transform(pattern, translation(1, 2, 3))
   Then pattern.transform = translation(1, 2, 3)
 
-#Scenario: A pattern with an object transformation
-#  Given shape ← sphere()
-#    And set_transform(shape, scaling(2, 2, 2))
-#    And pattern ← test_pattern()
-#  When c ← pattern_at_shape(pattern, shape, point(2, 3, 4))
-#  Then c = color(1, 1.5, 2)
-#
-#Scenario: A pattern with a pattern transformation
-#  Given shape ← sphere()
-#    And pattern ← test_pattern()
-#    And set_pattern_transform(pattern, scaling(2, 2, 2))
-#  When c ← pattern_at_shape(pattern, shape, point(2, 3, 4))
-#  Then c = color(1, 1.5, 2)
-#
-#Scenario: A pattern with both an object and a pattern transformation
-#  Given shape ← sphere()
-#    And set_transform(shape, scaling(2, 2, 2))
-#    And pattern ← test_pattern()
-#    And set_pattern_transform(pattern, translation(0.5, 1, 1.5))
-#  When c ← pattern_at_shape(pattern, shape, point(2.5, 3, 3.5))
-#  Then c = color(0.75, 0.5, 0.25)
-#
+Scenario: A pattern with an object transformation
+  Given shape ← sphere()
+    And set_transform(shape, scaling(2, 2, 2))
+    And pattern ← test_pattern()
+  When c ← pattern_at_shape(pattern, shape, point(2, 3, 4))
+  Then c = color(1, 1.5, 2)
+
+Scenario: A pattern with a pattern transformation
+  Given shape ← sphere()
+    And pattern ← test_pattern()
+    And set_pattern_transform(pattern, scaling(2, 2, 2))
+  When c ← pattern_at_shape(pattern, shape, point(2, 3, 4))
+  Then c = color(1, 1.5, 2)
+
+Scenario: A pattern with both an object and a pattern transformation
+  Given shape ← sphere()
+    And set_transform(shape, scaling(2, 2, 2))
+    And pattern ← test_pattern()
+    And set_pattern_transform(pattern, translation(0.5, 1, 1.5))
+  When c ← pattern_at_shape(pattern, shape, point(2.5, 3, 3.5))
+  Then c = color(0.75, 0.5, 0.25)
+
 #Scenario: A gradient linearly interpolates between colors
 #  Given pattern ← gradient_pattern(white, black)
 #  Then pattern_at(pattern, point(0, 0, 0)) = white

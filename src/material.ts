@@ -51,7 +51,7 @@ export class Material {
 }
 
 export function lighting(material: Material, light: Light, point: Tuple, eyev: Tuple, normalv: Tuple, inShadow = false): Color {
-    const color = material.pattern ? material.pattern.stripe_at(point) : material.color;
+    const color = material.pattern ? material.pattern.pattern_at(point) : material.color;
     const effective_color = Color.multiply(color, light.intensity);
     const ambient = Color.multiplyScalar(effective_color, material.ambient);
 
