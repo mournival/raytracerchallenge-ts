@@ -32,7 +32,7 @@ export class Canvas {
                 if (w > 0) {
                     r += ' '
                 }
-                r += Color.asPPMString(canvas.colors[h][w]);
+                r += canvas.colors[h][w].asPPMString();
             }
 
             let strings = r.split(' ');

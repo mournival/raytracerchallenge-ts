@@ -10,7 +10,7 @@ import {Light} from '../light';
 import {World} from '../world';
 import {Camera, render} from '../camera';
 import {Plane} from '../plane';
-import {gradient_pattern, stripe_pattern} from '../pattern';
+import {checkers_pattern, gradient_pattern, stripe_pattern} from '../pattern';
 
 function saveFile(canvas: any) {
     let fs = require('fs');
@@ -29,7 +29,8 @@ const floor = new Plane(
     Matrix.identity()
     , new Material(
         new Color(1, 0.9, 0.9),
-        0.1, 0.9, 0)
+        0.1, 0.9, 0, 200, checkers_pattern(Color.BLACK, Color.WHITE)
+    ),
 );
 
 const left_wall = new Plane(
@@ -48,7 +49,7 @@ const right_wall = new Plane(
 
 const ceiling = new Plane(
     Matrix.multiply(translation(0, 15, 0), rotation_z(-quarterPi)),
-    floor.material.replace('pattern', stripe_pattern(Color.BLACK, Color.WHITE))
+    floor.material.replace('pattern', checkers_pattern(Color.BLACK, Color.WHITE))
 );
 
 
@@ -78,15 +79,15 @@ const world = new World([
         floor,
         left_wall,
         right_wall,
-        // ceiling,
+        ceiling,
         middle,
         right,
         left
     ]);
 
-const camera = new Camera(1920 / 1, 1080 / 1, Math.PI / 3,
+const camera = new Camera(1920 / 4, 1080 / 4, Math.PI / 3,
     view_transform(
-        point(0, 1.0, -8),
+        point(0, 1.0, -7),
         point(0, 1, 0),
         vector(0, 1, 0)
     )

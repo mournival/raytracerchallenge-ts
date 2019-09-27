@@ -4,21 +4,12 @@ export class Color {
     static BLACK = new Color(0, 0, 0);
     static WHITE = new Color(1, 1, 1);
 
-
     static readonly EPSILON = 0.0001;
 
     constructor(public readonly red: number,
                 public readonly green: number,
                 public readonly blue: number,
     ) {
-    }
-
-    static asString(c: Color): any {
-        return c.red + ' ' + c.green + ' ' + c.blue;
-    }
-
-    static asPPMString(c: Color): any {
-        return Color.mapColor(c.red) + ' ' + Color.mapColor(c.green) + ' ' + Color.mapColor(c.blue);
     }
 
     static mapColor(n: number): number {
@@ -63,6 +54,14 @@ export class Color {
             lhs.green * rhs,
             lhs.blue * rhs
         );
+    }
+
+    asString(): string {
+        return this.red + ' ' + this.green + ' ' + this.blue;
+    }
+
+    asPPMString(): any {
+        return Color.mapColor(this.red) + ' ' + Color.mapColor(this.green) + ' ' + Color.mapColor(this.blue);
     }
 
     getElement(e: RGBElement): number {
