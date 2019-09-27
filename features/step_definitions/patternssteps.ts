@@ -2,7 +2,7 @@ import {binding, given} from 'cucumber-tsflow';
 import {parseArg, shouldEqualMsg, Workspace} from './Workspace';
 import {then, when} from 'cucumber-tsflow/dist';
 import {expect} from 'chai';
-import {pattern_at_shape, stripe_pattern, test_pattern} from '../../src/pattern';
+import {gradient_pattern, pattern_at_shape, stripe_pattern, test_pattern} from '../../src/pattern';
 import {Color} from '../../src/color';
 import {point} from '../../src/tuple';
 import {scaling, translation} from '../../src/matrix';
@@ -83,6 +83,28 @@ class PatternSteps {
             point(parseArg(x), parseArg(y), parseArg(z))
         );
     }
+
+    @given(/^([\w\d_]+) ← gradient_pattern\(([\w\d_]+), ([\w\d_]+)\)$/)
+    public givenGradientPattern(patternId: string, aColorId: string, bColorId: string) {
+        this.workspace.patterns[patternId] = gradient_pattern(
+            this.workspace.colors[aColorId],
+            this.workspace.colors[bColorId]);
+    }
+
+    @then(/^pattern_at\(([\w\d_]+), point\(([^,]+), ([^,]+), ([^,]+)\)\) = ([\w\d_]+)$/)
+    public thenPatternAtIsColorName(patternId: string, x: string, y: string, z: string, colorId: string) {
+        const actual = this.workspace.patterns[patternId].pattern_at(point(parseArg(x), parseArg(y), parseArg(z)));
+        const expected = this.workspace.colors[colorId];
+
+        expect(Color.equals(actual, expected), shouldEqualMsg(actual, expected)).to.be.true;
+    }
+
+    @then(/^pattern_at\(([\w\d_]+), point\(([^,]+), ([^,]+), ([^,]+)\)\) = color\(([^,]+), ([^,]+), ([^,]+)\)$/)
+    public thenPatternAtIs(patternId: string, x: string, y: string, z: string, r: string, g: string, b: string) {
+        const actual = this.workspace.patterns[patternId].pattern_at(point(parseArg(x), parseArg(y), parseArg(z)));
+        const expected = new Color(parseArg(r), parseArg(g), parseArg(b));
+
+        expect(Color.equals(actual, expected), shouldEqualMsg(actual, expected)).to.be.true;    }
 }
 
 export = PatternSteps;

@@ -10,6 +10,7 @@ import {Light} from '../light';
 import {World} from '../world';
 import {Camera, render} from '../camera';
 import {Plane} from '../plane';
+import {GradientPattern, StripePattern} from "../pattern";
 
 function saveFile(canvas: any) {
     let fs = require('fs');
@@ -34,7 +35,7 @@ const floor = new Plane(
 const left_wall = new Plane(
     Matrix.multiply(translation(0, 0, 5),
         Matrix.multiply(rotation_y(-quarterPi), rotation_x(2 * quarterPi))
-    ), floor.material
+    ), floor.material.replace('pattern', new StripePattern(Color.BLACK, Color.WHITE))
 );
 
 const right_wall = new Plane(
@@ -42,13 +43,13 @@ const right_wall = new Plane(
         Matrix.multiply(rotation_y(quarterPi),
             rotation_x(2 * quarterPi),
         )
-    ), floor.material
+    ), floor.material.replace('pattern', new GradientPattern(Color.BLACK, Color.WHITE))
 );
 
 const ceiling = new Plane(
     Matrix.multiply(translation(0, 15, 0), rotation_z(-quarterPi)),
-    new Material(new Color(1, 0.9, 0.9), 0.1, 0.9, 0))
-;
+    floor.material.replace('pattern', new StripePattern(Color.BLACK, Color.WHITE))
+);
 
 
 const middle = new Sphere(
@@ -75,15 +76,15 @@ const world = new World([
     ],
     [
         floor,
-        // left_wall,
-        // right_wall,
-        ceiling,
+        left_wall,
+        right_wall,
+        // ceiling,
         middle,
         right,
         left
     ]);
 
-const camera = new Camera(1920 / 2, 1080 / 2, Math.PI / 3,
+const camera = new Camera(1920 / 8, 1080 / 8, Math.PI / 3,
     view_transform(
         point(0, 1.0, -8),
         point(0, 1, 0),

@@ -36,8 +36,18 @@ export class TestPattern extends Pattern {
 
 }
 
-export function stripe_pattern(a: Color, b: Color, transform = Matrix.identity()): Pattern {
-    return new StripePattern(a, b, transform);
+export class GradientPattern extends Pattern {
+    pattern_at(p: Tuple): Color {
+        return Color.add(this.a,
+            Color.multiplyScalar(
+                Color.subtract(this.b, this.a),
+                p.x - Math.floor(p.x)));
+    }
+
+    replace(transformation: Matrix): Pattern {
+        return new GradientPattern(this.a, this.b, transformation);
+    }
+
 }
 
 export function pattern_at_shape(pattern: Pattern, object: Shape, world_point: Tuple): Color {
@@ -47,6 +57,14 @@ export function pattern_at_shape(pattern: Pattern, object: Shape, world_point: T
     return pattern.pattern_at(pattern_point);
 }
 
+export function stripe_pattern(a: Color, b: Color, transform = Matrix.identity()): Pattern {
+    return new StripePattern(a, b, transform);
+}
+
 export function test_pattern() {
     return new TestPattern(Color.WHITE, Color.BLACK);
+}
+
+export function gradient_pattern(a: Color, b: Color, transform = Matrix.identity()): Pattern {
+    return new GradientPattern(a, b, transform);
 }
