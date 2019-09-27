@@ -3,51 +3,20 @@ import {Tuple} from './tuple';
 import {Shape} from './shape';
 import {Matrix} from './matrix';
 
-export abstract class Pattern {
-    constructor(public readonly a: Color, public readonly b: Color, public readonly transform = Matrix.identity()) {
+export type PatternFunction = (p: Tuple) => Color;
+
+export class Pattern {
+
+    constructor(public readonly a: Color, public readonly b: Color, private patternFunction: PatternFunction, public readonly transform = Matrix.identity()) {
     }
 
-    abstract pattern_at(p: Tuple): Color;
-
-    abstract replace(transformation: Matrix): Pattern;
-
-}
-
-export class StripePattern extends Pattern {
-
     pattern_at(p: Tuple): Color {
-        return Math.floor(p.x) % 2 === 0 ? this.a : this.b;
+        return this.patternFunction(p);
     }
 
     replace(transformation: Matrix): Pattern {
-        return new StripePattern(this.a, this.b, transformation);
+        return new Pattern(this.a, this.b, this.patternFunction, transformation);
     }
-
-}
-
-export class TestPattern extends Pattern {
-    pattern_at(p: Tuple): Color {
-        return new Color(p.x, p.y, p.z);
-    }
-
-    replace(transformation: Matrix): Pattern {
-        return new TestPattern(this.a, this.b, transformation);
-    }
-
-}
-
-export class GradientPattern extends Pattern {
-    pattern_at(p: Tuple): Color {
-        return Color.add(this.a,
-            Color.multiplyScalar(
-                Color.subtract(this.b, this.a),
-                p.x - Math.floor(p.x)));
-    }
-
-    replace(transformation: Matrix): Pattern {
-        return new GradientPattern(this.a, this.b, transformation);
-    }
-
 }
 
 export function pattern_at_shape(pattern: Pattern, object: Shape, world_point: Tuple): Color {
@@ -57,14 +26,50 @@ export function pattern_at_shape(pattern: Pattern, object: Shape, world_point: T
     return pattern.pattern_at(pattern_point);
 }
 
+//
+function stripe_function(a: Color, b: Color): PatternFunction {
+    return (p: Tuple) => Math.floor(p.x) % 2 === 0 ? a : b;
+}
+
 export function stripe_pattern(a: Color, b: Color, transform = Matrix.identity()): Pattern {
-    return new StripePattern(a, b, transform);
+    return new Pattern(a, b, stripe_function(a, b), transform);
+}
+
+//
+function test_function(): PatternFunction {
+    return (p: Tuple) => new Color(p.x, p.y, p.z);
 }
 
 export function test_pattern() {
-    return new TestPattern(Color.WHITE, Color.BLACK);
+    return new Pattern(Color.WHITE, Color.BLACK, test_function());
+}
+
+//
+function gradient_function(a: Color, b: Color): PatternFunction {
+    return (p: Tuple) => Color.add(a,
+        Color.multiplyScalar(
+            Color.subtract(b, a),
+            p.x - Math.floor(p.x)));
 }
 
 export function gradient_pattern(a: Color, b: Color, transform = Matrix.identity()): Pattern {
-    return new GradientPattern(a, b, transform);
+    return new Pattern(a, b, gradient_function(a, b), transform);
+}
+
+//
+function ring_function(a: Color, b: Color): PatternFunction {
+    return (p: Tuple) => Math.floor(p.x * p.x + p.z * p.z) % 4 == 0 ? a : b;
+}
+
+export function ring_pattern(a: Color, b: Color, transform = Matrix.identity()) {
+    return new Pattern(a, b, ring_function(a, b), transform);
+}
+
+//
+function checkers_function(a: Color, b: Color): PatternFunction {
+    return (p: Tuple) => (Math.floor(p.x) + Math.floor(p.y) + Math.floor(p.z)) % 2 == 0 ? a : b;
+}
+
+export function checkers_pattern(a: Color, b: Color, transform = Matrix.identity()) {
+    return new Pattern(a, b, checkers_function(a, b), transform);
 }

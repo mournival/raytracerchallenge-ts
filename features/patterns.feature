@@ -91,28 +91,29 @@ Scenario: A gradient linearly interpolates between colors
     And pattern_at(pattern, point(0.5, 0, 0)) = color(0.5, 0.5, 0.5)
     And pattern_at(pattern, point(0.75, 0, 0)) = color(0.25, 0.25, 0.25)
 
-#Scenario: A ring should extend in both x and z
-#  Given pattern ← ring_pattern(white, black)
-#  Then pattern_at(pattern, point(0, 0, 0)) = white
-#    And pattern_at(pattern, point(1, 0, 0)) = black
-#    And pattern_at(pattern, point(0, 0, 1)) = black
-#    # 0.708 = just slightly more than √2/2
+Scenario: A ring should extend in both x and z
+  Given pattern ← ring_pattern(white, black)
+  Then pattern_at(pattern, point(0, 0, 0)) = white
+    And pattern_at(pattern, point(1, 0, 0)) = black
+    And pattern_at(pattern, point(0, 0, 1)) = black
+    # 0.708 = just slightly more than √2/2
 #    And pattern_at(pattern, point(0.708, 0, 0.708)) = black
-#
-#Scenario: Checkers should repeat in x
-#  Given pattern ← checkers_pattern(white, black)
-#  Then pattern_at(pattern, point(0, 0, 0)) = white
-#    And pattern_at(pattern, point(0.99, 0, 0)) = white
-#    And pattern_at(pattern, point(1.01, 0, 0)) = black
-#
-#Scenario: Checkers should repeat in y
-#  Given pattern ← checkers_pattern(white, black)
-#  Then pattern_at(pattern, point(0, 0, 0)) = white
-#    And pattern_at(pattern, point(0, 0.99, 0)) = white
-#    And pattern_at(pattern, point(0, 1.01, 0)) = black
-#
-#Scenario: Checkers should repeat in z
-#  Given pattern ← checkers_pattern(white, black)
-#  Then pattern_at(pattern, point(0, 0, 0)) = white
-#    And pattern_at(pattern, point(0, 0, 0.99)) = white
-#    And pattern_at(pattern, point(0, 0, 1.01)) = black
+    And pattern_at(pattern, point(√2/2, 0, √2/2)) = black
+
+Scenario: Checkers should repeat in x
+  Given pattern ← checkers_pattern(white, black)
+  Then pattern_at(pattern, point(0, 0, 0)) = white
+    And pattern_at(pattern, point(0.99, 0, 0)) = white
+    And pattern_at(pattern, point(1.01, 0, 0)) = black
+
+Scenario: Checkers should repeat in y
+  Given pattern ← checkers_pattern(white, black)
+  Then pattern_at(pattern, point(0, 0, 0)) = white
+    And pattern_at(pattern, point(0, 0.99, 0)) = white
+    And pattern_at(pattern, point(0, 1.01, 0)) = black
+
+Scenario: Checkers should repeat in z
+  Given pattern ← checkers_pattern(white, black)
+  Then pattern_at(pattern, point(0, 0, 0)) = white
+    And pattern_at(pattern, point(0, 0, 0.99)) = white
+    And pattern_at(pattern, point(0, 0, 1.01)) = black
