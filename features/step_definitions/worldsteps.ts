@@ -1,6 +1,14 @@
 import {binding, given, then, when} from 'cucumber-tsflow';
 import {parseArg, shouldEqualMsg, Workspace} from './Workspace';
-import {color_at, default_world, intersect_world, is_shadowed, shade_hit, World} from '../../src/world';
+import {
+    color_at,
+    default_world,
+    intersect_world,
+    is_shadowed,
+    reflected_color,
+    shade_hit,
+    World
+} from '../../src/world';
 import {expect} from 'chai';
 import {Color} from '../../src/color';
 import {Sphere} from '../../src/sphere';
@@ -105,50 +113,15 @@ class WorldsSteps {
         this.workspace.colors[colorID] = color_at(this.workspace.worlds[worldId], this.workspace.rays[rayId]);
     }
 
-    @then(/^outer.material.ambient ← ([^,]+)$/)
-    public thenOuterAmbientEquals(value: string) {
+
+    @given(/^([\w\d_]+).material.ambient ← ([^,]+)$/)
+    public giveMaterialAmbient(shapeId: string, value: string) {
         const w = this.workspace.worlds['w'];
+        const s = this.workspace.shapes[shapeId];
 
-        const o = w.objects[0];
-        const outer = new Sphere(
-            o.transform,
-            new Material(o.material.color,
-                parseArg(value),
-                o.material.diffuse,
-                o.material.specular,
-                o.material.shininess)
-        );
-
-        const objs = [
-            outer,
-            w.objects[1],
-        ];
-        this.workspace.shapes['outer'] = outer;
-        this.workspace.worlds['w'] = new World(w.lights, objs);
+        this.workspace.shapes[shapeId] = s.replace(s.material.replace('ambient', parseArg(value)));
+        this.workspace.worlds['w'] = w.replace(s, this.workspace.shapes[shapeId]);
     }
-
-    @then(/^inner.material.ambient ← ([^,]+)$/)
-    public thenInnerAmbientEquals(value: string) {
-        const w = this.workspace.worlds['w'];
-
-        const o = w.objects[1];
-        const inner = new Sphere(
-            o.transform,
-            new Material(o.material.color,
-                parseArg(value),
-                o.material.diffuse,
-                o.material.specular,
-                o.material.shininess)
-        );
-
-        const objs = [
-            w.objects[0],
-            inner,
-        ];
-        this.workspace.shapes['inner'] = inner;
-        this.workspace.worlds['w'] = new World(w.lights, objs);
-    }
-
 
     @then(/^([\w\d_]+) = ([^,]+).material.color$/)
     public thenColorEquals(colorId: string, objId: string) {
@@ -175,6 +148,14 @@ class WorldsSteps {
         const w = this.workspace.worlds[worldId];
         const o = this.workspace.shapes[objectId];
         this.workspace.worlds[worldId] = new World(w.lights, [...w.objects, o]);
+    }
+
+    @when(/^([\w\d_]+) ← reflected_color\(([\w\d_]+), ([\w\d_]+)\)$/)
+    public whenReflectedColorIs(colorId: string, worldId: string, pcId: string) {
+        this.workspace.colors[colorId] = reflected_color(
+            this.workspace.worlds[worldId],
+            this.workspace.intersection[pcId] as PreComputations
+        );
     }
 }
 

@@ -25,9 +25,7 @@ const s1 = scaling(10, 0.01, 10);
 const quarterPi = Math.PI / 4;
 const floor = new Sphere(
     s1
-    , new Material(
-        new Color(1, 0.9, 0.9),
-        0.1, 0.9, 0)
+    , new Material(new Color(1, 0.9, 0.9), 0.1, 0.9, 0)
 );
 
 const left_wall = new Sphere(
@@ -50,21 +48,17 @@ const right_wall = new Sphere(
 
 const middle = new Sphere(
     translation(-0.5, 1, 0.5),
-    new Material(
-        new Color(0.1, 1, 0.5), 0.1, 0.7, 0.3
-    )
+    new Material(new Color(0.1, 1, 0.5), 0.1, 0.7, 0.3)
 );
 
 const right = new Sphere(
     Matrix.multiply(translation(1.5, 0.5, -0.5), scaling(0.5, 0.5, 0.5)),
-    new Material(
-        new Color(0.5, 1, 0.1), 0.1, 0.7, 0.3)
+    new Material(new Color(0.5, 1, 0.1), 0.1, 0.7, 0.3)
 );
 
 const left = new Sphere(
     Matrix.multiply(translation(-1.5, 1 / 3, -0.75), scaling(1 / 3, 1 / 3, 1 / 3)),
-    new Material(
-        new Color(1, 0.8, 0.1), 0.1, 0.7, 0.3)
+    new Material(new Color(1, 0.8, 0.1), 0.1, 0.7, 0.3)
 );
 
 const world = new World([

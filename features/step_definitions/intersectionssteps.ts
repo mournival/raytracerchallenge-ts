@@ -100,6 +100,13 @@ class IntersectionsSteps {
 
         expect(actual).to.be.greaterThan(expected);
     }
+
+    @then(/^([\w\d_]+)\.reflectv = vector\(([^,]+), ([^,]+), ([^,]+)\)/)
+    public thenPCReflectVEqualsIpoint(pcId: string, x: string, y: string, z: string) {
+        const actual = (this.workspace.intersection[pcId] as PreComputations).reflectv;
+        const expected = vector(parseArg(x), parseArg(y), parseArg(z));
+        expect(Tuple.equals(actual, expected), shouldEqualMsg(actual, expected)).to.be.true;
+    }
 }
 
 export = IntersectionsSteps;

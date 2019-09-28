@@ -5,6 +5,7 @@ import {Shape} from './shape';
 
 export class PreComputations extends Intersection {
     public readonly over_point: Tuple;
+    public readonly reflectv: Tuple;
 
     constructor(public readonly i: Intersection,
                 public readonly p: Tuple,
@@ -14,6 +15,7 @@ export class PreComputations extends Intersection {
     ) {
         super(i.obj, i.t);
         this.over_point = Tuple.add(p, Tuple.multiply(normalv, Tuple.EPSILON));
+        this.reflectv = Tuple.reflect(eyev.negative, normalv);
 
     }
 

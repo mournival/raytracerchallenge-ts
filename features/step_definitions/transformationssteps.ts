@@ -1,5 +1,5 @@
 import {binding, given, then} from 'cucumber-tsflow';
-import {shouldEqualMsg, Workspace} from './Workspace';
+import {parseArg, shouldEqualMsg, Workspace} from './Workspace';
 import {expect} from 'chai';
 import {
     Matrix,
@@ -23,12 +23,13 @@ class TransformationsSteps {
 
     @given(/^([\w\d_]+) ← translation\(([^,]+), ([^,]+), ([^,]+)\)$/)
     public givensTransformation(tId: string, x: string, y: string, z: string) {
-        this.workspace.matrices[tId] = translation(parseFloat(x), parseFloat(y), parseFloat(z));
+        this.workspace.matrices[tId] = translation(parseArg(x), parseArg(y), parseArg(z));
+        this.workspace.matrices[tId] = translation(parseArg(x), parseArg(y), parseArg(z));
     }
 
     @given(/^([\w\d_]+) ← scaling\(([^,]+), ([^,]+), ([^,*]+)\)$/)
     public givensScaling(tId: string, x: string, y: string, z: string) {
-        this.workspace.matrices[tId] = scaling(parseFloat(x), parseFloat(y), parseFloat(z));
+        this.workspace.matrices[tId] = scaling(parseArg(x), parseArg(y), parseArg(z));
     }
 
     @then(/^transform \* ([\w\d_]+) = (\w+)$/)
@@ -56,8 +57,8 @@ class TransformationsSteps {
     @given(/^([\w\d_]+) ← shearing\(([^,]+), ([^,]+), ([^,]+), ([^,]+), ([^,]+), ([^,]+)\)$/)
     public givenShearing(tId: string, x_y: string, x_z: string, y_x: string, y_z: string, z_x: string, z_y: string) {
         this.workspace.matrices[tId] = shearing(
-            parseFloat(x_y), parseFloat(x_z), parseFloat(y_x),
-            parseFloat(y_z), parseFloat(z_x), parseFloat(z_y)
+            parseArg(x_y), parseArg(x_z), parseArg(y_x),
+            parseArg(y_z), parseArg(z_x), parseArg(z_y)
         );
     }
 
@@ -73,7 +74,7 @@ class TransformationsSteps {
     @then(/^([\w]+) = scaling\(([^,]+), ([^,]+), ([^,]+)\)$/)
     public thenEqualsScaling(tId: string, x: string, y: string, z: string) {
         const actual = this.workspace.matrices[tId];
-        const expected = scaling(parseFloat(x), parseFloat(y), parseFloat(z));
+        const expected = scaling(parseArg(x), parseArg(y), parseArg(z));
 
         expect(Matrix.equals(actual, expected), shouldEqualMsg(actual, expected)).to.be.true;
     }
@@ -81,7 +82,7 @@ class TransformationsSteps {
     @then(/^([\w]+) = translation\(([^,]+), ([^,]+), ([^,]+)\)$/)
     public thenEqualsTranslation(tId: string, x: string, y: string, z: string) {
         const actual = this.workspace.matrices[tId];
-        const expected = translation(parseFloat(x), parseFloat(y), parseFloat(z));
+        const expected = translation(parseArg(x), parseArg(y), parseArg(z));
 
         expect(Matrix.equals(actual, expected), shouldEqualMsg(actual, expected)).to.be.true;
     }

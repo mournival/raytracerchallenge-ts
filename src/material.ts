@@ -6,11 +6,12 @@ import {Pattern} from './pattern';
 export class Material {
     public static EPSILON = 0.001;
 
-    constructor(public readonly color = new Color(1, 1, 1),
-                public readonly ambient = 0.1,
-                public readonly diffuse = 0.9,
-                public readonly specular = 0.9,
-                public readonly shininess = 200.0,
+    constructor(public readonly color: Color = new Color(1, 1, 1),
+                public readonly ambient: number = 0.1,
+                public readonly diffuse: number = 0.9,
+                public readonly specular: number = 0.9,
+                public readonly shininess: number = 200.0,
+                public readonly reflective: number = 0.0,
                 public readonly pattern: Pattern | null = null) {
     }
 
@@ -25,23 +26,26 @@ export class Material {
     public replace(field: string, value: Color | Pattern | number): Material {
         switch (field) {
             case 'pattern':
-                return new Material(this.color, this.ambient, this.diffuse, this.specular, this.shininess, value as Pattern);
+                return new Material(this.color, this.ambient, this.diffuse, this.specular, this.shininess, this.reflective, value as Pattern);
                 break;
             case 'color':
-                return new Material(value as Color, this.ambient, this.diffuse, this.specular, this.shininess, this.pattern);
+                return new Material(value as Color, this.ambient, this.diffuse, this.specular, this.shininess, this.reflective, this.pattern);
                 break;
             case 'ambient':
-                return new Material(this.color, value as number, this.diffuse, this.specular, this.shininess, this.pattern);
+                return new Material(this.color, value as number, this.diffuse, this.specular, this.shininess, this.reflective, this.pattern);
                 break;
             case 'diffuse':
-                return new Material(this.color, this.ambient, value as number, this.specular, this.shininess, this.pattern);
+                return new Material(this.color, this.ambient, value as number, this.specular, this.shininess, this.reflective, this.pattern);
                 break;
             case 'specular':
-                return new Material(this.color, this.ambient, this.diffuse, value as number, this.shininess, this.pattern);
+                return new Material(this.color, this.ambient, this.diffuse, value as number, this.shininess, this.reflective, this.pattern);
                 break;
             case 'shininess':
-                return new Material(this.color, this.ambient, this.diffuse, this.specular, value as number, this.pattern);
+                return new Material(this.color, this.ambient, this.diffuse, this.specular, value as number, this.reflective, this.pattern);
                 break;
+            case 'reflective':
+                return new Material(this.color, this.ambient, this.diffuse, this.specular, this.shininess, value as number, this.pattern);
+
             default:
                 throw 'Unexpected field: ' + field;
 

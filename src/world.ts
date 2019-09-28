@@ -22,6 +22,11 @@ export class World {
         }
         return false;
     }
+
+    public replace(oldShape: Shape, newShape: Shape): World {
+        const map = this.objects.map(o => JSON.stringify(o) === JSON.stringify(oldShape) ? newShape : o);
+        return new World(this.lights, map);
+    }
 }
 
 export function color_at(w: World, r: Ray): Color {
@@ -69,4 +74,12 @@ export function is_shadowed(w: World, p: Tuple): boolean {
     const intersections = intersect_world(w, r);
 
     return intersections.length > 0 && intersections[0].t < distance;
+}
+
+export function reflected_color(w: World, comps: PreComputations): Color {
+    if (comps.object.material.reflective === 0) {
+        return Color.BLACK;
+    }
+    return Color.WHITE;
+
 }
