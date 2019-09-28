@@ -17,14 +17,14 @@ Feature: Intersections
     And comps.point = point(0, 0, -1)
     And comps.eyev = vector(0, 0, -1)
     And comps.normalv = vector(0, 0, -1)
-#
-#Scenario: Precomputing the reflection vector
-#  Given shape ← plane()
-#    And r ← ray(point(0, 1, -1), vector(0, -√2/2, √2/2))
-#    And i ← intersection(√2, shape)
-#  When comps ← prepare_computations(i, r)
-#  Then comps.reflectv = vector(0, √2/2, √2/2)
-#
+
+Scenario: Precomputing the reflection vector
+  Given shape ← plane()
+    And r ← ray(point(0, 1, -1), vector(0, -√2/2, √2/2))
+    And i ← intersection(√2, shape)
+  When comps ← prepare_computations(i, r)
+  Then comps.reflectv = vector(0, √2/2, √2/2)
+
 Scenario: The hit, when an intersection occurs on the outside
   Given r ← ray(point(0, 0, -5), vector(0, 0, 1))
     And shape ← sphere()

@@ -35,15 +35,15 @@ class RaysSteps {
     @when(/^([\w\d_]+) ← ray\(point\(([^,]+), ([^,]+), ([^,]+)\), vector\(([^,]+), ([^,]+), ([^,]+)\)\)$/)
     public whenRayFromPointVector(rayId: string, px: string, py: string, pz: string, vx: string, vy: string, vz: string,) {
         this.workspace.rays[rayId] = new Ray(
-            point(parseFloat(px), parseFloat(py), parseFloat(pz)),
-            vector(parseFloat(vx), parseFloat(vy), parseFloat(vz))
+            point(parseArg(px), parseArg(py), parseArg(pz)),
+            vector(parseArg(vx), parseArg(vy), parseArg(vz))
         );
     }
 
     @then(/^position\((\w+), ([^,]+)\) = point\(([^,]+), ([^,]+), ([^,]+)\)$/)
     public thenPosition(rayId: string, distance: string, px: string, py: string, pz: string) {
-        const actual = position(this.workspace.rays[rayId], parseFloat(distance));
-        const expected = point(parseFloat(px), parseFloat(py), parseFloat(pz));
+        const actual = position(this.workspace.rays[rayId], parseArg(distance));
+        const expected = point(parseArg(px), parseArg(py), parseArg(pz));
         expect(Tuple.equals(actual, expected)).to.be.true;
     }
 
