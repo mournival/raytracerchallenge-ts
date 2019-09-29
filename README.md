@@ -91,16 +91,54 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 - Fix mutable Matrix
 - Fix mutable Canvas(?). Not entirely sure if this is the correct decision for the global model that may have 1M+ pixels.
 - Refactor worldsteps.ts wrt inner/outer/world mutability
- 
+
+### 20190929
+Chapter 11: Reflection
+Halting problem test. Nope, didn't solve it. However, cucumber / chai / node handle stack overflow as failed test without terminating test suite, so that test is simply invoke possibly infinite recursion and it either terminates or fails.
+
+Re: Immutability. I came peace with an approach borrowed from strings: .replace(something, withThis) returns a new object, while leaving the original unchanged. Works particularly will with shapes and transforms, and ends the frustration with cloning and other stuff.
+E.g., for Pattern:
+```
+export class Pattern {
+
+    private readonly transformInv: Matrix;
+    constructor(public readonly a: Color, public readonly b: Color, private patternFunction: PatternFunction, public readonly transform = Matrix.identity()) {
+        this.transformInv = transform.inverse;
+    }
+...
+    replace(transformation: Matrix): Pattern {
+        return new Pattern(this.a, this.b, this.patternFunction, transformation);
+    }
+
+}-
+```
+
+So to updated a pattern in the tests:
+```
+   this.workspace.patterns[patternId] = this.workspace.patterns[patternId].replace(scaling(parseArg(x), parseArg(y), parseArg(z)));
+```
+
+It also lets me do this pretty messy bit to update both a class member and a reference to the class member (necessary for testing, accessing different parts of the world hierarchy):
+```
+    @given(/^([\w\d_]+).material.ambient ← ([^,]+)$/)
+    public giveMaterialAmbient(shapeId: string, value: string) {
+        const w = this.workspace.worlds['w'];
+        const s = this.workspace.shapes[shapeId];
+
+        this.workspace.shapes[shapeId] = s.replace(s.material.replace('ambient', parseArg(value)));
+        this.workspace.worlds['w'] = w.replace(s, this.workspace.shapes[shapeId]);
+    }
+```
+So, for non-Canvas class, I have arrived at a decisions. 
 ### 20190916
 Chapter 9: Panes / Refactoring Shapes
 
-I think this is major departure from the book. I am not going to use a class hiearchy of shapes, with an abstract base class to handle shapes. I am going to use interfaces. I may have free functions that can be reused in multiple class implementation of interfaces, though. In typescript interfaces have no implementation, but classes do. As far as I can tell, that is the only difference. 
+I think this is major departure from the book. I am not going to use a class hierarchy of shapes, with an abstract base class to handle shapes. I am going to use interfaces. I may have free functions that can be reused in multiple class implementation of interfaces, though. In typescript interfaces have no implementation, but classes do. As far as I can tell, that is the only difference. 
 
-I am having some difficulties with cloning / copy with mod (e.g, updating a translation matrix a material, or saved_ray ray properites. In point of fact, it more a diffuclty with the test as written, and not the actual ray tracer. THAT seems fine and straight foreward. I still have mutable matrices, as a set element method is much more straight forward than an copy methods I can figure out. Similar with the canvas (copying a 1920x1080 canvas to updat 1 cell seem excessive). Ultimately, I do need to cache the results to persist them (save a .pmm file), so that is a tradeoff I can accept.
+I am having some difficulties with cloning / copy with mod (e.g, updating a translation matrix a material, or saved_ray ray properties. In point of fact, it more a diffuclty with the test as written, and not the actual ray tracer. THAT seems fine and straight foreward. I still have mutable matrices, as a set element method is much more straight forward than an copy methods I can figure out. Similar with the canvas (copying a 1920x1080 canvas to updat 1 cell seem excessive). Ultimately, I do need to cache the results to persist them (save a .pmm file), so that is a trade off I can accept.
 
 ### 20190914
-More imutability: 
+More immutability: 
 ```
 Scenario: Assigning a transformation
   Given s ← test_shape()
