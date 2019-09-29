@@ -20,7 +20,7 @@ export class Pattern {
         const object_point = Matrix.multiplyVector(object.transform.inverse, p);
         const pattern_point = Matrix.multiplyVector(this.transformInv, object_point);
 
-        return this.pattern_at(pattern_point);
+        return this.patternFunction(pattern_point);
     }
 
     replace(transformation: Matrix): Pattern {
