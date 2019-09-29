@@ -3,12 +3,12 @@ import {Tuple} from './tuple';
 import {Shape} from './shape';
 import {Matrix} from './matrix';
 
-export type PatternFunction = (p: Tuple) => Color;
+export type PatternFunction = (p: Tuple, object?: Shape) => Color;
 
 export class Pattern {
 
     private readonly transformInv: Matrix;
-    constructor(public readonly a: Color, public readonly b: Color, private patternFunction: PatternFunction, public readonly transform = Matrix.identity()) {
+    constructor(private patternFunction: PatternFunction, public readonly transform = Matrix.identity()) {
         this.transformInv = transform.inverse;
     }
 
@@ -20,11 +20,11 @@ export class Pattern {
         const object_point = Matrix.multiplyVector(object.transform.inverse, p);
         const pattern_point = Matrix.multiplyVector(this.transformInv, object_point);
 
-        return this.patternFunction(pattern_point);
+        return this.patternFunction(pattern_point, object);
     }
 
     replace(transformation: Matrix): Pattern {
-        return new Pattern(this.a, this.b, this.patternFunction, transformation);
+        return new Pattern(this.patternFunction, transformation);
     }
 
 }
@@ -35,7 +35,7 @@ function stripe_function(a: Color, b: Color): PatternFunction {
 }
 
 export function stripe_pattern(a: Color, b: Color, transform = Matrix.identity()): Pattern {
-    return new Pattern(a, b, stripe_function(a, b), transform);
+    return new Pattern( stripe_function(a, b), transform);
 }
 
 //
@@ -44,7 +44,7 @@ function test_function(): PatternFunction {
 }
 
 export function test_pattern() {
-    return new Pattern(Color.WHITE, Color.BLACK, test_function());
+    return new Pattern(test_function());
 }
 
 //
@@ -56,7 +56,7 @@ function gradient_function(a: Color, b: Color): PatternFunction {
 }
 
 export function gradient_pattern(a: Color, b: Color, transform = Matrix.identity()): Pattern {
-    return new Pattern(a, b, gradient_function(a, b), transform);
+    return new Pattern(gradient_function(a, b), transform);
 }
 
 //
@@ -65,7 +65,7 @@ function ring_function(a: Color, b: Color): PatternFunction {
 }
 
 export function ring_pattern(a: Color, b: Color, transform = Matrix.identity()) {
-    return new Pattern(a, b, ring_function(a, b), transform);
+    return new Pattern(ring_function(a, b), transform);
 }
 
 //
@@ -74,5 +74,17 @@ function checkers_function(a: Color, b: Color): PatternFunction {
 }
 
 export function checkers_pattern(a: Color, b: Color, transform = Matrix.identity()) {
-    return new Pattern(a, b, checkers_function(a, b), transform);
+    return new Pattern(checkers_function(a, b), transform);
+}
+
+function combine_function(x: Pattern, y: Pattern): PatternFunction {
+    return (p: Tuple, object?: Shape) => Color.add(
+        x.pattern_at(p, object),
+        y.pattern_at(p, object)
+    );
+}
+
+
+export function combine_pattern(a: Pattern, b: Pattern, transform = Matrix.identity()) {
+    return new Pattern(combine_function(a, b), transform);
 }

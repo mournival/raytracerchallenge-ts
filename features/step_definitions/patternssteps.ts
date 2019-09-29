@@ -20,21 +20,21 @@ class PatternSteps {
             this.workspace.colors[bColorId]);
     }
 
-    @then(/^([\w\d_]+).a = ([\w\d_]+)$/)
-    public thenPattenAIs(patternId: string, aColorId: string) {
-        const actual = this.workspace.patterns[patternId].a;
-        const expected = this.workspace.colors[aColorId];
-
-        expect(Color.equals(actual, expected), shouldEqualMsg(actual, expected)).to.be.true;
-    }
-
-    @then(/^([\w\d_]+).b = ([\w\d_]+)$/)
-    public thenPattenBIs(patternId: string, bColorId: string) {
-        const actual = this.workspace.patterns[patternId].b;
-        const expected = this.workspace.colors[bColorId];
-
-        expect(Color.equals(actual, expected), shouldEqualMsg(actual, expected)).to.be.true;
-    }
+    // @then(/^([\w\d_]+).a = ([\w\d_]+)$/)
+    // public thenPattenAIs(patternId: string, aColorId: string) {
+    //     const actual = this.workspace.patterns[patternId].a;
+    //     const expected = this.workspace.colors[aColorId];
+    //
+    //     expect(Color.equals(actual, expected), shouldEqualMsg(actual, expected)).to.be.true;
+    // }
+    //
+    // @then(/^([\w\d_]+).b = ([\w\d_]+)$/)
+    // public thenPattenBIs(patternId: string, bColorId: string) {
+    //     const actual = this.workspace.patterns[patternId].b;
+    //     const expected = this.workspace.colors[bColorId];
+    //
+    //     expect(Color.equals(actual, expected), shouldEqualMsg(actual, expected)).to.be.true;
+    // }
 
     @then(/^stripe_at\(([\w\d_]+), point\(([^,]+), ([^,]+), ([^,]+)\)\) = ([\w\d_]+)$/)
     public thenStripeAtIs(patternId: string, x: string, y: string, z: string, colorId: string) {

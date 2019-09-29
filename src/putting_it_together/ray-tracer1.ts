@@ -6,7 +6,7 @@ import {Color} from '../color';
 import {position, Ray} from '../ray';
 import {Sphere} from '../sphere';
 import {Matrix} from '../matrix';
-import {lighting, Material} from '../material';
+import {Material} from '../material';
 import {Light} from '../light';
 import {Intersection} from '../intersection';
 
@@ -68,7 +68,7 @@ for (let y = 0; y < canvas.height; ++y) {
             const point = position(ray, intersection.t);
             const normal = intersection.obj.normal_at(point);
             const eye = ray.direction.negative;
-            const color = lighting(intersection.obj.material, light, point, eye, normal);
+            const color = intersection.obj.material.lighting(point, eye, normal, light);
             Canvas.write_pixel(canvas, x, y, color);
         }
     }

@@ -2,6 +2,7 @@ import {Color} from './color';
 import {Light} from './light';
 import {Tuple} from './tuple';
 import {Pattern} from './pattern';
+import {Shape} from "./shape";
 
 export class Material {
     public static EPSILON = 0.001;
@@ -52,33 +53,33 @@ export class Material {
         }
     }
 
+    lighting(point: Tuple, eyev: Tuple, normalv: Tuple, light: Light, inShadow = false, object?: Shape): Color {
+        const color = this.pattern ? this.pattern.pattern_at(point, object) : this.color;
+        const effective_color = Color.multiply(color, light.intensity);
+        const ambient = Color.multiplyScalar(effective_color, this.ambient);
+
+        if (inShadow) {
+            return ambient;
+        }
+
+        const lightv = Tuple.subtract(light.position, point).normalize;
+        const light_dot_normal = Tuple.dot(lightv, normalv);
+        if (light_dot_normal < 0) {
+            return ambient;
+        }
+        let diffuse: Color = Color.multiplyScalar(effective_color, this.diffuse * light_dot_normal);
+
+        let specular: Color = Color.BLACK;
+        const reflectv = Tuple.reflect(lightv.negative, normalv);
+        const reflect_dot_eye = Tuple.dot(reflectv, eyev);
+        if (reflect_dot_eye <= 0) {
+            specular = Color.BLACK;
+        } else {
+            const factor = Math.pow(reflect_dot_eye, this.shininess);
+            specular = Color.multiplyScalar(light.intensity, this.specular * factor);
+        }
+
+        return Color.add(ambient, Color.add(diffuse, specular));
+    }
 }
 
-export function lighting(material: Material, light: Light, point: Tuple, eyev: Tuple, normalv: Tuple, inShadow = false): Color {
-    const color = material.pattern ? material.pattern.pattern_at(point) : material.color;
-    const effective_color = Color.multiply(color, light.intensity);
-    const ambient = Color.multiplyScalar(effective_color, material.ambient);
-
-    if (inShadow) {
-        return ambient;
-    }
-
-    const lightv = Tuple.subtract(light.position, point).normalize;
-    const light_dot_normal = Tuple.dot(lightv, normalv);
-    if (light_dot_normal < 0) {
-        return ambient;
-    }
-    let diffuse: Color = Color.multiplyScalar(effective_color, material.diffuse * light_dot_normal);
-
-    let specular: Color = Color.BLACK;
-    const reflectv = Tuple.reflect(lightv.negative, normalv);
-    const reflect_dot_eye = Tuple.dot(reflectv, eyev);
-    if (reflect_dot_eye <= 0) {
-        specular = Color.BLACK;
-    } else {
-        const factor = Math.pow(reflect_dot_eye, material.shininess);
-        specular = Color.multiplyScalar(light.intensity, material.specular * factor);
-    }
-
-    return Color.add(ambient, Color.add(diffuse, specular));
-}

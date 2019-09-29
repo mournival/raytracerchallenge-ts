@@ -3,7 +3,7 @@ import {Light} from './light';
 import {point, Tuple} from './tuple';
 import {Color} from './color';
 import {Matrix, scaling} from './matrix';
-import {lighting, Material} from './material';
+import {Material} from './material';
 import {Ray} from './ray';
 import {Intersection} from './intersection';
 import {PreComputations, prepare_computations} from './pre-computations';
@@ -48,7 +48,7 @@ export class World {
     }
 
     shade_hit(pc: PreComputations, remaining: number): Color {
-        const surface = lighting(pc.object.material, this.lights[0], pc.point, pc.eyev, pc.normalv, this.is_shadowed(pc.over_point));
+        const surface = pc.object.material.lighting(pc.point, pc.eyev, pc.normalv, this.lights[0], this.is_shadowed(pc.over_point), pc.object);
         const reflected = this.reflected_color(pc, remaining);
         return Color.add(surface, reflected);
     }

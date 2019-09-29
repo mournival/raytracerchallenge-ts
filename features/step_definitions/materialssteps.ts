@@ -1,6 +1,6 @@
 import {binding, given, then, when} from 'cucumber-tsflow';
 import {parseArg, Workspace} from './Workspace';
-import {lighting, Material} from '../../src/material';
+import {Material} from '../../src/material';
 import {expect} from 'chai';
 import {Color} from '../../src/color';
 import {Light} from '../../src/light';
@@ -62,13 +62,7 @@ class MaterialsSteps {
 
     @when(/^([\w\d_]+) ← lighting\(([^,]+), ([^,]+), ([^,]+), ([^,]+), ([^,]+)\)$/)
     public lightingResult(resColorId: string, matId: string, lightId: string, positionId: string, eyeVectorId: string, normalVectorId: string) {
-        this.workspace.colors[resColorId] = lighting(
-            this.workspace.materials[matId],
-            this.workspace.lights[lightId],
-            this.workspace.tuples[positionId],
-            this.workspace.tuples[eyeVectorId],
-            this.workspace.tuples[normalVectorId]
-        );
+        this.workspace.colors[resColorId] = this.workspace.materials[matId].lighting(this.workspace.tuples[positionId], this.workspace.tuples[eyeVectorId], this.workspace.tuples[normalVectorId], this.workspace.lights[lightId]);
     }
 
     @given(/^([\w\d_]+) ← true$/)
@@ -79,14 +73,7 @@ class MaterialsSteps {
     @when(/^([\w\d_]+) ← lighting\(([^,]+), ([^,]+), ([^,]+), ([^,]+), ([^,]+), ([^,]+)\)$/)
     public lightingResultWShadow(resColorId: string, matId: string, lightId: string, positionId: string,
                                  eyeVectorId: string, normalVectorId: string, shadowTestId: string) {
-        this.workspace.colors[resColorId] = lighting(
-            this.workspace.materials[matId],
-            this.workspace.lights[lightId],
-            this.workspace.tuples[positionId],
-            this.workspace.tuples[eyeVectorId],
-            this.workspace.tuples[normalVectorId],
-            this.workspace.tests[shadowTestId]
-        );
+        this.workspace.colors[resColorId] = this.workspace.materials[matId].lighting(this.workspace.tuples[positionId], this.workspace.tuples[eyeVectorId], this.workspace.tuples[normalVectorId], this.workspace.lights[lightId], this.workspace.tests[shadowTestId]);
     }
 
     @given(/^([\w\d_]+).pattern ← stripe_pattern\(color\(([\w\d_]+), ([\w\d_]+), ([\w\d_]+)\), color\(([\w\d_]+), ([\w\d_]+), ([\w\d_]+)\)\)$/)
@@ -117,14 +104,7 @@ class MaterialsSteps {
     @when(/^([\w\d_]+) ← lighting\(([^,]+), ([^,]+), point\(([^,]+), ([^,]+), ([^,]+)\), ([^,]+), ([^,]+), ([^,]+)\)$/)
     public lightingByPointResultWShadow(resColorId: string, matId: string, lightId: string, x: string, y: string, z: string,
                                         eyeVectorId: string, normalVectorId: string, shadowTestId: string) {
-        this.workspace.colors[resColorId] = lighting(
-            this.workspace.materials[matId],
-            this.workspace.lights[lightId],
-            point(parseArg(x), parseArg(y), parseArg(z)),
-            this.workspace.tuples[eyeVectorId],
-            this.workspace.tuples[normalVectorId],
-            this.workspace.tests[shadowTestId]
-        );
+        this.workspace.colors[resColorId] = this.workspace.materials[matId].lighting(point(parseArg(x), parseArg(y), parseArg(z)), this.workspace.tuples[eyeVectorId], this.workspace.tuples[normalVectorId], this.workspace.lights[lightId], this.workspace.tests[shadowTestId]);
     }
 
     @then(/^([\w\d_]+).reflective = ([^,]+)$/)
