@@ -49,7 +49,9 @@ export function intersect_world(w: World, r: Ray): Intersection[] {
 }
 
 export function shade_hit(w: World, pc: PreComputations): Color {
-    return lighting(pc.object.material, w.lights[0], pc.point, pc.eyev, pc.normalv, is_shadowed(w, pc.over_point));
+    const surface = lighting(pc.object.material, w.lights[0], pc.point, pc.eyev, pc.normalv, is_shadowed(w, pc.over_point));
+    const reflected = reflected_color(w, pc);
+    return Color.add(surface, reflected);
 }
 
 export function default_world(): World {
@@ -80,6 +82,8 @@ export function reflected_color(w: World, comps: PreComputations): Color {
     if (comps.object.material.reflective === 0) {
         return Color.BLACK;
     }
-    return Color.WHITE;
+    const reflect_ray = new Ray(comps.over_point, comps.reflectv);
+    const color = color_at(w, reflect_ray);
+    return Color.multiplyScalar(color, comps.object.material.reflective);
 
 }

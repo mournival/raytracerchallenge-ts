@@ -142,8 +142,7 @@ export function parseArg(s: string): number {
         return parseInt(matchArray[0]) / parseInt(matchArray[1]);
     }
     if (s.match(/^√\d+$/)) {
-        const matchArray = s.split('/');
-        return Math.sqrt(parseInt(matchArray[0].slice(1)));
+        return Math.sqrt(parseInt(s.slice(1)));
     }
 
     // irrational ratio

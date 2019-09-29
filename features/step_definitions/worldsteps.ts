@@ -19,6 +19,7 @@ import {PreComputations} from '../../src/pre-computations';
 import {Light} from '../../src/light';
 import {point} from '../../src/tuple';
 import {transform} from '../../src/ray';
+import {Plane} from "../../src/plane";
 
 @binding([Workspace])
 class WorldsSteps {
@@ -45,9 +46,9 @@ class WorldsSteps {
         expect(actual, shouldEqualMsg(actual, expected)).to.equal(expected);
     }
 
-    @given(/^([\w\d_]+) ← sphere\(\) with:$/)
-    public givenSphereByProperties(shapeId: string, dataTable: { rawTable: [][] }) {
-        this.workspace.shapes[shapeId] = parseRawTable(dataTable.rawTable);
+    @given(/^([\w\d_]+) ← ([\w\d_]+)\(\) with:$/)
+    public givenSphereByProperties(shapeId: string, shapeType: string, dataTable: { rawTable: [][] }) {
+        this.workspace.shapes[shapeId] = parseRawTable(dataTable.rawTable, shapeType);
     }
 
     @when(/^([\w\d_]+) ← default_world\(\)$/)
@@ -89,8 +90,7 @@ class WorldsSteps {
     public whenShadeHit(colorId: string, worldId: string, pcId: string) {
         this.workspace.colors[colorId] = shade_hit(
             this.workspace.worlds[worldId],
-            this.workspace.intersection[pcId] as PreComputations
-        );
+            this.workspace.intersection[pcId] as PreComputations);
     }
 
     @given(/^([\w\d_]+).light ← point_light\(point\(([^,]+), ([^,]+), ([^,]+)\), color\(([^,]+), ([^,]+), ([^,]+)\)\)$/)
@@ -154,12 +154,18 @@ class WorldsSteps {
     public whenReflectedColorIs(colorId: string, worldId: string, pcId: string) {
         this.workspace.colors[colorId] = reflected_color(
             this.workspace.worlds[worldId],
-            this.workspace.intersection[pcId] as PreComputations
-        );
+            this.workspace.intersection[pcId] as PreComputations);
     }
+
+    @then(/^color_at\(w, r\) should terminate successfully$/)
+    public thenShouldTerminate() {
+        // Hmm ... some sort of timeout here ...
+        // color_at(this.workspace.worlds['w'], this.workspace.rays['r'])
+    }
+
 }
 
-function parseRawTable(data: string[][]): Sphere {
+function parseRawTable(data: string[][], shapeType = 'sphere'): Sphere {
     const rows = data.length;
     const cold = data[0].length;
     let color: Color = new Color(1, 1, 1);
@@ -167,6 +173,8 @@ function parseRawTable(data: string[][]): Sphere {
     let diffuse = 0.9;
     let specular = 0.9;
     const shininess = 200.0;
+    let reflective = 0;
+
     let t = Matrix.identity(4);
     for (let r = 0; r < rows; ++r) {
         switch (data[r][0]) {
@@ -179,12 +187,20 @@ function parseRawTable(data: string[][]): Sphere {
             case 'material.specular':
                 specular = parseArg(data[r][1]);
                 break;
+            case 'material.reflective':
+                reflective = parseArg(data[r][1]);
+                break;
             case 'transform':
                 if (data[r][1].match('scaling')) {
                     t = scaling(0.5, 0.5, 0.5);
-                } else if (data[r][1].match('translation')) {
+                } else if (data[r][1] === 'translation(0, 0, 10)') {
+                    t = translation(0, 0, 10);
+                } else if (data[r][1] === 'translation(0, 0, 1)') {
                     t = translation(0, 0, 1);
+                } else if (data[r][1] === 'translation(0, -1, 0)') {
+                    t = translation(0, -1, 0);
                 }
+
                 break;
             default:
                 console.log('Hmmm....');
@@ -192,9 +208,12 @@ function parseRawTable(data: string[][]): Sphere {
                 break;
         }
     }
-    const m = new Material(color, ambient, diffuse, specular, shininess);
+    const m = new Material(color, ambient, diffuse, specular, shininess, reflective);
 
-    return new Sphere(t, m);
+    if (shapeType === 'sphere') {
+        return new Sphere(t, m);
+    }
+    return new Plane(t, m);
 }
 
 export = WorldsSteps;
