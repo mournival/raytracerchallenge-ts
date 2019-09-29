@@ -8,7 +8,7 @@ import {Matrix, rotation_x, rotation_y, scaling, translation, view_transform} fr
 import {Material} from '../material';
 import {Light} from '../light';
 import {World} from '../world';
-import {Camera, render} from '../camera';
+import {Camera} from '../camera';
 
 function saveFile(canvas: any) {
     let fs = require('fs');
@@ -82,7 +82,7 @@ const camera = new Camera(1920 / 2, 1080 / 2, Math.PI / 3,
 );
 
 console.time('Rendering');
-const canvas = render(camera, world);
+const canvas = camera.render(world);
 console.timeEnd('Rendering');
 
 saveFile(canvas);

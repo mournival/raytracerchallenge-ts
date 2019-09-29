@@ -1,6 +1,6 @@
 import {binding, given, then, when} from 'cucumber-tsflow';
 import {parseArg, shouldEqualMsg, Workspace} from './Workspace';
-import {Camera, ray_for_pixel, render} from '../../src/camera';
+import {Camera} from '../../src/camera';
 import {expect} from 'chai';
 import {Matrix, rotation_y, translation, view_transform} from '../../src/matrix';
 import {Color} from '../../src/color';
@@ -65,11 +65,7 @@ class CameraSteps {
 
     @when(/^(\w+) ← ray_for_pixel\(([^,]+), ([^,]+), ([^,]+)\)$/)
     public whenRayForPixelIs(rayId: string, cameraId: string, px: string, py: string) {
-        this.workspace.rays[rayId] = ray_for_pixel(
-            this.workspace.cameras[cameraId],
-            parseArg(px),
-            parseArg(py)
-        );
+        this.workspace.rays[rayId] = this.workspace.cameras[cameraId].ray_for_pixel(parseArg(px), parseArg(py));
     }
 
     @when(/^(\w+).transform ← rotation_y\(([^,]+)\) \* translation\(([^,]+), ([^,]+), ([^,]+)\)$/)
@@ -93,7 +89,7 @@ class CameraSteps {
     public whenImageRenderedIs(key: string, cameraId: string, worldId: string) {
         const c = this.workspace.cameras[cameraId];
         const w = this.workspace.worlds[worldId];
-        this.workspace.canvases[key] = render(c, w);
+        this.workspace.canvases[key] = c.render(w);
     }
 
 

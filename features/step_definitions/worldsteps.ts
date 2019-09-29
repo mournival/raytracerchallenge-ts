@@ -1,14 +1,6 @@
 import {binding, given, then, when} from 'cucumber-tsflow';
 import {parseArg, shouldEqualMsg, Workspace} from './Workspace';
-import {
-    color_at,
-    default_world,
-    intersect_world,
-    is_shadowed,
-    reflected_color,
-    shade_hit,
-    World
-} from '../../src/world';
+import {default_world, World} from '../../src/world';
 import {expect} from 'chai';
 import {Color} from '../../src/color';
 import {Sphere} from '../../src/sphere';
@@ -19,7 +11,7 @@ import {PreComputations} from '../../src/pre-computations';
 import {Light} from '../../src/light';
 import {point} from '../../src/tuple';
 import {transform} from '../../src/ray';
-import {Plane} from "../../src/plane";
+import {Plane} from '../../src/plane';
 
 @binding([Workspace])
 class WorldsSteps {
@@ -75,8 +67,7 @@ class WorldsSteps {
 
     @when(/^([\w\d_]+) ← intersect_world\(([^,]+), ([^,]+)\)$/)
     public whenIntersectWorld(xsId: string, worldId: string, rayId: string) {
-        this.workspace.intersections[xsId] = intersect_world(
-            this.workspace.worlds[worldId],
+        this.workspace.intersections[xsId] = this.workspace.worlds[worldId].intersect_world(
             this.workspace.rays[rayId]
         );
     }
@@ -88,9 +79,9 @@ class WorldsSteps {
 
     @when(/^([\w\d_]+) ← shade_hit\(([^,]+), ([^,]+)\)$/)
     public whenShadeHit(colorId: string, worldId: string, pcId: string) {
-        this.workspace.colors[colorId] = shade_hit(
-            this.workspace.worlds[worldId],
-            this.workspace.intersection[pcId] as PreComputations);
+        this.workspace.colors[colorId] = this.workspace.worlds[worldId].shade_hit(
+            this.workspace.intersection[pcId] as PreComputations,
+            1);
     }
 
     @given(/^([\w\d_]+).light ← point_light\(point\(([^,]+), ([^,]+), ([^,]+)\), color\(([^,]+), ([^,]+), ([^,]+)\)\)$/)
@@ -110,7 +101,7 @@ class WorldsSteps {
 
     @when(/^([\w\d_]+) ← color_at\(([\w\d_]+), ([\w\d_]+)\)$/)
     public whenColorAt(colorID: string, worldId: string, rayId: string) {
-        this.workspace.colors[colorID] = color_at(this.workspace.worlds[worldId], this.workspace.rays[rayId]);
+        this.workspace.colors[colorID] = this.workspace.worlds[worldId].color_at(this.workspace.rays[rayId]);
     }
 
 
@@ -123,7 +114,7 @@ class WorldsSteps {
         this.workspace.worlds['w'] = w.replace(s, this.workspace.shapes[shapeId]);
     }
 
-    @then(/^([\w\d_]+) = ([^,]+).material.color$/)
+    @then(/^([\w\d_]+) = ([\w\d_]+).material.color$/)
     public thenColorEquals(colorId: string, objId: string) {
         const actual = this.workspace.colors[colorId];
         const expected = this.workspace.shapes[objId].material.color;
@@ -133,13 +124,13 @@ class WorldsSteps {
 
     @then(/^is_shadowed\(([\w\d_]+), ([\w\d_]+)\) is false$/)
     public thenIsShadowedIsFalse(worldId: string, pointId: string) {
-        const actual = is_shadowed(this.workspace.worlds[worldId], this.workspace.tuples[pointId]);
+        const actual = this.workspace.worlds[worldId].is_shadowed(this.workspace.tuples[pointId]);
         expect(actual).to.be.false;
     }
 
     @then(/^is_shadowed\(([\w\d_]+), ([\w\d_]+)\) is true$/)
     public thenIsShadowedIsTrue(worldId: string, pointId: string) {
-        const actual = is_shadowed(this.workspace.worlds[worldId], this.workspace.tuples[pointId]);
+        const actual = this.workspace.worlds[worldId].is_shadowed(this.workspace.tuples[pointId]);
         expect(actual).to.be.true;
     }
 
@@ -152,22 +143,27 @@ class WorldsSteps {
 
     @when(/^([\w\d_]+) ← reflected_color\(([\w\d_]+), ([\w\d_]+)\)$/)
     public whenReflectedColorIs(colorId: string, worldId: string, pcId: string) {
-        this.workspace.colors[colorId] = reflected_color(
-            this.workspace.worlds[worldId],
-            this.workspace.intersection[pcId] as PreComputations);
+        this.workspace.colors[colorId] = this.workspace.worlds[worldId].reflected_color(
+            this.workspace.intersection[pcId] as PreComputations,
+            1);
     }
 
     @then(/^color_at\(w, r\) should terminate successfully$/)
     public thenShouldTerminate() {
-        // Hmm ... some sort of timeout here ...
-        // color_at(this.workspace.worlds['w'], this.workspace.rays['r'])
+        this.workspace.worlds['w'].color_at(this.workspace.rays['r'])
+    }
+
+    @when(/^([\w\d_]+) ← reflected_color\(([\w\d_]+), ([\w\d_]+), ([^,]+)\)$/)
+    public whenReflectedColorAtLevel(colorId: string, worldId: string, pcId: string, level: string) {
+        this.workspace.colors[colorId] = this.workspace.worlds[worldId].reflected_color(
+            this.workspace.intersection[pcId] as PreComputations,
+            parseArg(level));
     }
 
 }
 
 function parseRawTable(data: string[][], shapeType = 'sphere'): Sphere {
     const rows = data.length;
-    const cold = data[0].length;
     let color: Color = new Color(1, 1, 1);
     const ambient = 0.1;
     let diffuse = 0.9;

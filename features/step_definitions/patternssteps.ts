@@ -2,14 +2,7 @@ import {binding, given} from 'cucumber-tsflow';
 import {parseArg, shouldEqualMsg, Workspace} from './Workspace';
 import {then, when} from 'cucumber-tsflow/dist';
 import {expect} from 'chai';
-import {
-    checkers_pattern,
-    gradient_pattern,
-    pattern_at_shape,
-    ring_pattern,
-    stripe_pattern,
-    test_pattern
-} from '../../src/pattern';
+import {checkers_pattern, gradient_pattern, ring_pattern, stripe_pattern, test_pattern} from '../../src/pattern';
 import {Color} from '../../src/color';
 import {point} from '../../src/tuple';
 import {scaling, translation} from '../../src/matrix';
@@ -53,11 +46,7 @@ class PatternSteps {
 
     @when(/^([\w\d_]+) ← stripe_at_object\(([\w\d_]+), ([\w\d_]+), point\(([^,]+), ([^,]+), ([^,]+)\)\)$/)
     public stripeAtObjectIs(colorId: string, patternId: string, shapeId: string, x: string, y: string, z: string) {
-        this.workspace.colors[colorId] = pattern_at_shape(
-            this.workspace.patterns[patternId],
-            this.workspace.shapes[shapeId],
-            point(parseArg(x), parseArg(y), parseArg(z))
-        );
+        this.workspace.colors[colorId] = this.workspace.patterns[patternId].pattern_at(point(parseArg(x), parseArg(y), parseArg(z)), this.workspace.shapes[shapeId]);
     }
 
     @then(/^([\w\d_]+) = white$/)
@@ -84,11 +73,7 @@ class PatternSteps {
 
     @when(/^([\w\d_]+) ← pattern_at_shape\(([\w\d_]+), ([\w\d_]+), point\(([^,]+), ([^,]+), ([^,]+)\)\)$/)
     public patternColorAtShapeis(colorId: string, patternId: string, shapeId: string, x: string, y: string, z: string) {
-        this.workspace.colors[colorId] = pattern_at_shape(
-            this.workspace.patterns[patternId],
-            this.workspace.shapes[shapeId],
-            point(parseArg(x), parseArg(y), parseArg(z))
-        );
+        this.workspace.colors[colorId] = this.workspace.patterns[patternId].pattern_at(point(parseArg(x), parseArg(y), parseArg(z)), this.workspace.shapes[shapeId]);
     }
 
     @given(/^([\w\d_]+) ← gradient_pattern\(([\w\d_]+), ([\w\d_]+)\)$/)

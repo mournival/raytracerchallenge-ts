@@ -8,7 +8,7 @@ import {Matrix, rotation_x, rotation_y, rotation_z, scaling, translation, view_t
 import {Material} from '../material';
 import {Light} from '../light';
 import {World} from '../world';
-import {Camera, render} from '../camera';
+import {Camera} from '../camera';
 import {Plane} from '../plane';
 import {checkers_pattern, gradient_pattern, stripe_pattern} from '../pattern';
 
@@ -23,17 +23,24 @@ function saveFile(canvas: any) {
     });
 }
 
+
 const s1 = scaling(10, 0.01, 10);
 const quarterPi = Math.PI / 4;
+
+const defaultMaterial = new Material(new Color(1, 0.9, 0.9), 0.1, 0.9, 0, 200, 0.0, checkers_pattern(Color.BLACK, Color.WHITE));
+
+const reflectiveCheckers = defaultMaterial.replace('reflective', 0.25);
+
+
 const floor = new Plane(
     Matrix.identity()
-    , new Material(new Color(1, 0.9, 0.9), 0.1, 0.9, 0, 200, 0.0, checkers_pattern(Color.BLACK, Color.WHITE)),
+    , reflectiveCheckers,
 );
 
 const left_wall = new Plane(
     Matrix.multiply(translation(0, 0, 5),
         Matrix.multiply(rotation_y(-quarterPi), rotation_x(2 * quarterPi))
-    ), floor.material.replace('pattern', stripe_pattern(Color.BLACK, Color.WHITE))
+    ), defaultMaterial.replace('pattern', stripe_pattern(Color.BLACK, Color.WHITE))
 );
 
 const right_wall = new Plane(
@@ -41,12 +48,12 @@ const right_wall = new Plane(
         Matrix.multiply(rotation_y(quarterPi),
             rotation_x(2 * quarterPi),
         )
-    ), floor.material.replace('pattern', gradient_pattern(Color.BLACK, Color.WHITE))
+    ), defaultMaterial.replace('pattern', gradient_pattern(Color.BLACK, Color.WHITE))
 );
 
 const ceiling = new Plane(
     Matrix.multiply(translation(0, 15, 0), rotation_z(-quarterPi)),
-    floor.material.replace('pattern', checkers_pattern(Color.BLACK, Color.WHITE))
+    defaultMaterial.replace('pattern', checkers_pattern(Color.BLACK, Color.WHITE))
 );
 
 
@@ -78,7 +85,7 @@ const world = new World([
         left
     ]);
 
-const camera = new Camera(Math.floor(1920/1), Math.floor(1920/1) , Math.PI / 3,
+const camera = new Camera(Math.floor(1600 / 2), Math.floor(800 / 2), Math.PI / 3,
     view_transform(
         point(0, 1.0, -7),
         point(0, 1, 0),
@@ -87,7 +94,7 @@ const camera = new Camera(Math.floor(1920/1), Math.floor(1920/1) , Math.PI / 3,
 );
 
 console.time('Rendering');
-const canvas = render(camera, world);
+const canvas = camera.render(world);
 console.timeEnd('Rendering');
 
 saveFile(canvas);

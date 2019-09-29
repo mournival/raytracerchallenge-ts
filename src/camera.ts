@@ -2,7 +2,7 @@ import {Matrix} from './matrix';
 import {point, Tuple} from './tuple';
 import {Ray} from './ray';
 import {Canvas} from './canvas';
-import {color_at, World} from './world';
+import {World} from './world';
 
 export class Camera {
 
@@ -22,31 +22,30 @@ export class Camera {
         }
         this.pixel_size = (this.half_width * 2) / this.hsize;
     }
-}
 
-export function ray_for_pixel(c: Camera, px: number, py: number): Ray {
-    const xOffset = (px + 0.5) * c.pixel_size;
-    const yOffset = (py + 0.5) * c.pixel_size;
+    ray_for_pixel(px: number, py: number): Ray {
+        const xOffset = (px + 0.5) * this.pixel_size;
+        const yOffset = (py + 0.5) * this.pixel_size;
 
-    const world_x = c.half_width - xOffset;
-    const world_y = c.half_height - yOffset;
+        const world_x = this.half_width - xOffset;
+        const world_y = this.half_height - yOffset;
 
-    const pixel = Matrix.multiplyVector(c.transform.inverse, point(world_x, world_y, -1));
-    const origin = Matrix.multiplyVector(c.transform.inverse, point(0, 0, 0));
-    const direction = Tuple.subtract(pixel, origin).normalize;
-    return new Ray(origin, direction);
-
-}
-
-export function render(camera: Camera, world: World): Canvas {
-    const image = new Canvas(camera.hsize, camera.vsize);
-    for (let y = 0; y < camera.vsize; ++y) {
-        for (let x = 0; x < camera.hsize; ++x) {
-            const ray = ray_for_pixel(camera, x, y);
-            const color = color_at(world, ray);
-            Canvas.write_pixel(image, y, x, color);
-        }
+        const pixel = Matrix.multiplyVector(this.transform.inverse, point(world_x, world_y, -1));
+        const origin = Matrix.multiplyVector(this.transform.inverse, point(0, 0, 0));
+        const direction = Tuple.subtract(pixel, origin).normalize;
+        return new Ray(origin, direction);
     }
 
-    return image;
+    render(world: World): Canvas {
+        const image = new Canvas(this.hsize, this.vsize);
+        for (let y = 0; y < this.vsize; ++y) {
+            for (let x = 0; x < this.hsize; ++x) {
+                const ray = this.ray_for_pixel(x, y);
+                const color = world.color_at(ray);
+                Canvas.write_pixel(image, y, x, color);
+            }
+        }
+
+        return image;
+    }
 }

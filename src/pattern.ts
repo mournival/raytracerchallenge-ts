@@ -7,23 +7,26 @@ export type PatternFunction = (p: Tuple) => Color;
 
 export class Pattern {
 
+    private readonly transformInv: Matrix;
     constructor(public readonly a: Color, public readonly b: Color, private patternFunction: PatternFunction, public readonly transform = Matrix.identity()) {
+        this.transformInv = transform.inverse;
     }
 
-    pattern_at(p: Tuple): Color {
-        return this.patternFunction(p);
+    pattern_at(p: Tuple, object?: Shape): Color {
+        if (!object) {
+            return this.patternFunction(p);
+        }
+
+        const object_point = Matrix.multiplyVector(object.transform.inverse, p);
+        const pattern_point = Matrix.multiplyVector(this.transformInv, object_point);
+
+        return this.pattern_at(pattern_point);
     }
 
     replace(transformation: Matrix): Pattern {
         return new Pattern(this.a, this.b, this.patternFunction, transformation);
     }
-}
 
-export function pattern_at_shape(pattern: Pattern, object: Shape, world_point: Tuple): Color {
-    const object_point = Matrix.multiplyVector(object.transform.inverse, world_point);
-    const pattern_point = Matrix.multiplyVector(pattern.transform.inverse, object_point);
-
-    return pattern.pattern_at(pattern_point);
 }
 
 //
