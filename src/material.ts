@@ -2,7 +2,7 @@ import {Color} from './color';
 import {Light} from './light';
 import {Tuple} from './tuple';
 import {Pattern} from './pattern';
-import {Shape} from "./shape";
+import {Shape} from './shape';
 
 export class Material {
     public static EPSILON = 0.001;
@@ -13,6 +13,8 @@ export class Material {
                 public readonly specular: number = 0.9,
                 public readonly shininess: number = 200.0,
                 public readonly reflective: number = 0.0,
+                public readonly transparency: number = 0.0,
+                public readonly refractive_index: number = 1.0,
                 public readonly pattern: Pattern | null = null) {
     }
 
@@ -27,26 +29,23 @@ export class Material {
     public replace(field: string, value: Color | Pattern | number): Material {
         switch (field) {
             case 'pattern':
-                return new Material(this.color, this.ambient, this.diffuse, this.specular, this.shininess, this.reflective, value as Pattern);
-                break;
+                return new Material(this.color, this.ambient, this.diffuse, this.specular, this.shininess, this.reflective, this.transparency, this.refractive_index, value as Pattern);
             case 'color':
-                return new Material(value as Color, this.ambient, this.diffuse, this.specular, this.shininess, this.reflective, this.pattern);
-                break;
+                return new Material(value as Color, this.ambient, this.diffuse, this.specular, this.shininess, this.reflective, this.transparency, this.refractive_index, this.pattern);
             case 'ambient':
-                return new Material(this.color, value as number, this.diffuse, this.specular, this.shininess, this.reflective, this.pattern);
-                break;
+                return new Material(this.color, value as number, this.diffuse, this.specular, this.shininess, this.reflective, this.transparency, this.refractive_index, this.pattern);
             case 'diffuse':
-                return new Material(this.color, this.ambient, value as number, this.specular, this.shininess, this.reflective, this.pattern);
-                break;
+                return new Material(this.color, this.ambient, value as number, this.specular, this.shininess, this.reflective, this.transparency, this.refractive_index, this.pattern);
             case 'specular':
-                return new Material(this.color, this.ambient, this.diffuse, value as number, this.shininess, this.reflective, this.pattern);
-                break;
+                return new Material(this.color, this.ambient, this.diffuse, value as number, this.shininess, this.reflective, this.transparency, this.refractive_index, this.pattern);
             case 'shininess':
-                return new Material(this.color, this.ambient, this.diffuse, this.specular, value as number, this.reflective, this.pattern);
-                break;
+                return new Material(this.color, this.ambient, this.diffuse, this.specular, value as number, this.reflective, this.transparency, this.refractive_index, this.pattern);
             case 'reflective':
-                return new Material(this.color, this.ambient, this.diffuse, this.specular, this.shininess, value as number, this.pattern);
-
+                return new Material(this.color, this.ambient, this.diffuse, this.specular, this.shininess, value as number, this.transparency, this.refractive_index, this.pattern);
+            case 'transparency':
+                return new Material(this.color, this.ambient, this.diffuse, this.specular, this.shininess, this.reflective, value as number, this.refractive_index, this.pattern);
+            case 'refractive_index':
+                return new Material(this.color, this.ambient, this.diffuse, this.specular, this.shininess, this.reflective, this.transparency, value as number, this.pattern);
             default:
                 throw 'Unexpected field: ' + field;
 

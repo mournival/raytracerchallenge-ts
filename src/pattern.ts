@@ -88,3 +88,10 @@ function combine_function(x: Pattern, y: Pattern): PatternFunction {
 export function combine_pattern(a: Pattern, b: Pattern, transform = Matrix.identity()) {
     return new Pattern(combine_function(a, b), transform);
 }
+
+export function fill(c: Color): PatternFunction {
+    return (p: Tuple) => c;
+}
+export function fill_pattern(a: Color) {
+    return new Pattern(fill(a));
+}

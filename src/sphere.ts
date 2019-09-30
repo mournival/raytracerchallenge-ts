@@ -48,5 +48,8 @@ export class Sphere extends Shape {
     local_replace_material(m: Material): Shape {
         return new Sphere(this.transform, m);
     }
+}
 
+export function glass_sphere(): Sphere {
+    return new Sphere().replace(new Material().replace('transparency', 1.0).replace('refractive_index', 1.5));
 }

@@ -1,7 +1,7 @@
 import {before, binding, given, then, when} from 'cucumber-tsflow';
 import {parseArg, shouldEqualMsg, Workspace} from './Workspace';
 import {expect} from 'chai';
-import {Sphere} from '../../src/sphere';
+import {glass_sphere, Sphere} from '../../src/sphere';
 import {Matrix, rotation_z, scaling, translation} from '../../src/matrix';
 import {point, Tuple} from '../../src/tuple';
 import {Material} from '../../src/material';
@@ -144,7 +144,10 @@ class SpheresSteps {
         expect(Material.equals(actual, expected), shouldEqualMsg(actual, expected)).to.be.true;
     }
 
-
+    @given(/^(\w+) ← glass_sphere\(\)$/)
+    public givenGlassSphere(shapeId: string) {
+        this.workspace.shapes[shapeId] = glass_sphere();
+    }
 }
 
 export = SpheresSteps;

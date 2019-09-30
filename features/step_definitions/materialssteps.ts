@@ -113,6 +113,20 @@ class MaterialsSteps {
         const expected = parseArg(value);
         expect(actual).to.be.closeTo(expected, 0.0001);
     }
+
+    @then(/^([\w\d_]+).transparency = ([^,]+)$/)
+    public thenTransparencyEquals(matId: string, value: string) {
+        const actual = this.workspace.materials[matId].transparency;
+        const expected = parseArg(value);
+        expect(actual).to.be.closeTo(expected, 0.0001);
+    }
+
+    @then(/^([\w\d_]+).refractive_index = ([^,]+)$/)
+    public thenRefractiveIndexEquals(matId: string, value: string) {
+        const actual = this.workspace.materials[matId].refractive_index;
+        const expected = parseArg(value);
+        expect(actual).to.be.closeTo(expected, 0.0001);
+    }
 }
 
 export = MaterialsSteps;

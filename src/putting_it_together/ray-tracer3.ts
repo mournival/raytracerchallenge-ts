@@ -10,7 +10,7 @@ import {Light} from '../light';
 import {World} from '../world';
 import {Camera} from '../camera';
 import {Plane} from '../plane';
-import {checkers_pattern, combine_pattern, gradient_pattern, ring_pattern, stripe_pattern} from '../pattern';
+import {checkers_pattern, combine_pattern, fill_pattern, gradient_pattern} from '../pattern';
 
 function saveFile(canvas: any) {
     let fs = require('fs');
@@ -27,7 +27,7 @@ function saveFile(canvas: any) {
 const s1 = scaling(10, 0.01, 10);
 const quarterPi = Math.PI / 4;
 
-const defaultMaterial = new Material(new Color(1, 0.9, 0.9), 0.1, 0.9, 0, 200, 0.0, checkers_pattern(Color.BLACK, Color.WHITE));
+const defaultMaterial = new Material(new Color(1, 0.9, 0.9), 0.1, 0.9, 0, 200, 0.0, 0, 1, checkers_pattern(Color.BLACK, Color.WHITE));
 
 const reflectiveCheckers = defaultMaterial.replace('reflective', 0.25).replace('pattern',
     combine_pattern(
@@ -44,7 +44,7 @@ const floor = new Plane(
 const left_wall = new Plane(
     Matrix.multiply(translation(0, 0, 5),
         Matrix.multiply(rotation_y(-quarterPi), rotation_x(2 * quarterPi))
-    ), defaultMaterial.replace('pattern', ring_pattern(Color.BLACK, Color.WHITE))
+    ), defaultMaterial.replace('pattern', fill_pattern(new Color(0.75, 0.75, 0.75)))
 );
 
 const right_wall = new Plane(
@@ -81,7 +81,7 @@ const world = new World([
     ],
     [
         floor,
-        // left_wall,
+        left_wall,
         // right_wall,
         // ceiling,
         middle,

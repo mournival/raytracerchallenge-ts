@@ -29,6 +29,22 @@ class ShapeSteps {
         expect(isShape(this.workspace.shapes[shapeId])).to.be.true;
     }
 
+    @then(/^([\w\d_]+).material.transparency = ([^,]+)$/)
+    public thenShapeMaterialTransparencyIs(objectId: string, value: string) {
+        const actual = this.workspace.shapes[objectId].material.transparency;
+        const expected = parseArg(value);
+
+        expect(actual, shouldEqualMsg(actual, expected)).to.be.closeTo(expected, 0.001);
+    }
+
+    @then(/^([\w\d_]+).material.refractive_index = ([^,]+)$/)
+    public thenShapeMaterialRefractiveIndexIs(objectId: string, value: string) {
+        const actual = this.workspace.shapes[objectId].material.refractive_index;
+        const expected = parseArg(value);
+
+        expect(actual, shouldEqualMsg(actual, expected)).to.be.closeTo(expected, 0.001);
+    }
+
 }
 
 export = ShapeSteps;
