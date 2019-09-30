@@ -27,9 +27,17 @@ export class PreComputations extends Intersection {
         return this.obj;
     }
 
+    public get n1(): number {
+        return 0;
+    }
+
+    public get n2(): number {
+        return 0;
+    }
+
 }
 
-export function prepare_computations(i: Intersection, r: Ray): PreComputations {
+export function prepare_computations(i: Intersection, r: Ray, xs: Intersection[] = []): PreComputations {
     const p = position(r, i.t);
     const normalv = i.obj.normal_at(p);
     const eyev = r.direction.negative;

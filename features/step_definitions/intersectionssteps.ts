@@ -110,22 +110,38 @@ class IntersectionsSteps {
 
     @given(/xs ← intersections\(2:A, 2.75:B, 3.25:C, 4.75:B, 5.25:C, 6:A\)/)
     public givenIntersectionList() {
-        return 'pending';
+        const A = this.workspace.shapes['A'];
+        const B = this.workspace.shapes['B'];
+        const C = this.workspace.shapes['C'];
+
+        this.workspace.intersections['xs'] = [
+            new Intersection(A, 2),
+            new Intersection(B, 2.75),
+            new Intersection(C, 3.25),
+            new Intersection(B, 4.75),
+            new Intersection(C, 5.25),
+            new Intersection(A, 6),
+        ];
     }
 
     @when(/^([\w\d_]+) ← prepare_computations\(([^,]+)\[([^,]+)\], ([\w\d_]+), \2\)$/)
     public whenPrecomputationIs(pcId: string, intersectionsId: string, index: string, rayId: string) {
-        return 'pending';
+        const xs = this.workspace.intersections['xs'];
+        this.workspace.intersection[pcId] = prepare_computations(xs[parseArg(index)], this.workspace.rays[rayId], xs)
     }
 
     @then(/^([\w\d_]+).n1 = ([^,]+)$/)
     public thenN1Is(pcId: string, value: string) {
-        return 'pending';
+        const actual = (this.workspace.intersection[pcId] as PreComputations).n1 ;
+        const expected = parseArg(value);
+        expect(actual).to.be.closeTo(expected, 0.001);
     }
 
     @then(/^([\w\d_]+).n2 = ([^,]+)$/)
     public thenN2Is(pcId: string, value: string) {
-        return 'pending';
+        const actual = (this.workspace.intersection[pcId] as PreComputations).n2;
+        const expected = parseArg(value);
+        expect(actual).to.be.closeTo(expected, 0.001);
     }
 }
 
