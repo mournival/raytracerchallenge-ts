@@ -129,7 +129,7 @@ Scenario: The hit should offset the point
 #    | 3     | 2.5 | 2.5 |
 #    | 4     | 2.5 | 1.5 |
 #    | 5     | 1.5 | 1.0 |
-#
+
 #Scenario: The Schlick approximation under total internal reflection
 #  Given shape ← glass_sphere()
 #    And r ← ray(point(0, 0, √2/2), vector(0, 1, 0))

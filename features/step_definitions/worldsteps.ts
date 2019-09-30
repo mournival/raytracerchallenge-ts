@@ -3,7 +3,7 @@ import {parseArg, shouldEqualMsg, Workspace} from './Workspace';
 import {default_world, World} from '../../src/world';
 import {expect} from 'chai';
 import {Color} from '../../src/color';
-import {Sphere} from '../../src/sphere';
+import {glass_sphere, Sphere} from '../../src/sphere';
 import {fail} from 'assert';
 import {Matrix, scaling, translation} from '../../src/matrix';
 import {Material} from '../../src/material';
@@ -186,17 +186,29 @@ function parseRawTable(data: string[][], shapeType = 'sphere'): Sphere {
             case 'material.reflective':
                 reflective = parseArg(data[r][1]);
                 break;
+            case 'material.refractive_index':
+                reflective = parseArg(data[r][1]);
+                break;
             case 'transform':
-                if (data[r][1].match('scaling')) {
+                if (data[r][1] === 'scaling(0.5, 0.5, 0.5)') {
                     t = scaling(0.5, 0.5, 0.5);
+                } else if (data[r][1].match('scaling(2, 2, 2)')) {
+                    t = scaling(2, 2, 2);
                 } else if (data[r][1] === 'translation(0, 0, 10)') {
                     t = translation(0, 0, 10);
                 } else if (data[r][1] === 'translation(0, 0, 1)') {
                     t = translation(0, 0, 1);
+                } else if (data[r][1] === 'translation(0, 1, 0)') {
+                    t = translation(0, 1, 0);
                 } else if (data[r][1] === 'translation(0, -1, 0)') {
                     t = translation(0, -1, 0);
+                } else if (data[r][1] === 'translation(0, 0, -0.25)') {
+                    t = translation(0, 0, -0.25);
+                } else if (data[r][1] === 'translation(0, 0, 0.25)') {
+                    t = translation(0, 0, 0.25);
+                } else {
+                    fail('Unexpected transform = "' + data[r][1] + '"');
                 }
-
                 break;
             default:
                 console.log('Hmmm....');
@@ -208,6 +220,8 @@ function parseRawTable(data: string[][], shapeType = 'sphere'): Sphere {
 
     if (shapeType === 'sphere') {
         return new Sphere(t, m);
+    } else if (shapeType === 'glass_sphere') {
+        return glass_sphere().replace(t).replace(m);
     }
     return new Plane(t, m);
 }
