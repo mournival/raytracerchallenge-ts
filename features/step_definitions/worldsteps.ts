@@ -192,7 +192,7 @@ function parseRawTable(data: string[][], shapeType = 'sphere'): Sphere {
             case 'transform':
                 if (data[r][1] === 'scaling(0.5, 0.5, 0.5)') {
                     t = scaling(0.5, 0.5, 0.5);
-                } else if (data[r][1].match('scaling(2, 2, 2)')) {
+                } else if (data[r][1] === 'scaling(2, 2, 2)') {
                     t = scaling(2, 2, 2);
                 } else if (data[r][1] === 'translation(0, 0, 10)') {
                     t = translation(0, 0, 10);

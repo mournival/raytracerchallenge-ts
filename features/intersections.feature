@@ -104,7 +104,7 @@ Scenario: The hit should offset the point
 #  And xs ← intersections(i1, i2, i3, i4)
 #When i ← hit(xs)
 #Then i = i4
-#
+
 #Scenario Outline: Finding n1 and n2 at various intersections
 #  Given A ← glass_sphere() with:
 #      | transform                 | scaling(2, 2, 2) |

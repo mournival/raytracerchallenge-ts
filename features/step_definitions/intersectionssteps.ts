@@ -107,6 +107,26 @@ class IntersectionsSteps {
         const expected = vector(parseArg(x), parseArg(y), parseArg(z));
         expect(Tuple.equals(actual, expected), shouldEqualMsg(actual, expected)).to.be.true;
     }
+
+    @given(/xs ← intersections\(2:A, 2.75:B, 3.25:C, 4.75:B, 5.25:C, 6:A\)/)
+    public givenIntersectionList() {
+        return 'pending';
+    }
+
+    @when(/^([\w\d_]+) ← prepare_computations\(([^,]+)\[([^,]+)\], ([\w\d_]+), \2\)$/)
+    public whenPrecomputationIs(pcId: string, intersectionsId: string, index: string, rayId: string) {
+        return 'pending';
+    }
+
+    @then(/^([\w\d_]+).n1 = ([^,]+)$/)
+    public thenN1Is(pcId: string, value: string) {
+        return 'pending';
+    }
+
+    @then(/^([\w\d_]+).n2 = ([^,]+)$/)
+    public thenN2Is(pcId: string, value: string) {
+        return 'pending';
+    }
 }
 
 export = IntersectionsSteps;
