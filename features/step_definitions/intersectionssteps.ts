@@ -34,7 +34,6 @@ class IntersectionsSteps {
         expect(actual).to.be.closeTo(expected, 0.0001);
     }
 
-
     @then(/^([\w\d_]+)\.object = ([^,.]+)$/)
     public thenObjectEquals(intersectionId: string, objId: string) {
         const actual = this.workspace.intersection[intersectionId].obj;
