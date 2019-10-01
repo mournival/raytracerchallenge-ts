@@ -95,8 +95,9 @@ class IntersectionsSteps {
 
     @then(/^([\w\d_]+)\.point\.z > [^.]+\.over_point\.z$/)
     public thenCompsOverPointGreater(pcId: string) {
-        const actual = (this.workspace.intersection[pcId] as PreComputations).point.z;
-        const expected = (this.workspace.intersection[pcId] as PreComputations).over_point.z;
+        const pc = this.workspace.intersection[pcId] as PreComputations;
+        const actual = pc.point.z;
+        const expected = pc.over_point.z;
 
         expect(actual).to.be.greaterThan(expected);
     }
@@ -109,7 +110,7 @@ class IntersectionsSteps {
     }
 
     @given(/xs ← intersections\(2:A, 2.75:B, 3.25:C, 4.75:B, 5.25:C, 6:A\)/)
-    public givenIntersectionList() {
+    public givenIntersectionList6() {
         const A = this.workspace.shapes['A'];
         const B = this.workspace.shapes['B'];
         const C = this.workspace.shapes['C'];
@@ -124,7 +125,7 @@ class IntersectionsSteps {
         ];
     }
 
-    @when(/^([\w\d_]+) ← prepare_computations\(([^,]+)\[([^,]+)\], ([\w\d_]+), \2\)$/)
+    @when(/^([\w\d_]+) ← prepare_computations\(([^,]+)\[([^,]+)], ([\w\d_]+), \2\)$/)
     public whenPrecomputationIs(pcId: string, intersectionsId: string, index: string, rayId: string) {
         const xs = this.workspace.intersections['xs'];
         this.workspace.intersection[pcId] = prepare_computations(xs[parseArg(index)], this.workspace.rays[rayId], xs)
@@ -171,6 +172,24 @@ class IntersectionsSteps {
         const expected = (this.workspace.intersection[pcId] as PreComputations).under_point.z;
 
         expect(actual).to.be.lessThan(expected);
+    }
+
+    @given(/([\w\d_]+) ← intersections\(4:shape, 6:shape\)/)
+    public givenIntersectionList2(intesectionsId: string) {
+        const s = this.workspace.shapes['shape'];
+
+        this.workspace.intersections[intesectionsId] = [
+            new Intersection(s, 2),
+            new Intersection(s, 2.75)
+        ];
+    }
+
+    @when(/^([\w\d_]+) ← refracted_color\(([\w\d_]+), ([\w\d_]+), ([\w\d_]+)\)$/)
+    public whenRefractedColor(colorId: string, worldId: string, pcId: string, remaining: string) {
+        this.workspace.colors[colorId] = this.workspace.worlds[worldId].refracted_color(
+            this.workspace.intersection[pcId] as PreComputations,
+            parseArg(remaining)
+        );
     }
 
 }

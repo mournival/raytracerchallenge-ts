@@ -72,6 +72,13 @@ export class World {
         return Color.multiplyScalar(color, comps.object.material.reflective);
 
     }
+
+    refracted_color(comps: PreComputations, remaining: number): Color {
+        if (comps.object.material.transparency === 0 || remaining === 0) {
+            return Color.BLACK;
+        }
+        return Color.WHITE;
+    }
 }
 
 export function default_world(): World {
