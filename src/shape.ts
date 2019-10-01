@@ -11,6 +11,14 @@ export abstract class Shape implements Interceptable {
                           public readonly material: Material) {
     }
 
+    static equals(lhs: Shape, rhs: Shape): boolean {
+        if (typeof lhs === typeof rhs) {
+            return Matrix.equals(lhs.transform, rhs.transform) &&
+                Material.equals(lhs.material, rhs.material);
+        }
+        return false;
+    }
+
     abstract local_intersection(r: Ray): Intersection[];
 
     abstract local_normal_at(pt: Tuple): Tuple;
@@ -18,7 +26,6 @@ export abstract class Shape implements Interceptable {
     abstract local_replace_transform(t: Matrix): Shape;
 
     abstract local_replace_material(m: Material): Shape;
-
 
     normal_at(point: Tuple): Tuple {
         const inverseTransform = this.transform.inverse;
@@ -29,7 +36,6 @@ export abstract class Shape implements Interceptable {
 
         return world_normal.normalize;
     }
-
 
     intersect(r: Ray): Intersection[] {
         return this.local_intersection(transform(r, this.transform.inverse));

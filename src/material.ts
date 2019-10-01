@@ -23,7 +23,12 @@ export class Material {
             Math.abs(lhs.ambient - rhs.ambient) < this.EPSILON &&
             Math.abs(lhs.diffuse - rhs.diffuse) < this.EPSILON &&
             Math.abs(lhs.specular - rhs.specular) < this.EPSILON &&
-            Math.abs(lhs.shininess - rhs.shininess) < this.EPSILON;
+            Math.abs(lhs.shininess - rhs.shininess) < this.EPSILON &&
+            Math.abs(lhs.reflective - rhs.reflective) < this.EPSILON &&
+            Math.abs(lhs.transparency - rhs.transparency) < this.EPSILON &&
+            Math.abs(lhs.refractive_index - rhs.refractive_index) < this.EPSILON
+            //           Pattern.equals(lhs.pattern, rhs.patter)
+            ;
     }
 
     public replace(field: string, value: Color | Pattern | number): Material {

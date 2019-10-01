@@ -170,6 +170,7 @@ function parseRawTable(data: string[][], shapeType = 'sphere'): Sphere {
     let specular = 0.9;
     const shininess = 200.0;
     let reflective = 0;
+    let refractive_index = 1.0;
 
     let t = Matrix.identity(4);
     for (let r = 0; r < rows; ++r) {
@@ -187,7 +188,7 @@ function parseRawTable(data: string[][], shapeType = 'sphere'): Sphere {
                 reflective = parseArg(data[r][1]);
                 break;
             case 'material.refractive_index':
-                reflective = parseArg(data[r][1]);
+                refractive_index = parseArg(data[r][1]);
                 break;
             case 'transform':
                 if (data[r][1] === 'scaling(0.5, 0.5, 0.5)') {
@@ -216,7 +217,7 @@ function parseRawTable(data: string[][], shapeType = 'sphere'): Sphere {
                 break;
         }
     }
-    const m = new Material(color, ambient, diffuse, specular, shininess, reflective);
+    const m = new Material(color, ambient, diffuse, specular, shininess, reflective, 0.0, refractive_index);
 
     if (shapeType === 'sphere') {
         return new Sphere(t, m);

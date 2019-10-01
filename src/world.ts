@@ -14,8 +14,8 @@ export class World {
     }
 
     public contains(o: Shape | Light): boolean {
-        if (o instanceof Sphere) {
-            return this.objects.find(os => Sphere.equals(os, o)) != undefined;
+        if (o instanceof Shape) {
+            return this.objects.find(os => Shape.equals(os, o)) != undefined;
         }
         if (o instanceof Light) {
             return this.lights.find(os => Light.equals(os, o)) != undefined;
