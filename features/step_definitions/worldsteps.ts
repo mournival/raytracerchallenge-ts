@@ -169,6 +169,12 @@ class WorldsSteps {
         this.workspace.worlds['w'] = this.workspace.worlds['w'].replace(orig, updated);
     }
 
+    @when(/^([\w\d_]+) ← shade_hit\(([^,]+), ([^,]+), ([^,]+)\)$/)
+    public whenShadeHitRecurses(colorId: string, worldId: string, pcId: string, remaining: string) {
+        this.workspace.colors[colorId] = this.workspace.worlds[worldId].shade_hit(
+            this.workspace.intersection[pcId] as PreComputations,
+            parseArg(remaining));
+    }
 
 }
 
@@ -188,7 +194,13 @@ function parseRawTable(data: string[][], shapeType = 'sphere'): Sphere {
     for (let r = 0; r < rows; ++r) {
         switch (data[r][0]) {
             case 'material.color':
-                color = new Color(0.8, 1.0, 0.6);
+                if (data[r][1] === '(1, 0, 0)') {
+                    color = new Color(1, 0, 0);
+                } else if (data[r][1] === '(0.8, 1.0, 0.6)') {
+                    color = new Color(0.8, 1.0, 0.6);
+                } else {
+                    fail('Unexpected color = "' + data[r][1] + '"');
+                }
                 break;
             case 'material.ambient':
                 ambient = parseArg(data[r][1]);

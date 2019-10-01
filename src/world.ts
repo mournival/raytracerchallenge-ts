@@ -50,7 +50,8 @@ export class World {
     shade_hit(pc: PreComputations, remaining: number): Color {
         const surface = pc.object.material.lighting(pc.point, pc.eyev, pc.normalv, this.lights[0], this.is_shadowed(pc.over_point), pc.object);
         const reflected = this.reflected_color(pc, remaining);
-        return Color.add(surface, reflected);
+        const refracted = this.refracted_color(pc, remaining);
+        return Color.add(Color.add(surface, reflected), refracted);
     }
 
     is_shadowed(p: Tuple): boolean {

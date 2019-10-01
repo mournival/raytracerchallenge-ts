@@ -3,7 +3,7 @@
 import {point, vector} from '../tuple';
 import {Canvas} from '../canvas';
 import {Color} from '../color';
-import {Sphere} from '../sphere';
+import {glass_sphere, Sphere} from '../sphere';
 import {Matrix, rotation_x, rotation_y, rotation_z, scaling, translation, view_transform} from '../matrix';
 import {Material} from '../material';
 import {Light} from '../light';
@@ -89,7 +89,7 @@ const world = new World([
         left
     ]);
 
-const camera = new Camera(Math.floor(3200 / 4), Math.floor(2400 / 4), Math.PI / 3,
+const camera = new Camera(Math.floor(3200 / 16), Math.floor(2400 / 16), Math.PI / 3,
     view_transform(
         point(0, 1.0, -7),
         point(0, 1, 0),
