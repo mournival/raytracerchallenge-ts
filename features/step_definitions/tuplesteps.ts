@@ -74,7 +74,7 @@ class TupleSteps {
     }
 
     @then(/^([\w\d_]+) = color\(([^,]+), ([^,]+), ([^,]+)\)$/)
-    public thencolorEquals(id: string, r: string, g: string, b: string): void {
+    public thenColorEquals(id: string, r: string, g: string, b: string): void {
         let expected = new Color(parseArg(r), parseArg(g), parseArg(b));
         const actual = this.workspace.colors[id];
         expect(Color.equals(actual, expected), shouldEqualMsg(actual, expected)).to.be.true;

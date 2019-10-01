@@ -127,7 +127,7 @@ class IntersectionsSteps {
 
     @when(/^([\w\d_]+) ← prepare_computations\(([^,]+)\[([^,]+)], ([\w\d_]+), \2\)$/)
     public whenPrecomputationIs(pcId: string, intersectionsId: string, index: string, rayId: string) {
-        const xs = this.workspace.intersections['xs'];
+        const xs = this.workspace.intersections[intersectionsId];
         this.workspace.intersection[pcId] = prepare_computations(xs[parseArg(index)], this.workspace.rays[rayId], xs)
     }
 
@@ -145,9 +145,16 @@ class IntersectionsSteps {
         expect(actual).to.be.closeTo(expected, 0.001);
     }
 
-    @given(/^([\w\d_]+) ← intersections\(([^,]+)\)$/)
-    public givenInstersections(intersectionsId: string, intersectionId: string) {
+    @given(/^([\w\d_]+) ← intersections\(([^,:]+)\)$/)
+    public givenIntersectionsById(intersectionsId: string, intersectionId: string) {
         this.workspace.intersections[intersectionsId] = [this.workspace.intersection[intersectionId]];
+    }
+
+    @given(/^([\w\d_]+) ← intersections\(([^,]+):([\w\d_]+)\)$/)
+    public givenIntersectionsByParts(intersectionsId: string, t1: string, s1: string) {
+        this.workspace.intersections[intersectionsId] = [
+            new Intersection(this.workspace.shapes[s1], parseArg(t1)),
+        ];
     }
 
     @when(/^([\w\d_]+) ← prepare_computations\(([\w\d_]+), ([\w\d_]+), ([\w\d_]+)\)$/)
@@ -174,14 +181,22 @@ class IntersectionsSteps {
         expect(actual).to.be.lessThan(expected);
     }
 
-    @given(/([\w\d_]+) ← intersections\(4:shape, 6:shape\)/)
-    public givenIntersectionList2(intesectionsId: string) {
-        const s = this.workspace.shapes['shape'];
-
+    @given(/([\w\d_]+) ← intersections\(([^,]+):([\w\d_]+), ([^,]+):([\w\d_]+), ([^,]+):([\w\d_]+), ([^,]+):([\w\d_]+)\)/)
+    public givenIntersectionList4(intesectionsId: string, t1: string, s1: string, t2: string, s2: string, t3: string, s3: string, t4: string, s4: string) {
         this.workspace.intersections[intesectionsId] = [
-            new Intersection(s, 2),
-            new Intersection(s, 2.75)
+            new Intersection(this.workspace.shapes[s1], parseArg(t1)),
+            new Intersection(this.workspace.shapes[s2], parseArg(t2)),
+            new Intersection(this.workspace.shapes[s3], parseArg(t3)),
+            new Intersection(this.workspace.shapes[s4], parseArg(t4))
         ];
+    }
+
+    @given(/([\w\d_]+) ← intersections\(([^,]+):([\w\d_]+), ([^,]+):([\w\d_]+)\)/)
+    public givenIntersectionList2(intesectionsId: string, t1: string, s1: string, t2: string, s2: string) {
+        this.workspace.intersections[intesectionsId] = [
+            new Intersection(this.workspace.shapes[s1], parseArg(t1)),
+            new Intersection(this.workspace.shapes[s2], parseArg(t2))
+        ]
     }
 
     @when(/^([\w\d_]+) ← refracted_color\(([\w\d_]+), ([\w\d_]+), ([\w\d_]+)\)$/)

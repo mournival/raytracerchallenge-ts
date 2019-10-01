@@ -74,10 +74,27 @@ export class World {
     }
 
     refracted_color(comps: PreComputations, remaining: number): Color {
-        if (comps.object.material.transparency === 0 || remaining === 0) {
+        if (comps.object.material.transparency === 0 || remaining === 0 || comps.n1 === undefined || comps.n2 === undefined) {
             return Color.BLACK;
         }
-        return Color.WHITE;
+
+        const n_ratio = comps.n1 / comps.n2;
+        const cos_i = Tuple.dot(comps.eyev, comps.normalv);
+        const sin2_t = (n_ratio * n_ratio) * (1 - cos_i * cos_i);
+
+        if (sin2_t > 1) {
+            return Color.BLACK;
+        }
+        const cos_t = Math.sqrt(1.0 - sin2_t);
+        const direction = Tuple.subtract(
+            Tuple.multiply(comps.normalv, n_ratio * cos_i - cos_t),
+            Tuple.multiply(comps.eyev, n_ratio)
+        );
+        const refract_ray = new Ray(comps.under_point, direction);
+        return Color.multiplyScalar(
+            this.color_at(refract_ray, remaining - 1),
+            comps.object.material.transparency
+        );
     }
 }
 

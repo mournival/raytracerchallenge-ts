@@ -12,6 +12,7 @@ import {Light} from '../../src/light';
 import {point} from '../../src/tuple';
 import {transform} from '../../src/ray';
 import {Plane} from '../../src/plane';
+import {test_pattern} from '../../src/pattern';
 
 @binding([Workspace])
 class WorldsSteps {
@@ -162,7 +163,10 @@ class WorldsSteps {
 
     @given(/^([\w\d_]+) has:$/)
     public givenShapeByProperties(shapeId: string, dataTable: { rawTable: [][] }) {
-        this.workspace.shapes[shapeId] = parseRawTable(dataTable.rawTable, 'sphere');
+        const orig = this.workspace.shapes[shapeId];
+        const updated = parseRawTable(dataTable.rawTable, 'sphere');
+        this.workspace.shapes[shapeId] = updated;
+        this.workspace.worlds['w'] = this.workspace.worlds['w'].replace(orig, updated);
     }
 
 
@@ -171,19 +175,23 @@ class WorldsSteps {
 function parseRawTable(data: string[][], shapeType = 'sphere'): Sphere {
     const rows = data.length;
     let color: Color = new Color(1, 1, 1);
-    const ambient = 0.1;
+    let ambient = 0.1;
     let diffuse = 0.9;
     let specular = 0.9;
     const shininess = 200.0;
-    let reflective = 0;
+    let reflective = 0.0;
     let refractive_index = 1.0;
-    let transparency = 0;
+    let transparency = 0.0;
+    let pattern = null;
 
     let t = Matrix.identity(4);
     for (let r = 0; r < rows; ++r) {
         switch (data[r][0]) {
             case 'material.color':
                 color = new Color(0.8, 1.0, 0.6);
+                break;
+            case 'material.ambient':
+                ambient = parseArg(data[r][1]);
                 break;
             case 'material.diffuse':
                 diffuse = parseArg(data[r][1]);
@@ -199,6 +207,9 @@ function parseRawTable(data: string[][], shapeType = 'sphere'): Sphere {
                 break;
             case 'material.transparency':
                 transparency = parseArg(data[r][1]);
+                break;
+            case 'material.pattern':
+                pattern = test_pattern();
                 break;
             case 'transform':
                 if (data[r][1] === 'scaling(0.5, 0.5, 0.5)') {
@@ -217,6 +228,8 @@ function parseRawTable(data: string[][], shapeType = 'sphere'): Sphere {
                     t = translation(0, 0, -0.25);
                 } else if (data[r][1] === 'translation(0, 0, 0.25)') {
                     t = translation(0, 0, 0.25);
+                } else if (data[r][1] === 'translation(0, -3.5, -0.5)') {
+                    t = translation(0, -3.5, -0.5);
                 } else {
                     fail('Unexpected transform = "' + data[r][1] + '"');
                 }
@@ -227,7 +240,7 @@ function parseRawTable(data: string[][], shapeType = 'sphere'): Sphere {
                 break;
         }
     }
-    const m = new Material(color, ambient, diffuse, specular, shininess, reflective, transparency, refractive_index);
+    const m = new Material(color, ambient, diffuse, specular, shininess, reflective, transparency, refractive_index, pattern);
 
     if (shapeType === 'sphere') {
         return new Sphere(t, m);
