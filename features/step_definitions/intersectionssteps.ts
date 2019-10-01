@@ -132,7 +132,7 @@ class IntersectionsSteps {
 
     @then(/^([\w\d_]+).n1 = ([^,]+)$/)
     public thenN1Is(pcId: string, value: string) {
-        const actual = (this.workspace.intersection[pcId] as PreComputations).n1 ;
+        const actual = (this.workspace.intersection[pcId] as PreComputations).n1;
         const expected = parseArg(value);
         expect(actual).to.be.closeTo(expected, 0.001);
     }
@@ -143,6 +143,36 @@ class IntersectionsSteps {
         const expected = parseArg(value);
         expect(actual).to.be.closeTo(expected, 0.001);
     }
+
+    @given(/^([\w\d_]+) ← intersections\(([^,]+)\)$/)
+    public givenInstersections(intersectionsId: string, intersectionId: string) {
+        this.workspace.intersections[intersectionsId] = [this.workspace.intersection[intersectionId]];
+    }
+
+    @when(/^([\w\d_]+) ← prepare_computations\(([\w\d_]+), ([\w\d_]+), ([\w\d_]+)\)$/)
+    public givenPrecomputations(pcId: string, intersectionId: string, rayId: string, xsId: string) {
+        this.workspace.intersection[pcId] = prepare_computations(
+            this.workspace.intersection[intersectionId],
+            this.workspace.rays[rayId],
+            this.workspace.intersections[xsId]
+        );
+    }
+
+    @then(/^([\w\d_]+)\.under_point\.z > EPSILON\/2$/)
+    public thenCompsUnderPointLess(pcId: string) {
+        const actual = (this.workspace.intersection[pcId] as PreComputations).under_point.z;
+
+        expect(actual).to.be.greaterThan(Tuple.EPSILON / 2);
+    }
+
+    @then(/^([\w\d_]+)\.point\.z < [^.]+\.under_point\.z$/)
+    public thenCompsUnderPointGreater(pcId: string) {
+        const actual = (this.workspace.intersection[pcId] as PreComputations).point.z;
+        const expected = (this.workspace.intersection[pcId] as PreComputations).under_point.z;
+
+        expect(actual).to.be.lessThan(expected);
+    }
+
 }
 
 export = IntersectionsSteps;

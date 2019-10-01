@@ -52,16 +52,16 @@ Scenario: The hit should offset the point
   Then comps.over_point.z < -EPSILON/2
     And comps.point.z > comps.over_point.z
 
-#Scenario: The under point is offset below the surface
-#  Given r ← ray(point(0, 0, -5), vector(0, 0, 1))
-#    And shape ← glass_sphere() with:
-#      | transform | translation(0, 0, 1) |
-#    And i ← intersection(5, shape)
-#    And xs ← intersections(i)
-#  When comps ← prepare_computations(i, r, xs)
-#  Then comps.under_point.z > EPSILON/2
-#    And comps.point.z < comps.under_point.z
-#
+Scenario: The under point is offset below the surface
+  Given r ← ray(point(0, 0, -5), vector(0, 0, 1))
+    And shape ← glass_sphere() with:
+      | transform | translation(0, 0, 1) |
+    And i ← intersection(5, shape)
+    And xs ← intersections(i)
+  When comps ← prepare_computations(i, r, xs)
+  Then comps.under_point.z > EPSILON/2
+    And comps.point.z < comps.under_point.z
+
 #Scenario: Aggregating intersections
 #  Given s ← sphere()
 #    And i1 ← intersection(1, s)
