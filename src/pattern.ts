@@ -49,10 +49,7 @@ export function test_pattern() {
 
 //
 function gradient_function(a: Color, b: Color): PatternFunction {
-    return (p: Tuple) => Color.add(a,
-        Color.multiplyScalar(
-            Color.subtract(b, a),
-            p.x - Math.floor(p.x)));
+    return (p: Tuple) => Color.add(a, Color.subtract(b, a).scale(p.x - Math.floor(p.x)));
 }
 
 export function gradient_pattern(a: Color, b: Color, transform = Matrix.identity()): Pattern {

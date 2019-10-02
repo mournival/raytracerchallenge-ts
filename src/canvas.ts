@@ -43,7 +43,7 @@ export class Canvas {
             while (strings.length > 0) {
                 let ll = 0;
                 let i = 0;
-                while (ll < 67 && i < strings.length) {
+                while (ll < 66 && i < strings.length) {
                     ll += strings[i].length + 1;
                     ++i;
                 }

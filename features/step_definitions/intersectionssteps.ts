@@ -5,6 +5,7 @@ import {expect} from 'chai';
 import {Sphere} from '../../src/sphere';
 import {PreComputations, prepare_computations} from '../../src/pre-computations';
 import {point, Tuple, vector} from '../../src/tuple';
+import {hit} from "../../src/world";
 
 @binding([Workspace])
 class IntersectionsSteps {
@@ -150,6 +151,26 @@ class IntersectionsSteps {
         this.workspace.intersections[intersectionsId] = [this.workspace.intersection[intersectionId]];
     }
 
+    @given(/^([\w\d_]+) ← intersections\(([^,:]+), ([^,:]+)\)$/)
+    public given2IntersectionsById(intersectionsId: string, i1: string, i2: string) {
+        this.workspace.intersections[intersectionsId] = [
+            this.workspace.intersection[i1],
+            this.workspace.intersection[i2]
+
+        ];
+    }
+
+    @given(/^([\w\d_]+) ← intersections\(([^,:]+), ([^,:]+), ([^,:]+), ([^,:]+)\)$/)
+    public given4IntersectionsById(intersectionsId: string, i1: string, i2: string, i3: string, i4: string) {
+        this.workspace.intersections[intersectionsId] = [
+            this.workspace.intersection[i1],
+            this.workspace.intersection[i2],
+            this.workspace.intersection[i3],
+            this.workspace.intersection[i4]
+
+        ];
+    }
+
     @given(/^([\w\d_]+) ← intersections\(([^,]+):([\w\d_]+)\)$/)
     public givenIntersectionsByParts(intersectionsId: string, t1: string, s1: string) {
         this.workspace.intersections[intersectionsId] = [
@@ -205,6 +226,38 @@ class IntersectionsSteps {
             this.workspace.intersection[pcId] as PreComputations,
             parseArg(remaining)
         );
+    }
+
+    @when(/^([\w\d_]+) ← schlick\(([\w\d_]+)\)$/)
+    public whenSchlickRefraction(numId: string, pcId: string) {
+        this.workspace.numbers[numId] = (this.workspace.intersection[pcId] as PreComputations).schlick();
+    }
+
+    @then(/^reflectance = ([^,]+)$/)
+    public thenReflectanceIs(value: string) {
+        const actual = this.workspace.numbers['reflectance'];
+        const expected = parseArg(value);
+
+        expect(actual).to.be.closeTo(expected, 0.0001);
+    }
+
+    @when(/^([\w\d_]+) ← hit\(([\w\d_]+)\)$/)
+    public whenHitIs(intersectionId: string, xsId: string) {
+        this.workspace.intersection[intersectionId] = hit(this.workspace.intersections[xsId])[0];
+    }
+
+    @then(/^i = ([^,]+)$/)
+    public thenHitIs(intersectionId: string) {
+        const actual = this.workspace.intersection['i'];
+        const expected = this.workspace.intersection[intersectionId];
+
+        expect(actual.t).to.be.equal(expected.t);
+    }
+
+    @then(/^i is nothing$/)
+    public thenIIsNothing() {
+        const actual = this.workspace.intersection['i'];
+        expect(actual).to.be.undefined;
     }
 
 }

@@ -68,7 +68,7 @@ for (let y = 0; y < canvas.height; ++y) {
             const point = position(ray, intersection.t);
             const normal = intersection.obj.normal_at(point);
             const eye = ray.direction.negative;
-            const color = intersection.obj.material.lighting(point, eye, normal, light);
+            const color = intersection.obj.material.lighting(point, eye, normal, light, false);
             Canvas.write_pixel(canvas, x, y, color);
         }
     }

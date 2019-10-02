@@ -8,8 +8,8 @@ import {Shape} from './shape';
 export class Sphere extends Shape {
 
     constructor(
-        public readonly transform: Matrix = Matrix.identity(4),
-        public readonly material = new Material()
+        public readonly transform: Matrix = Matrix.identity(),
+        public readonly material: Material = new Material()
     ) {
         super(transform, material);
     }
@@ -42,7 +42,7 @@ export class Sphere extends Shape {
     }
 
     local_replace_transform(t: Matrix): Shape {
-        return new Sphere(t);
+        return new Sphere(t, this.material);
     }
 
     local_replace_material(m: Material): Shape {
@@ -51,5 +51,5 @@ export class Sphere extends Shape {
 }
 
 export function glass_sphere(): Sphere {
-    return new Sphere().replace(new Material().replace('transparency', 1.0).replace('refractive_index', 1.5));
+    return new Sphere().replace((new Material()).replace('transparency', 1.0).replace('refractive_index', 1.5));
 }

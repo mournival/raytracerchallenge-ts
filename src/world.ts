@@ -9,6 +9,15 @@ import {Intersection} from './intersection';
 import {PreComputations, prepare_computations} from './pre-computations';
 import {Shape} from './shape';
 
+export function hit(intersections: Intersection[]) {
+    if (!intersections || intersections.length === 0)
+        return [];
+    const xs = intersections.filter(i => i.t >= 0).sort((a, b) => a.t - b.t);
+    if (!xs || xs.length === 0)
+        return [];
+    return [xs[0]];
+}
+
 export class World {
     constructor(public readonly lights: Light[] = [], public readonly objects: Shape[] = []) {
     }
@@ -28,8 +37,8 @@ export class World {
         return new World(this.lights, map);
     }
 
-    color_at(r: Ray, remaining: number = 5): Color {
-        const xs = this.intersect_world(r);
+    color_at(r: Ray, remaining: number): Color {
+        const xs = hit(this.intersect_world(r));
         if (xs.length === 0) {
             return Color.BLACK;
         }
@@ -38,7 +47,7 @@ export class World {
 
     intersect_world(r: Ray): Intersection[] {
         // Require Node Version 11+
-        return this.objects.flatMap(o => o.intersect(r)).filter(i => i.t >= 0).sort((a, b) => a.t - b.t);
+        return this.objects.flatMap(o => o.intersect(r)).sort((a, b) => a.t - b.t);
 
         // for Node Version < 11
         // const xs: Intersection[] = [];
@@ -48,10 +57,17 @@ export class World {
     }
 
     shade_hit(pc: PreComputations, remaining: number): Color {
-        const surface = pc.object.material.lighting(pc.point, pc.eyev, pc.normalv, this.lights[0], this.is_shadowed(pc.over_point), pc.object);
-        const reflected = this.reflected_color(pc, remaining);
-        const refracted = this.refracted_color(pc, remaining);
-        return Color.add(Color.add(surface, reflected), refracted);
+        const material = pc.object.material;
+        const surface = material.lighting(pc.point, pc.eyev, pc.normalv, this.lights[0], this.is_shadowed(pc.over_point), pc.object);
+        let reflected = this.reflected_color(pc, remaining);
+        let refracted = this.refracted_color(pc, remaining);
+        if (material.reflective > 0 && material.transparency > 0) {
+            const reflectance = pc.schlick();
+            reflected = reflected.scale(reflectance);
+            refracted = refracted.scale((1 - reflectance));
+        }
+        const intermediate = Color.add(refracted, reflected);
+        return Color.add(surface, intermediate);
     }
 
     is_shadowed(p: Tuple): boolean {
@@ -59,7 +75,7 @@ export class World {
         const distance = v.magnitude;
         const direction = v.normalize;
         const r = new Ray(p, direction);
-        const intersections = this.intersect_world(r);
+        const intersections = hit(this.intersect_world(r));
 
         return intersections.length > 0 && intersections[0].t < distance;
     }
@@ -70,12 +86,12 @@ export class World {
         }
         const reflect_ray = new Ray(comps.over_point, comps.reflectv);
         const color = this.color_at(reflect_ray, remaining - 1);
-        return Color.multiplyScalar(color, comps.object.material.reflective);
+        return color.scale(comps.object.material.reflective);
 
     }
 
     refracted_color(comps: PreComputations, remaining: number): Color {
-        if (comps.object.material.transparency === 0 || remaining === 0 || comps.n1 === undefined || comps.n2 === undefined) {
+        if (!comps.object.material.transparency || !remaining || !comps.n1 || !comps.n2) {
             return Color.BLACK;
         }
 
@@ -87,15 +103,15 @@ export class World {
             return Color.BLACK;
         }
         const cos_t = Math.sqrt(1.0 - sin2_t);
+        const lhs = Tuple.multiply(comps.normalv, n_ratio * cos_i - cos_t);
+        const rhs = Tuple.multiply(comps.eyev, n_ratio);
         const direction = Tuple.subtract(
-            Tuple.multiply(comps.normalv, n_ratio * cos_i - cos_t),
-            Tuple.multiply(comps.eyev, n_ratio)
+            lhs,
+            rhs
         );
         const refract_ray = new Ray(comps.under_point, direction);
-        return Color.multiplyScalar(
-            this.color_at(refract_ray, remaining - 1),
-            comps.object.material.transparency
-        );
+        const colorAt = this.color_at(refract_ray, remaining - 1);
+        return colorAt.scale(comps.object.material.transparency);
     }
 }
 
@@ -110,5 +126,5 @@ export function default_world(): World {
             new Sphere(scaling(0.5, 0.5, 0.5))
         ]
     );
-
 }
+

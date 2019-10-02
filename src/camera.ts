@@ -41,7 +41,7 @@ export class Camera {
         for (let y = 0; y < this.vsize; ++y) {
             for (let x = 0; x < this.hsize; ++x) {
                 const ray = this.ray_for_pixel(x, y);
-                const color = world.color_at(ray);
+                const color = world.color_at(ray, 5);
                 Canvas.write_pixel(image, y, x, color);
             }
         }

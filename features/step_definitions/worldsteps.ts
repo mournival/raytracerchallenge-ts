@@ -1,6 +1,6 @@
 import {binding, given, then, when} from 'cucumber-tsflow';
 import {parseArg, shouldEqualMsg, Workspace} from './Workspace';
-import {default_world, World} from '../../src/world';
+import {default_world, hit, World} from '../../src/world';
 import {expect} from 'chai';
 import {Color} from '../../src/color';
 import {glass_sphere, Sphere} from '../../src/sphere';
@@ -13,6 +13,7 @@ import {point} from '../../src/tuple';
 import {transform} from '../../src/ray';
 import {Plane} from '../../src/plane';
 import {test_pattern} from '../../src/pattern';
+import {Shape} from '../../src/shape';
 
 @binding([Workspace])
 class WorldsSteps {
@@ -102,7 +103,7 @@ class WorldsSteps {
 
     @when(/^([\w\d_]+) ← color_at\(([\w\d_]+), ([\w\d_]+)\)$/)
     public whenColorAt(colorID: string, worldId: string, rayId: string) {
-        this.workspace.colors[colorID] = this.workspace.worlds[worldId].color_at(this.workspace.rays[rayId]);
+        this.workspace.colors[colorID] = this.workspace.worlds[worldId].color_at(this.workspace.rays[rayId], 5);
     }
 
 
@@ -151,7 +152,7 @@ class WorldsSteps {
 
     @then(/^color_at\(w, r\) should terminate successfully$/)
     public thenShouldTerminate() {
-        this.workspace.worlds['w'].color_at(this.workspace.rays['r'])
+        this.workspace.worlds['w'].color_at(this.workspace.rays['r'], 5)
     }
 
     @when(/^([\w\d_]+) ← reflected_color\(([\w\d_]+), ([\w\d_]+), ([^,]+)\)$/)
@@ -178,29 +179,23 @@ class WorldsSteps {
 
 }
 
-function parseRawTable(data: string[][], shapeType = 'sphere'): Sphere {
+function parseRawTable(data: string[][], shapeType = 'sphere'): Shape {
     const rows = data.length;
     let color: Color = new Color(1, 1, 1);
     let ambient = 0.1;
     let diffuse = 0.9;
     let specular = 0.9;
-    const shininess = 200.0;
+    let shininess = 200.0;
     let reflective = 0.0;
     let refractive_index = 1.0;
     let transparency = 0.0;
     let pattern = null;
-
     let t = Matrix.identity(4);
+
     for (let r = 0; r < rows; ++r) {
         switch (data[r][0]) {
             case 'material.color':
-                if (data[r][1] === '(1, 0, 0)') {
-                    color = new Color(1, 0, 0);
-                } else if (data[r][1] === '(0.8, 1.0, 0.6)') {
-                    color = new Color(0.8, 1.0, 0.6);
-                } else {
-                    fail('Unexpected color = "' + data[r][1] + '"');
-                }
+                color = parseColor(data[r][1]);
                 break;
             case 'material.ambient':
                 ambient = parseArg(data[r][1]);
@@ -211,43 +206,25 @@ function parseRawTable(data: string[][], shapeType = 'sphere'): Sphere {
             case 'material.specular':
                 specular = parseArg(data[r][1]);
                 break;
+            case 'material.shininess':
+                shininess = parseArg(data[r][1]);
+                break;
             case 'material.reflective':
                 reflective = parseArg(data[r][1]);
                 break;
-            case 'material.refractive_index':
-                refractive_index = parseArg(data[r][1]);
-                break;
             case 'material.transparency':
                 transparency = parseArg(data[r][1]);
+                break;
+            case 'material.refractive_index':
+                refractive_index = parseArg(data[r][1]);
                 break;
             case 'material.pattern':
                 pattern = test_pattern();
                 break;
             case 'transform':
-                if (data[r][1] === 'scaling(0.5, 0.5, 0.5)') {
-                    t = scaling(0.5, 0.5, 0.5);
-                } else if (data[r][1] === 'scaling(2, 2, 2)') {
-                    t = scaling(2, 2, 2);
-                } else if (data[r][1] === 'translation(0, 0, 10)') {
-                    t = translation(0, 0, 10);
-                } else if (data[r][1] === 'translation(0, 0, 1)') {
-                    t = translation(0, 0, 1);
-                } else if (data[r][1] === 'translation(0, 1, 0)') {
-                    t = translation(0, 1, 0);
-                } else if (data[r][1] === 'translation(0, -1, 0)') {
-                    t = translation(0, -1, 0);
-                } else if (data[r][1] === 'translation(0, 0, -0.25)') {
-                    t = translation(0, 0, -0.25);
-                } else if (data[r][1] === 'translation(0, 0, 0.25)') {
-                    t = translation(0, 0, 0.25);
-                } else if (data[r][1] === 'translation(0, -3.5, -0.5)') {
-                    t = translation(0, -3.5, -0.5);
-                } else {
-                    fail('Unexpected transform = "' + data[r][1] + '"');
-                }
+                t = parseMatrixOp(data[r][1]);
                 break;
             default:
-                console.log('Hmmm....');
                 fail('Unexpected field');
                 break;
         }
@@ -258,8 +235,35 @@ function parseRawTable(data: string[][], shapeType = 'sphere'): Sphere {
         return new Sphere(t, m);
     } else if (shapeType === 'glass_sphere') {
         return glass_sphere().replace(t).replace(m);
+    } else if (shapeType === 'plane') {
+        return new Plane(t, m);
     }
-    return new Plane(t, m);
+    fail('Unexpected Object type : ' + shapeType);
+    return new Sphere();
+
+}
+
+function parseMatrixOp(s: string): Matrix {
+    const fields = s.match(/([\w]+)\(([^,]+), ([^,]+), ([^,]+)\)/);
+    if (fields) {
+        if (fields[1] === 'scaling') {
+            return scaling(parseArg(fields[2]), parseArg(fields[3]), parseArg(fields[4]));
+        }
+        if (fields[1] === 'translation') {
+            return translation(parseArg(fields[2]), parseArg(fields[3]), parseArg(fields[4]));
+        }
+    }
+    fail('Unexpected field');
+    return new Matrix(0, 0);
+}
+
+function parseColor(s: string): Color {
+    const fields = s.match(/\(([^,]+), ([^,]+), ([^,]+)\)/);
+    if (fields) {
+        return new Color(parseArg(fields[1]), parseArg(fields[2]), parseArg(fields[3]));
+    }
+    fail('Unexpected field');
+    return Color.BLACK;
 }
 
 export = WorldsSteps;

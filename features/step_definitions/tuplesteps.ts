@@ -155,7 +155,7 @@ class TupleSteps {
                     ).to.be.true;
                 } else {
                     expect(
-                        Color.equals(Color.multiplyScalar(this.workspace.colors[lhs], parseArg(rhs)), new Color(parseArg(x), parseArg(y), parseArg(z)))
+                        Color.equals(this.workspace.colors[lhs].scale(parseArg(rhs)), new Color(parseArg(x), parseArg(y), parseArg(z)))
                     ).to.be.true;
                 }
                 break;

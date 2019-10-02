@@ -48,14 +48,13 @@ export class Color {
         );
     }
 
-    static multiplyScalar(lhs: Color, rhs: number): Color {
+    scale(s: number) : Color {
         return new Color(
-            lhs.red * rhs,
-            lhs.green * rhs,
-            lhs.blue * rhs
+            this.red * s,
+            this.green * s,
+            this.blue * s
         );
     }
-
     asString(): string {
         return this.red + ' ' + this.green + ' ' + this.blue;
     }

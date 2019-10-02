@@ -62,7 +62,7 @@ class MaterialsSteps {
 
     @when(/^([\w\d_]+) ← lighting\(([^,]+), ([^,]+), ([^,]+), ([^,]+), ([^,]+)\)$/)
     public lightingResult(resColorId: string, matId: string, lightId: string, positionId: string, eyeVectorId: string, normalVectorId: string) {
-        this.workspace.colors[resColorId] = this.workspace.materials[matId].lighting(this.workspace.tuples[positionId], this.workspace.tuples[eyeVectorId], this.workspace.tuples[normalVectorId], this.workspace.lights[lightId]);
+        this.workspace.colors[resColorId] = this.workspace.materials[matId].lighting(this.workspace.tuples[positionId], this.workspace.tuples[eyeVectorId], this.workspace.tuples[normalVectorId], this.workspace.lights[lightId], false);
     }
 
     @given(/^([\w\d_]+) ← true$/)

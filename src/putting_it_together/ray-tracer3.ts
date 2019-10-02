@@ -3,7 +3,7 @@
 import {point, vector} from '../tuple';
 import {Canvas} from '../canvas';
 import {Color} from '../color';
-import {glass_sphere, Sphere} from '../sphere';
+import {Sphere} from '../sphere';
 import {Matrix, rotation_x, rotation_y, rotation_z, scaling, translation, view_transform} from '../matrix';
 import {Material} from '../material';
 import {Light} from '../light';
@@ -63,17 +63,22 @@ const ceiling = new Plane(
 
 const middle = new Sphere(
     translation(-0.5, 1, 0.5),
-    new Material(Color.multiplyScalar(new Color(246, 103, 51), 1 / 255), 0.1, 0.7, 0.3, 200, 0.1)
+    new Material((new Color(246, 103, 51).scale(1 / 255)), 0.1, 0.7, 0.3, 200, 0.1)
+);
+
+const middle2 = new Sphere(
+    translation(-1.5, 1, -2.5),
+    new Material(Color.BLACK, 0.05, 0.05, 1, 200, 1, 1, 2.25)
 );
 
 const right = new Sphere(
     Matrix.multiply(translation(1.5, 0.5, -0.5), scaling(0.5, 0.5, 0.5)),
-    new Material(Color.multiplyScalar(new Color(82, 45, 128), 1 / 255), 0.1, 0.7, 0.6, 200, 0.3)
+    new Material(new Color(82, 45, 128).scale(1 / 255), 0.1, 0.7, 0.6, 200, 0.3)
 );
 
 const left = new Sphere(
     Matrix.multiply(translation(-1.5, 1 / 3, -0.75), scaling(1 / 3, 1 / 3, 1 / 3)),
-    new Material(Color.multiplyScalar(new Color(249, 228, 152), 1 / 255), 0.1, 0.7, 0.01, 200, 0.2)
+    new Material(new Color(249, 228, 152).scale(1 / 255), 0.1, 0.7, 0.01, 200, 0.2)
 );
 
 const world = new World([
@@ -82,14 +87,15 @@ const world = new World([
     [
         floor,
         left_wall,
-        // right_wall,
+        right_wall,
         // ceiling,
         middle,
+        middle2,
         right,
         left
     ]);
 
-const camera = new Camera(Math.floor(3200 / 16), Math.floor(2400 / 16), Math.PI / 3,
+const camera = new Camera(Math.floor(3200 / 8), Math.floor(2400 / 8), Math.PI / 3,
     view_transform(
         point(0, 1.0, -7),
         point(0, 1, 0),

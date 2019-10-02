@@ -33,8 +33,6 @@ export class Material {
 
     public replace(field: string, value: Color | Pattern | number): Material {
         switch (field) {
-            case 'pattern':
-                return new Material(this.color, this.ambient, this.diffuse, this.specular, this.shininess, this.reflective, this.transparency, this.refractive_index, value as Pattern);
             case 'color':
                 return new Material(value as Color, this.ambient, this.diffuse, this.specular, this.shininess, this.reflective, this.transparency, this.refractive_index, this.pattern);
             case 'ambient':
@@ -51,16 +49,18 @@ export class Material {
                 return new Material(this.color, this.ambient, this.diffuse, this.specular, this.shininess, this.reflective, value as number, this.refractive_index, this.pattern);
             case 'refractive_index':
                 return new Material(this.color, this.ambient, this.diffuse, this.specular, this.shininess, this.reflective, this.transparency, value as number, this.pattern);
+            case 'pattern':
+                return new Material(this.color, this.ambient, this.diffuse, this.specular, this.shininess, this.reflective, this.transparency, this.refractive_index, value as Pattern);
             default:
                 throw 'Unexpected field: ' + field;
 
         }
     }
 
-    lighting(point: Tuple, eyev: Tuple, normalv: Tuple, light: Light, inShadow = false, object?: Shape): Color {
+    lighting(point: Tuple, eyev: Tuple, normalv: Tuple, light: Light, inShadow: boolean, object?: Shape): Color {
         const color = this.pattern ? this.pattern.pattern_at(point, object) : this.color;
         const effective_color = Color.multiply(color, light.intensity);
-        const ambient = Color.multiplyScalar(effective_color, this.ambient);
+        const ambient = effective_color.scale(this.ambient);
 
         if (inShadow) {
             return ambient;
@@ -71,7 +71,7 @@ export class Material {
         if (light_dot_normal < 0) {
             return ambient;
         }
-        let diffuse: Color = Color.multiplyScalar(effective_color, this.diffuse * light_dot_normal);
+        let diffuse: Color = effective_color.scale(this.diffuse * light_dot_normal);
 
         let specular: Color = Color.BLACK;
         const reflectv = Tuple.reflect(lightv.negative, normalv);
@@ -80,7 +80,7 @@ export class Material {
             specular = Color.BLACK;
         } else {
             const factor = Math.pow(reflect_dot_eye, this.shininess);
-            specular = Color.multiplyScalar(light.intensity, this.specular * factor);
+            specular = light.intensity.scale(this.specular * factor);
         }
 
         return Color.add(ambient, Color.add(diffuse, specular));

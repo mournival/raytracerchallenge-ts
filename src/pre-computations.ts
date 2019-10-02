@@ -2,6 +2,7 @@ import {position, Ray} from './ray';
 import {Intersection} from './intersection';
 import {Tuple} from './tuple';
 import {Shape} from './shape';
+import {Console} from "inspector";
 
 export class PreComputations extends Intersection {
     public readonly over_point: Tuple;
@@ -28,6 +29,26 @@ export class PreComputations extends Intersection {
 
     public get object(): Shape {
         return this.obj;
+    }
+
+    public schlick(): number {
+        let cos = Tuple.dot(this.eyev, this.normalv);
+
+        if (this.n1 && this.n2) {
+            if (this.n1 > this.n2) {
+                const n = this.n1 / this.n2;
+                const sin2_t = (n * n) * (1 - cos * cos);
+                if (sin2_t > 1.0) {
+                    return 1;
+                }
+
+                const cos_t = Math.sqrt(1.0 - sin2_t);
+                cos = cos_t;
+            }
+            const r0 = Math.pow((this.n1 - this.n2) / (this.n1 + this.n2), 2);
+            return r0 + (1 - r0) * Math.pow(1 - cos, 5);
+        }
+        return 0.0;
     }
 
 }
