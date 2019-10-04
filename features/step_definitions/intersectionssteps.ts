@@ -92,7 +92,7 @@ class IntersectionsSteps {
     public thenCompsOverPointLess(pcId: string) {
         const actual = (this.workspace.intersection[pcId] as PreComputations).over_point.z;
 
-        expect(actual).to.be.lessThan(-Tuple.EPSILON / 2);
+        expect(actual).to.be.lessThan(-Workspace.EPSILON / 2);
     }
 
     @then(/^([\w\d_]+)\.point\.z > [^.]+\.over_point\.z$/)
@@ -192,7 +192,7 @@ class IntersectionsSteps {
     public thenCompsUnderPointLess(pcId: string) {
         const actual = (this.workspace.intersection[pcId] as PreComputations).under_point.z;
 
-        expect(actual).to.be.greaterThan(Tuple.EPSILON / 2);
+        expect(actual).to.be.greaterThan(Workspace.EPSILON / 2);
     }
 
     @then(/^([\w\d_]+)\.point\.z < [^.]+\.under_point\.z$/)

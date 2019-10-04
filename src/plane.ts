@@ -4,6 +4,7 @@ import {Tuple, vector} from './tuple';
 import {Shape} from './shape';
 import {Ray, transform} from './ray';
 import {Intersection} from './intersection';
+import {Util} from "./util";
 
 export class Plane extends Shape {
 
@@ -15,7 +16,7 @@ export class Plane extends Shape {
     }
 
     local_intersection(r: Ray): Intersection[] {
-        if (Math.abs(r.direction.y) < Tuple.EPSILON) {
+        if (Math.abs(r.direction.y) < Util.EPSILON) {
             return [];
         }
 

@@ -2,6 +2,7 @@ import {position, Ray} from './ray';
 import {Intersection} from './intersection';
 import {Tuple} from './tuple';
 import {Shape} from './shape';
+import {Util} from "./util";
 
 export class PreComputations extends Intersection {
     public readonly over_point: Tuple;
@@ -17,8 +18,8 @@ export class PreComputations extends Intersection {
                 public readonly n2: number,
     ) {
         super(i.obj, i.t);
-        this.over_point = Tuple.add(p, Tuple.multiply(normalv,  Tuple.EPSILON));
-        this.under_point = Tuple.add(p, Tuple.multiply(normalv, -Tuple.EPSILON));
+        this.over_point = Tuple.add(p, Tuple.multiply(normalv,  Util.EPSILON));
+        this.under_point = Tuple.add(p, Tuple.multiply(normalv, -Util.EPSILON));
         this.reflectv = Tuple.reflect(eyev.negative, normalv);
     }
 

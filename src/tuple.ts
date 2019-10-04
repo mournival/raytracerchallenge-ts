@@ -1,7 +1,8 @@
+import {Util} from "./util";
+
 export type VectorElement = 'x' | 'y' | 'z' | 'w';
 
 export class Tuple {
-    static readonly EPSILON = 0.0001;
 
     constructor(
         public readonly x: number,
@@ -20,12 +21,12 @@ export class Tuple {
     }
 
     public get isPoint(): boolean {
-        return 1.0 - Tuple.EPSILON < this.w &&
-            this.w < 1.0 + Tuple.EPSILON;
+        return 1.0 - Util.EPSILON < this.w &&
+            this.w < 1.0 + Util.EPSILON;
     }
 
     public get isVector(): boolean {
-        return Math.abs(this.w) < Tuple.EPSILON;
+        return Math.abs(this.w) < Util.EPSILON;
     }
 
     public get negative(): Tuple {
@@ -33,10 +34,10 @@ export class Tuple {
     }
 
     static equals(lhs: Tuple, rhs: Tuple): boolean {
-        return Math.abs(lhs.x - rhs.x) < Tuple.EPSILON &&
-            Math.abs(lhs.y - rhs.y) < Tuple.EPSILON &&
-            Math.abs(lhs.z - rhs.z) < Tuple.EPSILON &&
-            Math.abs(lhs.w - rhs.w) < Tuple.EPSILON;
+        return Math.abs(lhs.x - rhs.x) < Util.EPSILON &&
+            Math.abs(lhs.y - rhs.y) < Util.EPSILON &&
+            Math.abs(lhs.z - rhs.z) < Util.EPSILON&&
+            Math.abs(lhs.w - rhs.w) < Util.EPSILON;
     }
 
     static add(lhs: Tuple, rhs: Tuple): Tuple {

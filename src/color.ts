@@ -1,10 +1,10 @@
+import {Util} from "./util";
+
 export type RGBElement = 'red' | 'green' | 'blue';
 
 export class Color {
     static BLACK = new Color(0, 0, 0);
     static WHITE = new Color(1, 1, 1);
-
-    static readonly EPSILON = 0.0001;
 
     constructor(public readonly red: number,
                 public readonly green: number,
@@ -19,9 +19,9 @@ export class Color {
     }
 
     static equals(lhs: Color, rhs: Color): boolean {
-        return Math.abs(lhs.red - rhs.red) < Color.EPSILON &&
-            Math.abs(lhs.green - rhs.green) < Color.EPSILON &&
-            Math.abs(lhs.blue - rhs.blue) < Color.EPSILON;
+        return Math.abs(lhs.red - rhs.red) < Util.EPSILON &&
+            Math.abs(lhs.green - rhs.green) < Util.EPSILON &&
+            Math.abs(lhs.blue - rhs.blue) < Util.EPSILON;
     }
 
     static add(lhs: Color, rhs: Color): Color {

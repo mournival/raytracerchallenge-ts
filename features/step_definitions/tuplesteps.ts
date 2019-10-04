@@ -120,7 +120,7 @@ class TupleSteps {
     @then(/^dot\(([\w\d_]+), ([\w\d_]+)\) = ([^,]+)$/)
     public thenDotEquals(lhs: string, rhs: string, product: string): void {
         expect(
-            Math.abs(Tuple.dot(this.workspace.tuples[lhs], this.workspace.tuples[rhs]) - parseArg(product)) < Tuple.EPSILON
+            Math.abs(Tuple.dot(this.workspace.tuples[lhs], this.workspace.tuples[rhs]) - parseArg(product)) < Workspace.EPSILON
         ).to.be.true;
     }
 

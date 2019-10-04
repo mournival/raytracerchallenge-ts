@@ -1,7 +1,7 @@
 import {Tuple} from './tuple';
+import {Util} from "./util";
 
 export class Matrix {
-    static readonly EPSILON = 0.0001;
     data: number[][] = [];
 
     constructor(row: number, col: number) {
@@ -31,7 +31,7 @@ export class Matrix {
     }
 
     public get invertible(): boolean {
-        return Math.abs(this.det) > Matrix.EPSILON;
+        return Math.abs(this.det) > Util.EPSILON;
     }
 
     public get det(): number {
@@ -72,7 +72,7 @@ export class Matrix {
         }
         for (let r = 0; r < lhs.rDim; ++r) {
             for (let c = 0; c < lhs.data[0].length; ++c) {
-                if (Math.abs(lhs.get(r, c) - rhs.get(r, c)) > Matrix.EPSILON) {
+                if (Math.abs(lhs.get(r, c) - rhs.get(r, c)) > Util.EPSILON) {
                     return false;
                 }
             }

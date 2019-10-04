@@ -44,7 +44,7 @@ class MatricesSteps {
     @then(/^(\w+)\[(\d+),(\d+)] = (.*)$/)
     public checkMatrixElement(matId: string, row: string, col: string, expectedValue: string) {
         const actual = this.workspace.matrices[matId].get(parseInt(row), parseInt(col));
-        expect(actual).to.be.closeTo(parseArg(expectedValue), Matrix.EPSILON);
+        expect(actual).to.be.closeTo(parseArg(expectedValue), Workspace.EPSILON);
     }
 
     @given(/the following matrix (\w+):/)
@@ -113,7 +113,7 @@ class MatricesSteps {
     public thenDeterminantEquals(matId: string, value: string) {
         const actual = this.workspace.matrices[matId].det;
         const expected = parseArg(value);
-        expect(actual).to.be.closeTo(expected, Matrix.EPSILON);
+        expect(actual).to.be.closeTo(expected, Workspace.EPSILON);
     }
 
     @then(/^submatrix\((\w+), (\d+), (\d+)\) is the following (\d+)x(\d+) matrix:$/)
@@ -132,14 +132,14 @@ class MatricesSteps {
     public minorEquals(matId: string, r: string, c: string, value: string) {
         const actual = this.workspace.matrices[matId].minor(parseInt(r), parseInt(c));
         const expected = parseArg(value);
-        expect(actual).to.be.closeTo(expected, Matrix.EPSILON);
+        expect(actual).to.be.closeTo(expected, Workspace.EPSILON);
     }
 
     @then(/^cofactor\((\w+), (\d+), (\d+)\) = (.*)$/)
     public cofactorEquals(matId: string, r: string, c: string, value: string) {
         const actual = this.workspace.matrices[matId].cofactor(parseInt(r), parseInt(c));
         const expected = parseArg(value);
-        expect(actual).to.be.closeTo(expected, Matrix.EPSILON);
+        expect(actual).to.be.closeTo(expected, Workspace.EPSILON);
     }
 
     @then(/^(\w+) is invertible$/)

@@ -52,42 +52,6 @@ export abstract class Shape implements Interceptable {
     }
 }
 
-export class TestShape extends Shape {
-    constructor(
-        public readonly transform: Matrix = Matrix.identity(4),
-        public readonly material = new Material()
-    ) {
-        super(transform, material);
-    }
-
-    intersect(r: Ray): Intersection[] {
-        return [];
-    }
-
-    local_normal_at(pt: Tuple): Tuple {
-        return (new Sphere()).normal_at(pt);
-    }
-
-    local_intersection(r: Ray): Intersection[] {
-        return [];
-
-    }
-
-    local_replace_transform(t: Matrix): Shape {
-        return new TestShape(t);
-    }
-
-    local_replace_material(m: Material): Shape {
-        return new TestShape(this.transform, m);
-    }
-
-
-}
-
-export function test_shape(): Shape {
-    return new TestShape();
-}
-
 export function isShape(arg: any): arg is Shape {
     return true;
 }

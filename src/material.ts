@@ -3,9 +3,9 @@ import {Light} from './light';
 import {Tuple} from './tuple';
 import {Pattern} from './pattern';
 import {Shape} from './shape';
+import {Util} from "./util";
 
 export class Material {
-    public static EPSILON = 0.001;
 
     constructor(public readonly color: Color = new Color(1, 1, 1),
                 public readonly ambient: number = 0.1,
@@ -20,13 +20,13 @@ export class Material {
 
     public static equals(lhs: Material, rhs: Material): boolean {
         return Color.equals(lhs.color, rhs.color) &&
-            Math.abs(lhs.ambient - rhs.ambient) < this.EPSILON &&
-            Math.abs(lhs.diffuse - rhs.diffuse) < this.EPSILON &&
-            Math.abs(lhs.specular - rhs.specular) < this.EPSILON &&
-            Math.abs(lhs.shininess - rhs.shininess) < this.EPSILON &&
-            Math.abs(lhs.reflective - rhs.reflective) < this.EPSILON &&
-            Math.abs(lhs.transparency - rhs.transparency) < this.EPSILON &&
-            Math.abs(lhs.refractive_index - rhs.refractive_index) < this.EPSILON
+            Math.abs(lhs.ambient - rhs.ambient) < Util.EPSILON &&
+            Math.abs(lhs.diffuse - rhs.diffuse) < Util.EPSILON &&
+            Math.abs(lhs.specular - rhs.specular) < Util.EPSILON &&
+            Math.abs(lhs.shininess - rhs.shininess) < Util.EPSILON &&
+            Math.abs(lhs.reflective - rhs.reflective) < Util.EPSILON &&
+            Math.abs(lhs.transparency - rhs.transparency) < Util.EPSILON &&
+            Math.abs(lhs.refractive_index - rhs.refractive_index) < Util.EPSILON
             //           Pattern.equals(lhs.pattern, rhs.patter)
             ;
     }

@@ -14,10 +14,6 @@ export class Sphere extends Shape {
         super(transform, material);
     }
 
-    public static equals(lhs: Sphere, rhs: Sphere): boolean {
-        return Matrix.equals(lhs.transform, rhs.transform) && Material.equals(lhs.material, rhs.material);
-    }
-
     public local_intersection(r: Ray): Intersection[] {
         const sphere_to_ray = Tuple.subtract(r.origin, point(0, 0, 0));
         const a = Tuple.dot(r.direction, r.direction);
@@ -52,4 +48,40 @@ export class Sphere extends Shape {
 
 export function glass_sphere(): Sphere {
     return new Sphere().replace(new Material().replace('transparency', 1.0).replace('refractive_index', 1.5));
+}
+
+export class TestShape extends Shape {
+    constructor(
+        public readonly transform: Matrix = Matrix.identity(4),
+        public readonly material = new Material()
+    ) {
+        super(transform, material);
+    }
+
+    intersect(r: Ray): Intersection[] {
+        return [];
+    }
+
+    local_normal_at(pt: Tuple): Tuple {
+        return (new Sphere()).local_normal_at(pt);
+    }
+
+    local_intersection(r: Ray): Intersection[] {
+        return [];
+
+    }
+
+    local_replace_transform(t: Matrix): Shape {
+        return new TestShape(t);
+    }
+
+    local_replace_material(m: Material): Shape {
+        return new TestShape(this.transform, m);
+    }
+
+
+}
+
+export function test_shape(): Shape {
+    return new TestShape();
 }
