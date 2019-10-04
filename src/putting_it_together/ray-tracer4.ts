@@ -88,9 +88,9 @@ const world = new World([
         left
     ]);
 
-const camera = new Camera(Math.floor(3200 / 4), Math.floor(2400 / 4), Math.PI / 3,
+const camera = new Camera(Math.floor(3200 / 1), Math.floor(2400 / 1), Math.PI / 4,
     view_transform(
-        point(0, 1.0, -7),
+        point(0, 5.0, -5),
         point(0, 1, 0),
         vector(0, 1, 0)
     )
