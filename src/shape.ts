@@ -12,11 +12,9 @@ export abstract class Shape implements Interceptable {
     }
 
     static equals(lhs: Shape, rhs: Shape): boolean {
-        if (typeof lhs === typeof rhs) {
-            return Matrix.equals(lhs.transform, rhs.transform) &&
-                Material.equals(lhs.material, rhs.material);
-        }
-        return false;
+        return typeof lhs === typeof rhs &&
+            Matrix.equals(lhs.transform, rhs.transform) &&
+            Material.equals(lhs.material, rhs.material);
     }
 
     abstract local_intersection(r: Ray): Intersection[];

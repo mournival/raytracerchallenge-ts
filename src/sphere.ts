@@ -51,5 +51,5 @@ export class Sphere extends Shape {
 }
 
 export function glass_sphere(): Sphere {
-    return new Sphere().replace((new Material()).replace('transparency', 1.0).replace('refractive_index', 1.5));
+    return new Sphere().replace(new Material().replace('transparency', 1.0).replace('refractive_index', 1.5));
 }

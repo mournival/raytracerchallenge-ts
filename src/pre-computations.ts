@@ -2,7 +2,6 @@ import {position, Ray} from './ray';
 import {Intersection} from './intersection';
 import {Tuple} from './tuple';
 import {Shape} from './shape';
-import {Console} from "inspector";
 
 export class PreComputations extends Intersection {
     public readonly over_point: Tuple;
@@ -14,12 +13,12 @@ export class PreComputations extends Intersection {
                 public readonly eyev: Tuple,
                 public readonly normalv: Tuple,
                 public readonly inside: boolean,
-                public readonly n1?: number,
-                public readonly n2?: number,
+                public readonly n1: number,
+                public readonly n2: number,
     ) {
         super(i.obj, i.t);
-        this.over_point = Tuple.add(p, Tuple.multiply(normalv, Tuple.EPSILON));
-        this.under_point = Tuple.subtract(p, Tuple.multiply(normalv, Tuple.EPSILON));
+        this.over_point = Tuple.add(p, Tuple.multiply(normalv,  Tuple.EPSILON));
+        this.under_point = Tuple.add(p, Tuple.multiply(normalv, -Tuple.EPSILON));
         this.reflectv = Tuple.reflect(eyev.negative, normalv);
     }
 
@@ -53,7 +52,7 @@ export class PreComputations extends Intersection {
 
 }
 
-export function prepare_computations(i: Intersection, r: Ray, xs?: Intersection[]): PreComputations {
+export function prepare_computations(i: Intersection, r: Ray, xs: Intersection[]): PreComputations {
     const p = position(r, i.t);
     const normalv = i.obj.normal_at(p);
     const eyev = r.direction.negative;
@@ -61,30 +60,30 @@ export function prepare_computations(i: Intersection, r: Ray, xs?: Intersection[
     let containers: Shape[] = [];
     let n1 = 0;
     let n2 = 0;
-    if (xs) {
-        for (let x of xs) {
-            if (Shape.equals(i.obj, x.obj) && i.t === x.t) {
-                if (containers.length === 0) {
-                    n1 = 1.0;
-                } else {
-                    n1 = containers[containers.length - 1].material.refractive_index;
-                }
-            }
-
-            const index = containers.indexOf(x.obj, 0);
-            if (index > -1) {
-                containers.splice(index, 1);
+    for (let n = 0; n < xs.length; ++n) {
+        let x = xs[n];
+        if (Shape.equals(i.obj, x.obj) && i.t === x.t) {
+            if (containers.length === 0) {
+                n1 = 1.0;
             } else {
-                containers = [...containers, x.obj];
+                n1 = containers[containers.length - 1].material.refractive_index;
             }
+        }
 
-            if (Shape.equals(i.obj, x.obj) && i.t === x.t) {
-                if (containers.length === 0) {
-                    n2 = 1.0;
-                } else {
-                    n2 = containers[containers.length - 1].material.refractive_index;
-                }
+        const index = containers.indexOf(x.obj, 0);
+        if (index > -1) {
+            containers.splice(index, 1);
+        } else {
+            containers = [...containers, x.obj];
+        }
+
+        if (Shape.equals(i.obj, x.obj) && i.t === x.t) {
+            if (containers.length === 0) {
+                n2 = 1.0;
+            } else {
+                n2 = containers[containers.length - 1].material.refractive_index;
             }
+            break;
         }
     }
 

@@ -58,7 +58,7 @@ export function gradient_pattern(a: Color, b: Color, transform = Matrix.identity
 
 //
 function ring_function(a: Color, b: Color): PatternFunction {
-    return (p: Tuple) => Math.floor(p.x * p.x + p.z * p.z) % 4 == 0 ? a : b;
+    return (p: Tuple) => Math.floor(p.x * p.x + p.z * p.z) % 4 === 0 ? a : b;
 }
 
 export function ring_pattern(a: Color, b: Color, transform = Matrix.identity()) {
@@ -67,7 +67,7 @@ export function ring_pattern(a: Color, b: Color, transform = Matrix.identity()) 
 
 //
 function checkers_function(a: Color, b: Color): PatternFunction {
-    return (p: Tuple) => (Math.floor(p.x) + Math.floor(p.y) + Math.floor(p.z)) % 2 == 0 ? a : b;
+    return (p: Tuple) => (Math.floor(p.x) + Math.floor(p.y) + Math.floor(p.z)) % 2 === 0 ? a : b;
 }
 
 export function checkers_pattern(a: Color, b: Color, transform = Matrix.identity()) {

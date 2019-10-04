@@ -5,7 +5,7 @@ import {expect} from 'chai';
 import {Sphere} from '../../src/sphere';
 import {PreComputations, prepare_computations} from '../../src/pre-computations';
 import {point, Tuple, vector} from '../../src/tuple';
-import {hit} from "../../src/world";
+import {hit} from '../../src/world';
 
 @binding([Workspace])
 class IntersectionsSteps {
@@ -56,6 +56,7 @@ class IntersectionsSteps {
         this.workspace.intersection[pcId] = prepare_computations(
             this.workspace.intersection[intersectId],
             this.workspace.rays[rayId],
+            []
         );
     }
 

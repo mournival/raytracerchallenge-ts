@@ -27,7 +27,7 @@ export class Plane extends Shape {
     }
 
     local_replace_transform(t: Matrix): Shape {
-        return new Plane(t);
+        return new Plane(t, this.material);
     }
 
     local_replace_material(m: Material): Shape {

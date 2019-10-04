@@ -3,6 +3,8 @@ import {point, Tuple} from './tuple';
 import {Ray} from './ray';
 import {Canvas} from './canvas';
 import {World} from './world';
+import {Color} from './color';
+import {Console} from 'inspector';
 
 export class Camera {
 
@@ -40,9 +42,26 @@ export class Camera {
         const image = new Canvas(this.hsize, this.vsize);
         for (let y = 0; y < this.vsize; ++y) {
             for (let x = 0; x < this.hsize; ++x) {
-                const ray = this.ray_for_pixel(x, y);
-                const color = world.color_at(ray, 5);
-                Canvas.write_pixel(image, y, x, color);
+                // const ray = this.ray_for_pixel(x, y);
+                // const color = world.color_at(ray, 5);
+                //
+                // Canvas.write_pixel(image, y, x, color);
+
+                let acc = Color.BLACK;
+                const n = 3;
+                for (let u = 0; u < n; ++u) {
+                    for (let v = 0; v < n; ++v) {
+                        const ray = this.ray_for_pixel(x + (.33 * u) - .66, y + (.33 * v) - .66);
+                        acc = Color.add(acc, world.color_at(ray, 5));
+                    }
+                }
+                // if (!Color.equals(color, acc.scale(1/9))) {
+                //     console.log(JSON.stringify('x : ' + x + ', y: ' + y));
+                //     console.log(JSON.stringify(ray));
+                //     console.log(JSON.stringify(color));
+                //     console.log(JSON.stringify(acc));
+                //     console.log('');
+                // }
             }
         }
 

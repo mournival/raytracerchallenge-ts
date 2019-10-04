@@ -55,6 +55,7 @@ export class Color {
             this.blue * s
         );
     }
+
     asString(): string {
         return this.red + ' ' + this.green + ' ' + this.blue;
     }

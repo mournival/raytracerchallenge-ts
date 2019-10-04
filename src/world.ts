@@ -38,16 +38,16 @@ export class World {
     }
 
     color_at(r: Ray, remaining: number): Color {
-        const xs = hit(this.intersect_world(r));
+        const xs = this.intersect_world(r);
         if (xs.length === 0) {
             return Color.BLACK;
         }
-        return this.shade_hit(prepare_computations(xs[0], r), remaining);
+        return this.shade_hit(prepare_computations(xs[0], r, xs), remaining);
     }
 
     intersect_world(r: Ray): Intersection[] {
         // Require Node Version 11+
-        return this.objects.flatMap(o => o.intersect(r)).sort((a, b) => a.t - b.t);
+        return this.objects.flatMap(o => o.intersect(r)).filter(i => i.t >= 0).sort((a, b) => a.t - b.t);
 
         // for Node Version < 11
         // const xs: Intersection[] = [];
@@ -66,8 +66,7 @@ export class World {
             reflected = reflected.scale(reflectance);
             refracted = refracted.scale((1 - reflectance));
         }
-        const intermediate = Color.add(refracted, reflected);
-        return Color.add(surface, intermediate);
+        return Color.add(surface, Color.add(refracted, reflected));
     }
 
     is_shadowed(p: Tuple): boolean {
@@ -75,7 +74,7 @@ export class World {
         const distance = v.magnitude;
         const direction = v.normalize;
         const r = new Ray(p, direction);
-        const intersections = hit(this.intersect_world(r));
+        const intersections = this.intersect_world(r);
 
         return intersections.length > 0 && intersections[0].t < distance;
     }
@@ -87,7 +86,6 @@ export class World {
         const reflect_ray = new Ray(comps.over_point, comps.reflectv);
         const color = this.color_at(reflect_ray, remaining - 1);
         return color.scale(comps.object.material.reflective);
-
     }
 
     refracted_color(comps: PreComputations, remaining: number): Color {
@@ -126,5 +124,5 @@ export function default_world(): World {
             new Sphere(scaling(0.5, 0.5, 0.5))
         ]
     );
-}
 
+}

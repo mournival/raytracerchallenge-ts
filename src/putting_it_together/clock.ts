@@ -22,7 +22,6 @@ function clock(dots: number, dotSize: number) {
                 scaledTranslation,
                 rotation_z(slice * i))
             , point(0, 1, 0));
-        // console.log(JSON.stringify(p));
 
         for (let rOffset = 0; rOffset < dotSize; ++rOffset) {
             for (let cOffset = 0; cOffset < dotSize; ++cOffset) {
