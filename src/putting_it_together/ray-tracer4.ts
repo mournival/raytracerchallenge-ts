@@ -62,7 +62,7 @@ const ceiling = new Plane(
 
 const middle = new Sphere(
     translation(-0.5, 1, 0.5),
-    new Material((new Color(246, 103, 51).scale(1 / 255)), 0.1, 0.7, 0.9, 300, 0.9, 1.0, 2.25)
+    new Material((new Color(246, 103, 51).scale(1 / 1020)), 0.1, 0.7, 0.9, 300, 0.9, 1.0, 2.25)
 );
 
 const right = new Sphere(
@@ -80,7 +80,7 @@ const world = new World([
     ],
     [
         floor,
-        left_wall,
+        // left_wall,
         right_wall,
         // ceiling,
         middle,
@@ -88,7 +88,7 @@ const world = new World([
         left
     ]);
 
-const camera = new Camera(Math.floor(3200 / 2), Math.floor(2400 / 2), Math.PI / 3,
+const camera = new Camera(Math.floor(3200 / 8), Math.floor(2400 / 8), Math.PI / 3,
     view_transform(
         point(0, 1.0, -7),
         point(0, 1, 0),
