@@ -21,23 +21,6 @@ class CubeSteps {
         );
     }
 
-    // @when(/^([\w\d_]+) ← local_normal_at\(([\w\d_]+), point\(([^,]+), ([^,]+), ([^,]+)\)\)$/)
-    // public whenNormalAt(normalId: string, cubeId: string, x: string, y: string, z: string) {
-    //     const n = this.workspace.shapes[cubeId].normal_at(
-    //         point(parseArg(x), parseArg(y), parseArg(z))
-    //     );
-    //     this.workspace.tuples[normalId] = n;
-    // }
-    //
-    // @when(/^([\w\d_]+) ← local_intersect\(([\w\d_]+), ([\w\d_]+)\)$/)
-    // public whenIntersect(intersectionsId: string, cubeId: string, rayId: string) {
-    //     this.workspace.intersections[intersectionsId] = this.workspace.shapes[cubeId].intersect(this.workspace.rays[rayId]);
-    // }
-    //
-    // @then(/^([\w\d_]+) is empty$/)
-    // public thenIntersectionsIsEmpty(intersectionsId: string) {
-    //     expect(this.workspace.intersections[intersectionsId].length).to.be.equal(0);
-    // }
 }
 
 export = CubeSteps;
