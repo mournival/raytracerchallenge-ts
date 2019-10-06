@@ -8,9 +8,13 @@ import {Util} from "./util";
 
 export class Cylinder extends Shape {
 
+
     constructor(
         public readonly transform: Matrix = Matrix.identity(4),
-        public readonly material = new Material()
+        public readonly material = new Material(),
+        public readonly minimum = Number.NEGATIVE_INFINITY,
+        public readonly maximum = Number.POSITIVE_INFINITY,
+        public readonly closed = false
     ) {
         super(transform, material);
     }
@@ -33,7 +37,19 @@ export class Cylinder extends Shape {
 
         const t0 = (-b - Math.sqrt(disc)) / (2 * a);
         const t1 = (-b + Math.sqrt(disc)) / (2 * a);
-        return [new Intersection(this, t0), new Intersection(this, t1)];
+
+        let xs: Intersection[] = [];
+        const y0 = r.origin.y + t0 * r.direction.y;
+        if (this.minimum < y0 && y0 < this.maximum) {
+            xs = [new Intersection(this, t0)];
+        }
+
+        const y1 = r.origin.y + t1 * r.direction.y;
+        if (this.minimum < y1 && y1 < this.maximum) {
+            xs = [...xs, new Intersection(this, t1)];
+        }
+
+        return xs;
     }
 
     local_normal_at(pt: Tuple): Tuple {
