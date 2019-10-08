@@ -1,5 +1,5 @@
 import {Tuple} from './tuple';
-import {Util} from "./util";
+import {Util} from './util';
 
 export class Matrix {
     data: number[][] = [];

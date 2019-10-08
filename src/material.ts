@@ -3,7 +3,7 @@ import {Light} from './light';
 import {Tuple} from './tuple';
 import {Pattern} from './pattern';
 import {Shape} from './shape';
-import {Util} from "./util";
+import {Util} from './util';
 
 export class Material {
 

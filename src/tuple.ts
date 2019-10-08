@@ -1,4 +1,4 @@
-import {Util} from "./util";
+import {Util} from './util';
 
 export type VectorElement = 'x' | 'y' | 'z' | 'w';
 

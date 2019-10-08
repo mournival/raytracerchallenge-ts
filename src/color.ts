@@ -1,4 +1,4 @@
-import {Util} from "./util";
+import {Util} from './util';
 
 export type RGBElement = 'red' | 'green' | 'blue';
 

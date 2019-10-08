@@ -4,11 +4,10 @@ import {Tuple, vector} from './tuple';
 import {Shape} from './shape';
 import {Ray} from './ray';
 import {Intersection} from './intersection';
-import {Util} from "./util";
+import {Util} from './util';
 
 export class Cylinder extends Shape {
-
-
+    
     constructor(
         public readonly transform: Matrix = Matrix.identity(4),
         public readonly material = new Material(),

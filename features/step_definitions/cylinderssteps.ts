@@ -3,8 +3,8 @@ import {parseArg, Workspace} from './Workspace';
 import {Cylinder} from '../../src/cylinder';
 import {point, vector} from '../../src/tuple';
 import {Ray} from '../../src/ray';
-import {then} from "cucumber-tsflow/dist";
-import {expect} from "chai";
+import {then} from 'cucumber-tsflow/dist';
+import {expect} from 'chai';
 
 @binding([Workspace])
 class CylinderSteps {

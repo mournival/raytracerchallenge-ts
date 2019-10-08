@@ -2,7 +2,7 @@ import {position, Ray} from './ray';
 import {Intersection} from './intersection';
 import {Tuple} from './tuple';
 import {Shape} from './shape';
-import {Util} from "./util";
+import {Util} from './util';
 
 export class PreComputations extends Intersection {
     public readonly over_point: Tuple;
