@@ -5,6 +5,7 @@ import {point, vector} from '../../src/tuple';
 import {Ray} from '../../src/ray';
 import {then} from 'cucumber-tsflow/dist';
 import {expect} from 'chai';
+import {Cone} from '../../src/cone';
 
 @binding([Workspace])
 class CylinderSteps {
@@ -46,14 +47,26 @@ class CylinderSteps {
 
     @given(/^([\w\d_]+).minimum ← ([^,]+)$/)
     public givenCylinderMin(cylId: string, value: string) {
-        const c = this.workspace.shapes[cylId] as Cylinder;
-        this.workspace.shapes[cylId] = new Cylinder(c.transform, c.material, parseArg(value), c.maximum);
+        let c = this.workspace.shapes[cylId];
+        if (c instanceof Cylinder) {
+            let cyl = c as Cylinder;
+            this.workspace.shapes[cylId] = new Cylinder(cyl.transform, cyl.material, parseArg(value), cyl.maximum);
+        } else if (c instanceof Cone) {
+            let cn = c as Cone;
+            this.workspace.shapes[cylId] = new Cone(cn.transform, cn.material, parseArg(value), cn.maximum);
+        }
     }
 
     @given(/^([\w\d_]+).maximum ← ([^,]+)$/)
     public givenCylinderMax(cylId: string, value: string) {
-        const c = this.workspace.shapes[cylId] as Cylinder;
-        this.workspace.shapes[cylId] = new Cylinder(c.transform, c.material, c.minimum, parseArg(value));
+        let c = this.workspace.shapes[cylId];
+        if (c instanceof Cylinder) {
+            let cyl = c as Cylinder;
+            this.workspace.shapes[cylId] = new Cylinder(cyl.transform, cyl.material, cyl.minimum, parseArg(value));
+        } else if (c instanceof Cone) {
+            let cn = c as Cone;
+            this.workspace.shapes[cylId] = new Cone(cn.transform, cn.material, cn.minimum, parseArg(value));
+        }
     }
 
     @then(/^([\w\d_]+).closed = ([^,]+)/)
@@ -66,8 +79,14 @@ class CylinderSteps {
 
     @given(/^([\w\d_]+).closed ← ([^,]+)$/)
     public givenCylinderClosed(cylId: string, value: string) {
-        const c = this.workspace.shapes[cylId] as Cylinder;
-        this.workspace.shapes[cylId] = new Cylinder(c.transform, c.material, c.minimum, c.maximum, !!value);
+        let c = this.workspace.shapes[cylId];
+        if (c instanceof Cylinder) {
+            let cyl = c as Cylinder;
+            this.workspace.shapes[cylId] = new Cylinder(cyl.transform, cyl.material, cyl.minimum, cyl.maximum, !!value);
+        } else if (c instanceof Cone) {
+            let cn = c as Cone;
+            this.workspace.shapes[cylId] = new Cone(cn.transform, cn.material, cn.minimum, cn.maximum, !!value);
+        }
     }
 }
 

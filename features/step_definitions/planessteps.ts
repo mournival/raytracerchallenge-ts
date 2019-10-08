@@ -25,8 +25,8 @@ class PlaneSteps {
     }
 
     @when(/^([\w\d_]+) ← local_intersect\(([\w\d_]+), ([\w\d_]+)\)$/)
-    public whenIntersect(intersectionsId: string, planeId: string, rayId: string) {
-        this.workspace.intersections[intersectionsId] = this.workspace.shapes[planeId].intersect(this.workspace.rays[rayId]);
+    public whenIntersect(intersectionsId: string, shapeId: string, rayId: string) {
+        this.workspace.intersections[intersectionsId] = this.workspace.shapes[shapeId].intersect(this.workspace.rays[rayId]);
     }
 
     @then(/^([\w\d_]+) is empty$/)

@@ -2,7 +2,7 @@ import {Matrix} from './matrix';
 import {Material} from './material';
 import {Tuple, vector} from './tuple';
 import {Shape} from './shape';
-import {Ray} from './ray';
+import {position, Ray} from './ray';
 import {Intersection} from './intersection';
 import {Util} from './util';
 
@@ -29,8 +29,8 @@ export class Cone extends Shape {
 
         if (Math.abs(a) < Util.EPSILON) {
             if (Math.abs(b) > Util.EPSILON) {
-                return  [
-                    ... this.intersect_cap(r, []),
+                return [
+                    ...this.intersect_cap(r, []),
                     new Intersection(this, -c / (2 * b))
                 ];
             }
@@ -79,11 +79,10 @@ export class Cone extends Shape {
         return new Cone(this.transform, m);
     }
 
-    check_cap(r: Ray, rY: number, t: number): boolean {
+    check_cap(r: Ray, y: number, t: number): boolean {
         const x = r.origin.x + t * r.direction.x;
-        const y = r.origin.y + t * rY;
         const z = r.origin.z + t * r.direction.z;
-        return x * x - y * y + z * z <= 1;
+        return x * x + z * z <= Math.abs(y);
     }
 
     intersect_cap(r: Ray, xs: Intersection[]): Intersection[] {
