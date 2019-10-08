@@ -64,6 +64,11 @@ class CylinderSteps {
         expect(actual).to.be.equal(expected);
     }
 
+    @given(/^([\w\d_]+).closed ← ([^,]+)$/)
+    public givenCylinderClosed(cylId: string, value: string) {
+        const c = this.workspace.shapes[cylId] as Cylinder;
+        this.workspace.shapes[cylId] = new Cylinder(c.transform, c.material, c.minimum, c.maximum, !!value);
+    }
 }
 
 export = CylinderSteps;

@@ -23,7 +23,7 @@ export class Cylinder extends Shape {
         const a = r.direction.x * r.direction.x + r.direction.z * r.direction.z;
 
         if (Math.abs(a) < Util.EPSILON) {
-            return [];
+            return this.intersect_cap(r, []);
         }
 
         const b = 2 * r.origin.x * r.direction.x
@@ -49,10 +49,18 @@ export class Cylinder extends Shape {
             xs = [...xs, new Intersection(this, t1)];
         }
 
+        xs = this.intersect_cap(r, xs);
         return xs;
     }
 
     local_normal_at(pt: Tuple): Tuple {
+        const dist = pt.x * pt.x + pt.z * pt.z;
+        if (dist < 1 && pt.y >= this.maximum - Util.EPSILON) {
+            return vector(0, 1, 0);
+        }
+        if (dist < 1 && pt.y <= this.minimum + Util.EPSILON) {
+            return vector(0, -1, 0);
+        }
         return vector(pt.x, 0, pt.z);
     }
 
@@ -62,6 +70,29 @@ export class Cylinder extends Shape {
 
     local_replace_material(m: Material): Shape {
         return new Cylinder(this.transform, m);
+    }
+
+    check_cap(r: Ray, t: number): boolean {
+        const x = r.origin.x + t * r.direction.x;
+        const z = r.origin.z + t * r.direction.z;
+        return x * x + z * z <= 1;
+    }
+
+    intersect_cap(r: Ray, xs: Intersection[]): Intersection[] {
+        if (!this.closed || Math.abs(r.direction.y) < Util.EPSILON) {
+            return xs;
+        }
+
+        let t = (this.minimum - r.origin.y) / r.direction.y;
+        if (this.check_cap(r, t)) {
+            xs = [...xs, new Intersection(this, t)];
+        }
+
+        t = (this.maximum - r.origin.y) / r.direction.y;
+        if (this.check_cap(r, t)) {
+            xs = [...xs, new Intersection(this, t)];
+        }
+        return xs;
     }
 
 }
