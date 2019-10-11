@@ -20,13 +20,13 @@ export class Material {
 
     public static equals(lhs: Material, rhs: Material): boolean {
         return Color.equals(lhs.color, rhs.color) &&
-            Math.abs(lhs.ambient - rhs.ambient) < Util.EPSILON &&
-            Math.abs(lhs.diffuse - rhs.diffuse) < Util.EPSILON &&
-            Math.abs(lhs.specular - rhs.specular) < Util.EPSILON &&
-            Math.abs(lhs.shininess - rhs.shininess) < Util.EPSILON &&
-            Math.abs(lhs.reflective - rhs.reflective) < Util.EPSILON &&
-            Math.abs(lhs.transparency - rhs.transparency) < Util.EPSILON &&
-            Math.abs(lhs.refractive_index - rhs.refractive_index) < Util.EPSILON
+            Util.closeTo(lhs.ambient, rhs.ambient) &&
+            Util.closeTo(lhs.diffuse, rhs.diffuse) &&
+            Util.closeTo(lhs.specular, rhs.specular) &&
+            Util.closeTo(lhs.shininess, rhs.shininess) &&
+            Util.closeTo(lhs.reflective, rhs.reflective) &&
+            Util.closeTo(lhs.transparency, rhs.transparency) &&
+            Util.closeTo(lhs.refractive_index, rhs.refractive_index)
             //           Pattern.equals(lhs.pattern, rhs.patter)
             ;
     }
@@ -76,7 +76,7 @@ export class Material {
         let specular: Color = Color.BLACK;
         const reflectv = Tuple.reflect(lightv.negative, normalv);
         const reflect_dot_eye = Tuple.dot(reflectv, eyev);
-        if (reflect_dot_eye <= 0) {
+        if (reflect_dot_eye < Util.EPSILON) {
             specular = Color.BLACK;
         } else {
             const factor = Math.pow(reflect_dot_eye, this.shininess);

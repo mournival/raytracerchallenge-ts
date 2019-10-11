@@ -4,6 +4,8 @@ export type VectorElement = 'x' | 'y' | 'z' | 'w';
 
 export class Tuple {
 
+    private norm: number = -1;
+
     constructor(
         public readonly x: number,
         public readonly y: number,
@@ -17,16 +19,18 @@ export class Tuple {
     }
 
     public get magnitude(): number {
-        return Math.sqrt(Tuple.dot(this, this));
+        if (this.norm < 0) {
+            this.norm = Math.sqrt(Tuple.dot(this, this))
+        }
+        return this.norm;
     }
 
     public get isPoint(): boolean {
-        return 1.0 - Util.EPSILON < this.w &&
-            this.w < 1.0 + Util.EPSILON;
+        return Util.closeTo(this.w, 1.0);
     }
 
     public get isVector(): boolean {
-        return Math.abs(this.w) < Util.EPSILON;
+        return Util.closeTo(this.w, 0.0);
     }
 
     public get negative(): Tuple {
@@ -34,10 +38,10 @@ export class Tuple {
     }
 
     static equals(lhs: Tuple, rhs: Tuple): boolean {
-        return Math.abs(lhs.x - rhs.x) < Util.EPSILON &&
-            Math.abs(lhs.y - rhs.y) < Util.EPSILON &&
-            Math.abs(lhs.z - rhs.z) < Util.EPSILON&&
-            Math.abs(lhs.w - rhs.w) < Util.EPSILON;
+        return Util.closeTo(lhs.x, rhs.x) &&
+            Util.closeTo(lhs.y, rhs.y) &&
+            Util.closeTo(lhs.z, rhs.z) &&
+            Util.closeTo(lhs.w, rhs.w);
     }
 
     static add(lhs: Tuple, rhs: Tuple): Tuple {

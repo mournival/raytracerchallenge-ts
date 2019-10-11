@@ -6,6 +6,7 @@ import {Sphere} from '../../src/sphere';
 import {PreComputations, prepare_computations} from '../../src/pre-computations';
 import {point, Tuple, vector} from '../../src/tuple';
 import {hit} from '../../src/world';
+import {Util} from '../../src/util';
 
 @binding([Workspace])
 class IntersectionsSteps {
@@ -92,7 +93,7 @@ class IntersectionsSteps {
     public thenCompsOverPointLess(pcId: string) {
         const actual = (this.workspace.intersection[pcId] as PreComputations).over_point.z;
 
-        expect(actual).to.be.lessThan(-Workspace.EPSILON / 2);
+        expect(actual).to.be.lessThan(-Util.EPSILON / 2);
     }
 
     @then(/^([\w\d_]+)\.point\.z > [^.]+\.over_point\.z$/)
@@ -192,7 +193,7 @@ class IntersectionsSteps {
     public thenCompsUnderPointLess(pcId: string) {
         const actual = (this.workspace.intersection[pcId] as PreComputations).under_point.z;
 
-        expect(actual).to.be.greaterThan(Workspace.EPSILON / 2);
+        expect(actual).to.be.greaterThan(Util.EPSILON / 2);
     }
 
     @then(/^([\w\d_]+)\.point\.z < [^.]+\.under_point\.z$/)
@@ -244,7 +245,10 @@ class IntersectionsSteps {
 
     @when(/^([\w\d_]+) ← hit\(([\w\d_]+)\)$/)
     public whenHitIs(intersectionId: string, xsId: string) {
-        this.workspace.intersection[intersectionId] = hit(this.workspace.intersections[xsId])[0];
+        const h = hit(this.workspace.intersections[xsId]);
+        if (h !== null) {
+            this.workspace.intersection[intersectionId] = h;
+        }
     }
 
     @then(/^i = ([^,]+)$/)

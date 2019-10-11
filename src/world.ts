@@ -8,14 +8,15 @@ import {Ray} from './ray';
 import {Intersection} from './intersection';
 import {PreComputations, prepare_computations} from './pre-computations';
 import {Shape} from './shape';
+import {Util} from './util';
 
-export function hit(intersections: Intersection[]) {
-    if (!intersections || intersections.length === 0)
-        return [];
+export function hit(intersections: Intersection[]): null | Intersection {
+    if (intersections.length === 0)
+        return null;
     const xs = intersections.filter(i => i.t >= 0).sort((a, b) => a.t - b.t);
     if (!xs || xs.length === 0)
-        return [];
-    return [xs[0]];
+        return null;
+    return xs[0];
 }
 
 export class World {
@@ -39,15 +40,16 @@ export class World {
 
     color_at(r: Ray, remaining: number): Color {
         const xs = this.intersect_world(r);
-        if (xs.length === 0) {
+        const x = hit(xs);
+        if (x === null) {
             return Color.BLACK;
         }
-        return this.shade_hit(prepare_computations(xs[0], r, xs), remaining);
+        return this.shade_hit(prepare_computations(x, r, xs), remaining);
     }
 
     intersect_world(r: Ray): Intersection[] {
         // Require Node Version 11+
-        return this.objects.flatMap(o => o.intersect(r)).filter(i => i.t >= 0).sort((a, b) => a.t - b.t);
+        return this.objects.flatMap(o => o.intersect(r));
 
         // for Node Version < 11
         // const xs: Intersection[] = [];
@@ -58,7 +60,12 @@ export class World {
 
     shade_hit(pc: PreComputations, remaining: number): Color {
         const material = pc.object.material;
-        const surface = material.lighting(pc.point, pc.eyev, pc.normalv, this.lights[0], this.is_shadowed(pc.over_point), pc.object);
+        let surface = Color.BLACK;
+        this.lights.forEach(l => surface = Color.add(
+            surface,
+            material.lighting(pc.point, pc.eyev, pc.normalv, l, this.is_shadowed(pc.over_point, l), pc.object)
+        ));
+
         let reflected = this.reflected_color(pc, remaining);
         let refracted = this.refracted_color(pc, remaining);
         if (material.reflective > 0 && material.transparency > 0) {
@@ -69,18 +76,20 @@ export class World {
         return Color.add(surface, Color.add(refracted, reflected));
     }
 
-    is_shadowed(p: Tuple): boolean {
-        const v = Tuple.subtract(this.lights[0].position, p);
+    is_shadowed(p: Tuple, light: Light): boolean {
+        const v = Tuple.subtract(light.position, p);
         const distance = v.magnitude;
-        const direction = v.normalize;
-        const r = new Ray(p, direction);
-        const intersections = this.intersect_world(r);
+        const intersection = hit(
+            this.intersect_world(
+                new Ray(p, v.normalize)
+            )
+        );
 
-        return intersections.length > 0 && intersections[0].t < distance;
+        return intersection !== null && intersection.t < distance;
     }
 
     reflected_color(comps: PreComputations, remaining: number): Color {
-        if (remaining <= 0 || comps.object.material.reflective === 0) {
+        if (remaining <= 0 || comps.object.material.reflective < Util.EPSILON) {
             return Color.BLACK;
         }
         const reflect_ray = new Ray(comps.over_point, comps.reflectv);

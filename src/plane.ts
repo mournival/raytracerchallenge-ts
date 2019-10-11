@@ -16,7 +16,7 @@ export class Plane extends Shape {
     }
 
     local_intersection(r: Ray): Intersection[] {
-        if (Math.abs(r.direction.y) < Util.EPSILON) {
+        if (Util.closeTo(r.direction.y, 0) ) {
             return [];
         }
 

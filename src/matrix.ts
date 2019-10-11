@@ -31,7 +31,7 @@ export class Matrix {
     }
 
     public get invertible(): boolean {
-        return Math.abs(this.det) > Util.EPSILON;
+        return !Util.closeTo(this.det, 0);
     }
 
     public get det(): number {
@@ -72,7 +72,7 @@ export class Matrix {
         }
         for (let r = 0; r < lhs.rDim; ++r) {
             for (let c = 0; c < lhs.data[0].length; ++c) {
-                if (Math.abs(lhs.get(r, c) - rhs.get(r, c)) > Util.EPSILON) {
+                if (!Util.closeTo(lhs.get(r, c), rhs.get(r, c))) {
                     return false;
                 }
             }

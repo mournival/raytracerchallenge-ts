@@ -21,7 +21,7 @@ export class Cylinder extends Shape {
     local_intersection(r: Ray): Intersection[] {
         const a = r.direction.x * r.direction.x + r.direction.z * r.direction.z;
 
-        if (Math.abs(a) < Util.EPSILON) {
+        if (Util.closeTo(a, 0)) {
             return this.intersect_cap(r, []);
         }
 
@@ -54,10 +54,10 @@ export class Cylinder extends Shape {
 
     local_normal_at(pt: Tuple): Tuple {
         const dist = pt.x * pt.x + pt.z * pt.z;
-        if (dist < 1 && pt.y >= this.maximum - Util.EPSILON) {
+        if (dist < 1 && pt.y > this.maximum - Util.EPSILON) {
             return vector(0, 1, 0);
         }
-        if (dist < 1 && pt.y <= this.minimum + Util.EPSILON) {
+        if (dist < 1 && pt.y < this.minimum + Util.EPSILON) {
             return vector(0, -1, 0);
         }
         return vector(pt.x, 0, pt.z);
@@ -78,7 +78,7 @@ export class Cylinder extends Shape {
     }
 
     intersect_cap(r: Ray, xs: Intersection[]): Intersection[] {
-        if (!this.closed || Math.abs(r.direction.y) < Util.EPSILON) {
+        if (!this.closed || Util.closeTo(r.direction.y, 0)) {
             return xs;
         }
 

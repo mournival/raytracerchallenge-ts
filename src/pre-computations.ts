@@ -18,8 +18,8 @@ export class PreComputations extends Intersection {
                 public readonly n2: number,
     ) {
         super(i.obj, i.t);
-        this.over_point = Tuple.add(p, Tuple.multiply(normalv,  Util.EPSILON));
-        this.under_point = Tuple.add(p, Tuple.multiply(normalv, -Util.EPSILON));
+        this.over_point = Tuple.add(p, Tuple.multiply(normalv, Util.EPSILON));
+        this.under_point = Tuple.subtract(p, Tuple.multiply(normalv, Util.EPSILON));
         this.reflectv = Tuple.reflect(eyev.negative, normalv);
     }
 
@@ -42,8 +42,7 @@ export class PreComputations extends Intersection {
                     return 1;
                 }
 
-                const cos_t = Math.sqrt(1.0 - sin2_t);
-                cos = cos_t;
+                cos = Math.sqrt(1.0 - sin2_t);
             }
             const r0 = Math.pow((this.n1 - this.n2) / (this.n1 + this.n2), 2);
             return r0 + (1 - r0) * Math.pow(1 - cos, 5);
@@ -53,17 +52,13 @@ export class PreComputations extends Intersection {
 
 }
 
-export function prepare_computations(i: Intersection, r: Ray, xs: Intersection[]): PreComputations {
-    const p = position(r, i.t);
-    const normalv = i.obj.normal_at(p);
-    const eyev = r.direction.negative;
-
+function calculateN1N2(xs: Intersection[], i: Intersection) {
     let containers: Shape[] = [];
     let n1 = 0;
     let n2 = 0;
     for (let n = 0; n < xs.length; ++n) {
         let x = xs[n];
-        if (Shape.equals(i.obj, x.obj) && i.t === x.t) {
+        if (Shape.equals(i.obj, x.obj) && Util.closeTo(i.t, x.t)) {
             if (containers.length === 0) {
                 n1 = 1.0;
             } else {
@@ -78,7 +73,7 @@ export function prepare_computations(i: Intersection, r: Ray, xs: Intersection[]
             containers = [...containers, x.obj];
         }
 
-        if (Shape.equals(i.obj, x.obj) && i.t === x.t) {
+        if (Shape.equals(i.obj, x.obj) && Util.closeTo(i.t, x.t)) {
             if (containers.length === 0) {
                 n2 = 1.0;
             } else {
@@ -87,7 +82,15 @@ export function prepare_computations(i: Intersection, r: Ray, xs: Intersection[]
             break;
         }
     }
+    return {n1, n2};
+}
 
+export function prepare_computations(i: Intersection, r: Ray, xs: Intersection[]): PreComputations {
+
+    const {n1, n2} = calculateN1N2(xs, i);
+    const eyev = r.direction.negative;
+    const p = position(r, i.t);
+    const normalv = i.obj.normal_at(p);
     if (Tuple.dot(normalv, eyev) < 0) {
         return new PreComputations(i, p, eyev, normalv.negative, true, n1, n2);
     }

@@ -4,7 +4,10 @@ export type RGBElement = 'red' | 'green' | 'blue';
 
 export class Color {
     static BLACK = new Color(0, 0, 0);
+    static RED = new Color(1, 0, 0);
+
     static WHITE = new Color(1, 1, 1);
+    static CLEMSON_ORANGE = new Color(246, 103, 51).scale(1 / 255);
 
     constructor(public readonly red: number,
                 public readonly green: number,
@@ -19,9 +22,9 @@ export class Color {
     }
 
     static equals(lhs: Color, rhs: Color): boolean {
-        return Math.abs(lhs.red - rhs.red) < Util.EPSILON &&
-            Math.abs(lhs.green - rhs.green) < Util.EPSILON &&
-            Math.abs(lhs.blue - rhs.blue) < Util.EPSILON;
+        return Util.closeTo(lhs.red, rhs.red) &&
+            Util.closeTo(lhs.green, rhs.green) &&
+            Util.closeTo(lhs.blue, rhs.blue);
     }
 
     static add(lhs: Color, rhs: Color): Color {

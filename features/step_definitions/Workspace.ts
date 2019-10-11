@@ -72,8 +72,6 @@ interface PatternArray {
 }
 
 export class Workspace {
-    public static readonly EPSILON = 0.0001;
-
     public tuples: TupleArray = {};
     public canvases: CanvasArray = {};
     public colors: ColorArray = {};

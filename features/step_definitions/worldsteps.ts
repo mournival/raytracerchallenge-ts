@@ -1,6 +1,6 @@
 import {binding, given, then, when} from 'cucumber-tsflow';
 import {parseArg, shouldEqualMsg, Workspace} from './Workspace';
-import {default_world, hit, World} from '../../src/world';
+import {default_world, World} from '../../src/world';
 import {expect} from 'chai';
 import {Color} from '../../src/color';
 import {glass_sphere, Sphere} from '../../src/sphere';
@@ -72,7 +72,7 @@ class WorldsSteps {
     public whenIntersectWorld(xsId: string, worldId: string, rayId: string) {
         this.workspace.intersections[xsId] = this.workspace.worlds[worldId].intersect_world(
             this.workspace.rays[rayId]
-        );
+        ).sort((a, b) => a.t - b.t);
     }
 
     @given(/^([\w\d_]+) ← the first object in ([^,]+)$/)
@@ -127,13 +127,15 @@ class WorldsSteps {
 
     @then(/^is_shadowed\(([\w\d_]+), ([\w\d_]+)\) is false$/)
     public thenIsShadowedIsFalse(worldId: string, pointId: string) {
-        const actual = this.workspace.worlds[worldId].is_shadowed(this.workspace.tuples[pointId]);
+        const world = this.workspace.worlds[worldId];
+        const actual = world.is_shadowed(this.workspace.tuples[pointId], world.lights[0]);
         expect(actual).to.be.false;
     }
 
     @then(/^is_shadowed\(([\w\d_]+), ([\w\d_]+)\) is true$/)
     public thenIsShadowedIsTrue(worldId: string, pointId: string) {
-        const actual = this.workspace.worlds[worldId].is_shadowed(this.workspace.tuples[pointId]);
+        const world = this.workspace.worlds[worldId];
+        const actual = world.is_shadowed(this.workspace.tuples[pointId], world.lights[0]);
         expect(actual).to.be.true;
     }
 

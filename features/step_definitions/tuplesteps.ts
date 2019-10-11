@@ -5,6 +5,7 @@ import {point, Tuple, vector, VectorElement} from '../../src/tuple';
 import {Color, RGBElement} from '../../src/color';
 import {parseArg, shouldEqualMsg, Workspace} from './Workspace';
 import {Matrix} from '../../src/matrix';
+import {Util} from '../../src/util';
 
 @binding([Workspace])
 class TupleSteps {
@@ -82,13 +83,10 @@ class TupleSteps {
 
     @then(/^([\w\d_]+) (.) (.+) = (\w*)\(([^,]+), ([^,]+), ([^,]+)[, ]*([^,]*)\)$/)
     public testMixedOperation(lhs: string, op: string, rhs: string, expectedType: string, x: string, y: string, z: string, w: string): void {
-        switch (expectedType) {
-            case 'color':
-                this.colorOp(op, lhs, rhs, x, y, z);
-                break;
-            default:
-                this.tupleOp(op, lhs, rhs, x, y, z, w, expectedType);
-                break;
+        if (expectedType === 'color') {
+            this.colorOp(op, lhs, rhs, x, y, z);
+        } else {
+            this.tupleOp(op, lhs, rhs, x, y, z, w, expectedType);
         }
     }
 
@@ -120,7 +118,7 @@ class TupleSteps {
     @then(/^dot\(([\w\d_]+), ([\w\d_]+)\) = ([^,]+)$/)
     public thenDotEquals(lhs: string, rhs: string, product: string): void {
         expect(
-            Math.abs(Tuple.dot(this.workspace.tuples[lhs], this.workspace.tuples[rhs]) - parseArg(product)) < Workspace.EPSILON
+            Util.closeTo(Tuple.dot(this.workspace.tuples[lhs], this.workspace.tuples[rhs]), parseArg(product))
         ).to.be.true;
     }
 

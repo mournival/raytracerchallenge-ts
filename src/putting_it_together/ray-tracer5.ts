@@ -11,9 +11,9 @@ import {Plane} from '../plane';
 import {checkers_pattern, combine_pattern, fill_pattern, gradient_pattern, ring_pattern} from '../pattern';
 import {Sphere} from '../sphere';
 import {Light} from '../light';
-import {Cube} from "../cube";
-import {Cylinder} from "../cylinder";
-import {Cone} from "../cone";
+import {Cube} from '../cube';
+import {Cylinder} from '../cylinder';
+import {Cone} from '../cone';
 
 function saveFile(canvas: any) {
     let fs = require('fs');
