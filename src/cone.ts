@@ -30,11 +30,11 @@ export class Cone extends Shape {
         if (Math.abs(a) < Util.EPSILON) {
             if (Math.abs(b) > Util.EPSILON) {
                 return [
-                    ...this.intersect_cap(r, []),
+                    ...this.intersect_cap(r),
                     new Intersection(this, -c / (2 * b))
                 ];
             }
-            return this.intersect_cap(r, []);
+            return this.intersect_cap(r);
         }
 
         const disc = b * b - 4 * a * c;
@@ -56,7 +56,7 @@ export class Cone extends Shape {
             xs = [...xs, new Intersection(this, t1)];
         }
 
-        xs = this.intersect_cap(r, xs);
+        xs = [...xs, ...this.intersect_cap(r)];
         return xs;
     }
 
@@ -82,17 +82,18 @@ export class Cone extends Shape {
     check_cap(r: Ray, y: number, t: number): boolean {
         const x = r.origin.x + t * r.direction.x;
         const z = r.origin.z + t * r.direction.z;
-        return x * x + z * z <= Math.abs(y);
+        return x * x + z * z <= y * y;
     }
 
-    intersect_cap(r: Ray, xs: Intersection[]): Intersection[] {
+    intersect_cap(r: Ray): Intersection[] {
         if (!this.closed || Math.abs(r.direction.y) < Util.EPSILON) {
-            return xs;
+            return [];
         }
 
+        let xs: Intersection[] = [];
         let t = (this.minimum - r.origin.y) / r.direction.y;
         if (this.check_cap(r, this.minimum, t)) {
-            xs = [...xs, new Intersection(this, t)];
+            xs = [new Intersection(this, t)];
         }
 
         t = (this.maximum - r.origin.y) / r.direction.y;

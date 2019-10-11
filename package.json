@@ -4,6 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
+    "cone": "./node_modules/ts-node/dist/bin.js src/putting_it_together/cone.ts",
     "scratch": "./node_modules/ts-node/dist/bin.js src/putting_it_together/scratch.ts",
     "particle": "./node_modules/ts-node/dist/bin.js src/putting_it_together/particle.ts",
     "clock": "./node_modules/ts-node/dist/bin.js src/putting_it_together/clock.ts",
