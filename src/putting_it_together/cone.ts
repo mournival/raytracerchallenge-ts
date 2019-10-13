@@ -37,7 +37,7 @@ const reflectiveCheckers = new Material(new Color(.67, 0.67, 0.67), 0.1, 0.9, 0,
 
 const floor = new Plane(
     translation(0, -2, 0)
-    // , reflectiveCheckers,
+    , reflectiveCheckers,
 );
 
 const left_wall = new Plane(
@@ -59,8 +59,8 @@ const cone = new Sphere(
 );
 
 const world = new World([
-        new Light(point(-10, 10, -10), new Color(0.5,  0.5, 0.5)),
-        new Light(point(10, 10, -10), new Color(0.75, 0.75, 0.75))
+        new Light(point(-10, 10, -10), new Color(0.25,  0.5, 0.25)),
+        new Light(point(10, 10, -10), new Color(0.50, 0.25, 0.5))
     ],
     [
         floor,
@@ -70,7 +70,7 @@ const world = new World([
         cone,
     ]);
 
-const camera = new Camera(Math.floor(3200 / 16), Math.floor(2400 / 16), Math.PI / 4,
+const camera = new Camera(Math.floor(3200 / 1), Math.floor(2400 / 1), Math.PI / 4,
     view_transform(
         point(0, 5, -15),
         point(0, 0, 1),

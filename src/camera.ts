@@ -4,7 +4,6 @@ import {Ray} from './ray';
 import {Canvas} from './canvas';
 import {World} from './world';
 import {Color} from './color';
-import {Console} from 'inspector';
 
 export class Camera {
 
@@ -48,14 +47,14 @@ export class Camera {
                 Canvas.write_pixel(image, y, x, color);
 
                 // let acc = Color.BLACK;
-                // const n = 2;
+                // const n = 3;
                 // for (let u = 0; u < n; ++u) {
                 //     for (let v = 0; v < n; ++v) {
-                //         const ray = this.ray_for_pixel(x + (1/n * u) - 2/n, y + (1/n * v) - 2/n);
+                //         const ray = this.ray_for_pixel(x + (1 / n * u) - 2 / n, y + (1 / n * v) - 2 / n);
                 //         acc = Color.add(acc, world.color_at(ray, 5));
                 //     }
                 // }
-                // Canvas.write_pixel(image, y, x, acc.scale(1/ Math.pow(n, 2)));
+                // Canvas.write_pixel(image, y, x, acc.scale(1 / Math.pow(n, 2)));
 
                 // if (!Color.equals(color, acc.scale(1/9))) {
                 //     console.log(JSON.stringify('x : ' + x + ', y: ' + y));
