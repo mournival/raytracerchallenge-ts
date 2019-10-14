@@ -22,7 +22,7 @@ export class Cylinder extends Shape {
         const a = r.direction.x * r.direction.x + r.direction.z * r.direction.z;
 
         if (Util.closeTo(a, 0)) {
-            return this.intersect_cap(r, []);
+            return this.intersect_cap(r);
         }
 
         const b = 2 * r.origin.x * r.direction.x
@@ -48,8 +48,7 @@ export class Cylinder extends Shape {
             xs = [...xs, new Intersection(this, t1)];
         }
 
-        xs = this.intersect_cap(r, xs);
-        return xs;
+        return [...xs, ...this.intersect_cap(r)];
     }
 
     local_normal_at(pt: Tuple): Tuple {
@@ -77,14 +76,15 @@ export class Cylinder extends Shape {
         return x * x + z * z <= 1;
     }
 
-    intersect_cap(r: Ray, xs: Intersection[]): Intersection[] {
+    intersect_cap(r: Ray): Intersection[] {
+        let xs: Intersection[] = [];
         if (!this.closed || Util.closeTo(r.direction.y, 0)) {
             return xs;
         }
 
         let t = (this.minimum - r.origin.y) / r.direction.y;
         if (this.check_cap(r, t)) {
-            xs = [...xs, new Intersection(this, t)];
+            xs = [new Intersection(this, t)];
         }
 
         t = (this.maximum - r.origin.y) / r.direction.y;

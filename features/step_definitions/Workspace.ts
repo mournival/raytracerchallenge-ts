@@ -125,6 +125,9 @@ export function parseArg(s: string): number {
         const matchArray = s.split('/');
         return Math.sqrt(parseInt(matchArray[0].slice(1))) / parseInt(matchArray[1]);
     }
+    if (s.match(/^-√\d+$/)) {
+        return -Math.sqrt(parseInt(s.slice(2)));
+    }
     if (s.match(/^-√\d+\s*\/\s*\d+$/)) {
         const matchArray = s.split('/');
         return -Math.sqrt(parseInt(matchArray[0].slice(2))) / parseInt(matchArray[1]);

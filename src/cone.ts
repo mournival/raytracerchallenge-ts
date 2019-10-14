@@ -25,18 +25,18 @@ export class Cone extends Shape {
         const b = 2 * r.origin.x * r.direction.x
             - 2 * r.origin.y * r.direction.y
             + 2 * r.origin.z * r.direction.z;
-        const c = r.origin.x * r.origin.x - r.origin.y * r.origin.y + r.origin.z * r.origin.z;
-
-        let xs: Intersection[] = this.intersect_cap(r);
+        const c = r.origin.x * r.origin.x
+            - r.origin.y * r.origin.y
+            + r.origin.z * r.origin.z;
 
         if (Util.closeTo(a, 0)) {
-            if (!Util.closeTo(b, 0)) {
+            if (b !== 0) {
                 return [
                     new Intersection(this, -c / (2 * b)),
-                    ...xs
+                    ...this.intersect_cap(r)
                 ];
             }
-            return xs;
+            return this.intersect_cap(r);
         }
 
         const disc = b * b - 4 * a * c;
@@ -47,9 +47,10 @@ export class Cone extends Shape {
         const t0 = (-b - Math.sqrt(disc)) / (2 * a);
         const t1 = (-b + Math.sqrt(disc)) / (2 * a);
 
+        let xs: Intersection[] = [];
         const y0 = r.origin.y + t0 * r.direction.y;
         if (this.minimum < y0 && y0 < this.maximum) {
-            xs = [...xs, new Intersection(this, t0)];
+            xs = [new Intersection(this, t0)];
         }
 
         const y1 = r.origin.y + t1 * r.direction.y;
@@ -57,18 +58,20 @@ export class Cone extends Shape {
             xs = [...xs, new Intersection(this, t1)];
         }
 
-        return xs;
+        return [...xs, ...this.intersect_cap(r)];
     }
 
     local_normal_at(pt: Tuple): Tuple {
         const dist = pt.x * pt.x + pt.z * pt.z;
-        if (dist < 1 && Util.closeTo(pt.y, this.maximum)) {
-            return vector(0, 1, 0);
+        const y = pt.y <= 0 ? Math.sqrt(dist) : -Math.sqrt(dist);
+        if (dist < 1 && pt.y > this.maximum - Util.EPSILON) {
+            return vector(0, y, 0);
         }
-        if (dist < 1 && Util.closeTo(pt.y, this.minimum)) {
-            return vector(0, -1, 0);
+        if (dist < 1 && pt.y < this.minimum + Util.EPSILON) {
+            return vector(0, -y, 0);
         }
-        return vector(pt.x, 0, pt.z);
+
+        return vector(pt.x, y, pt.z);
     }
 
     local_replace_transform(t: Matrix): Shape {
@@ -79,29 +82,26 @@ export class Cone extends Shape {
         return new Cone(this.transform, m);
     }
 
-    check_cap(ray: Ray, capRadius: number, t: number): boolean {
-        const x = ray.origin.x + t * ray.direction.x;
-        const z = ray.origin.z + t * ray.direction.z;
+    check_cap(r: Ray, t: number, capRadius: number): boolean {
+        const x = r.origin.x + t * r.direction.x;
+        const z = r.origin.z + t * r.direction.z;
 
-        return x * x + z * z <= capRadius * capRadius ;
+        return x * x + z * z <= Math.abs(capRadius);
     }
 
     intersect_cap(r: Ray): Intersection[] {
+        let xs: Intersection[] = [];
         if (!this.closed || Util.closeTo(r.direction.y, 0)) {
-            return [];
+            return xs;
         }
 
-        let xs: Intersection[] = [];
-
         let t = (this.minimum - r.origin.y) / r.direction.y;
-        let y = r.origin.y + t * r.direction.y;
-        if (this.check_cap(r, Math.max(this.minimum, y), t)) {
+        if (this.check_cap(r, t, this.minimum)) {
             xs = [new Intersection(this, t)];
         }
 
         t = (this.maximum - r.origin.y) / r.direction.y;
-        y = r.origin.y + t * r.direction.y;
-        if (this.check_cap(r, Math.min(this.maximum, y), t)) {
+        if (this.check_cap(r, t, this.maximum)) {
             xs = [...xs, new Intersection(this, t)];
         }
         return xs;

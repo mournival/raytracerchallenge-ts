@@ -19,10 +19,9 @@ class PlaneSteps {
 
     @when(/^([\w\d_]+) ← local_normal_at\(([\w\d_]+), point\(([^,]+), ([^,]+), ([^,]+)\)\)$/)
     public whenNormalAt(normalId: string, planeId: string, x: string, y: string, z: string) {
-        const n = this.workspace.shapes[planeId].normal_at(
+        this.workspace.tuples[normalId] = this.workspace.shapes[planeId].local_normal_at(
             point(parseArg(x), parseArg(y), parseArg(z))
         );
-        this.workspace.tuples[normalId] = n;
     }
 
     @when(/^([\w\d_]+) ← local_intersect\(([\w\d_]+), ([\w\d_]+)\)$/)

@@ -52,10 +52,10 @@ const right_wall = new Plane(
         )
     ), new Material(new Color(.16, 0.67, 0.16), 0.1, 0.9, 0, 200, 0.05, 0, 1));
 
-const cone = new Sphere(
+const cone = new Cone(
     rotation_x(-quarterPi/2),
     new Material(Color.RED, 0.2, 0.9, 1, 200)
-    // , -2, 3, true
+    , -2, 2, true
 );
 
 const world = new World([
@@ -70,7 +70,7 @@ const world = new World([
         cone,
     ]);
 
-const camera = new Camera(Math.floor(3200 / 1), Math.floor(2400 / 1), Math.PI / 4,
+const camera = new Camera(Math.floor(3200 / 16), Math.floor(2400 / 16), Math.PI / 4,
     view_transform(
         point(0, 5, -15),
         point(0, 0, 1),
