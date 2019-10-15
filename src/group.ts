@@ -20,7 +20,7 @@ export class Group extends Shape {
     }
 
     local_intersection(r: Ray): Intersection[] {
-        return [];
+        return this.children.flatMap( x => x.intersect(r)).sort((a, b) => a.t - b.t);
     }
 
     local_normal_at(pt: Tuple): Tuple {
