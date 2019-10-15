@@ -13,9 +13,10 @@ export class Cone extends Shape {
         public readonly material = new Material(),
         public readonly minimum = Number.NEGATIVE_INFINITY,
         public readonly maximum = Number.POSITIVE_INFINITY,
-        public readonly closed = false
+        public readonly closed = false,
+        public readonly parent: Shape | null = null
     ) {
-        super(transform, material);
+        super(transform, material, parent);
     }
 
     local_intersection(r: Ray): Intersection[] {
@@ -75,11 +76,15 @@ export class Cone extends Shape {
     }
 
     local_replace_transform(t: Matrix): Shape {
-        return new Cone(t, this.material);
+        return new Cone(t, this.material, this.minimum, this.maximum, this.closed, this.parent);
     }
 
     local_replace_material(m: Material): Shape {
-        return new Cone(this.transform, m);
+        return new Cone(this.transform, m, this.minimum, this.maximum, this.closed, this.parent);
+    }
+
+    local_replace_parent(s: Shape): Shape {
+        return new Cone(this.transform, this.material, this.minimum, this.maximum, this.closed, s);
     }
 
     check_cap(r: Ray, t: number, capRadius: number): boolean {

@@ -9,9 +9,10 @@ export class Sphere extends Shape {
 
     constructor(
         public readonly transform: Matrix = Matrix.identity(),
-        public readonly material: Material = new Material()
+        public readonly material: Material = new Material(),
+        public readonly parent: Shape|null = null
     ) {
-        super(transform, material);
+        super(transform, material, parent);
     }
 
     public local_intersection(r: Ray): Intersection[] {
@@ -38,11 +39,15 @@ export class Sphere extends Shape {
     }
 
     local_replace_transform(t: Matrix): Shape {
-        return new Sphere(t, this.material);
+        return new Sphere(t, this.material, this.parent);
     }
 
     local_replace_material(m: Material): Shape {
-        return new Sphere(this.transform, m);
+        return new Sphere(this.transform, m, this.parent);
+    }
+
+    local_replace_parent(s: Shape): Shape {
+        return new Sphere(this.transform, this.material, s);
     }
 }
 
@@ -53,9 +58,10 @@ export function glass_sphere(): Sphere {
 export class TestShape extends Shape {
     constructor(
         public readonly transform: Matrix = Matrix.identity(4),
-        public readonly material = new Material()
+        public readonly material = new Material(),
+        public readonly parent: Shape|null = null
     ) {
-        super(transform, material);
+        super(transform, material, parent);
     }
 
     intersect(r: Ray): Intersection[] {
@@ -72,11 +78,15 @@ export class TestShape extends Shape {
     }
 
     local_replace_transform(t: Matrix): Shape {
-        return new TestShape(t);
+        return new TestShape(t, this.material, this.parent);
     }
 
     local_replace_material(m: Material): Shape {
-        return new TestShape(this.transform, m);
+        return new TestShape(this.transform, m, this.parent);
+    }
+
+    local_replace_parent(s: Shape): Shape {
+        return new TestShape(this.transform, this.material, s);
     }
 
 

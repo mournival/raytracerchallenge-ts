@@ -6,13 +6,13 @@ Scenario: Creating a new group
   Then g.transform = identity_matrix
     And g is empty
 
-#Scenario: Adding a child to a group
-#  Given g ← group()
-#    And s ← test_shape()
-#  When add_child(g, s)
-#  Then g is not empty
-#    And g includes s
-#    And s.parent = g
+Scenario: Adding a child to a group
+  Given g ← group()
+    And s ← test_shape()
+  When add_child(g, s)
+  Then g is not empty
+    And g includes s
+    And s.parent = g
 #
 #Scenario: Intersecting a ray with an empty group
 #  Given g ← group()

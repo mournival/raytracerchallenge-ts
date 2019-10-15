@@ -7,12 +7,16 @@ import {Material} from './material';
 
 
 export class Group extends Shape {
-    constructor(public readonly transform: Matrix = Matrix.identity()) {
-        super(transform, new Material());
+
+    constructor(public readonly transform: Matrix = Matrix.identity(),
+                public readonly material = new Material(),
+                public readonly children: Shape[] = [],
+                public readonly parent: Shape|null = null) {
+        super(transform, material, parent);
     }
 
     get empty(): boolean {
-        return true;
+        return this.children.length === 0;
     }
 
     local_intersection(r: Ray): Intersection[] {
@@ -24,10 +28,23 @@ export class Group extends Shape {
     }
 
     local_replace_material(m: Material): Shape {
-        return new Group(this.transform);
+        return new Group(this.transform, m, this.children, this.parent);
     }
 
     local_replace_transform(t: Matrix): Shape {
-        return new Group(t);
+        return new Group(t, this.material, this.children, this.parent);
+    }
+
+    local_replace_parent(s: Shape): Shape {
+        return new Group(this.transform, this.material, this.children, s);
+    }
+
+
+    add_child(shape: Shape): Group {
+        return new Group(this.transform, this.material, [...this.children, shape]);
+    }
+
+    includes(shape: Shape): boolean {
+        return !!this.children.find(s => Shape.equals(s, shape));
     }
 }

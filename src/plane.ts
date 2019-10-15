@@ -1,18 +1,19 @@
 import {Matrix} from './matrix';
 import {Material} from './material';
-import {Tuple, vector} from './tuple';
 import {Shape} from './shape';
-import {Ray, transform} from './ray';
+import {Ray} from './ray';
 import {Intersection} from './intersection';
 import {Util} from './util';
+import {Tuple, vector} from './tuple';
 
 export class Plane extends Shape {
 
     constructor(
         public readonly transform: Matrix = Matrix.identity(4),
-        public readonly material = new Material()
+        public readonly material = new Material(),
+        public readonly parent: Shape | null = null
     ) {
-        super(transform, material);
+        super(transform, material, parent);
     }
 
     local_intersection(r: Ray): Intersection[] {
@@ -28,11 +29,16 @@ export class Plane extends Shape {
     }
 
     local_replace_transform(t: Matrix): Shape {
-        return new Plane(t, this.material);
+        return new Plane(t, this.material, this.parent);
     }
 
     local_replace_material(m: Material): Shape {
-        return  new Plane(this.transform, m);
+        return new Plane(this.transform, m, this.parent);
     }
+
+    local_replace_parent(s: Shape): Shape {
+        return new Plane(this.transform, this.material, s);
+    }
+
 }
 

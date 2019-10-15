@@ -3,7 +3,7 @@
 import {point, vector} from '../tuple';
 import {Canvas} from '../canvas';
 import {Color} from '../color';
-import {Matrix, rotation_x, rotation_y, rotation_z, scaling, translation, view_transform} from '../matrix';
+import {Matrix, rotation_x, rotation_y, scaling, translation, view_transform} from '../matrix';
 import {Material} from '../material';
 import {World} from '../world';
 import {Camera} from '../camera';
@@ -11,8 +11,6 @@ import {Plane} from '../plane';
 import {checkers_pattern, combine_pattern, gradient_pattern} from '../pattern';
 import {Light} from '../light';
 import {Cone} from '../cone';
-import {Cylinder} from "../cylinder";
-import {Sphere} from "../sphere";
 
 function saveFile(canvas: any) {
     let fs = require('fs');

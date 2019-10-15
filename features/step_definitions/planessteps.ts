@@ -4,7 +4,7 @@ import {Plane} from '../../src/plane';
 import {then, when} from 'cucumber-tsflow/dist';
 import {point} from '../../src/tuple';
 import {expect} from 'chai';
-import {Group} from "../../src/group";
+import {Group} from '../../src/group';
 
 @binding([Workspace])
 class PlaneSteps {

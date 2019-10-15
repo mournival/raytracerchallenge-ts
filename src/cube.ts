@@ -10,9 +10,10 @@ export class Cube extends Shape {
 
     constructor(
         public readonly transform: Matrix = Matrix.identity(4),
-        public readonly material = new Material()
+        public readonly material = new Material(),
+        public readonly parent: Shape | null = null
     ) {
-        super(transform, material);
+        super(transform, material, parent);
     }
 
     local_intersection(r: Ray): Intersection[] {
@@ -43,11 +44,15 @@ export class Cube extends Shape {
     }
 
     local_replace_transform(t: Matrix): Shape {
-        return new Cube(t, this.material);
+        return new Cube(t, this.material, this.parent);
     }
 
     local_replace_material(m: Material): Shape {
-        return new Cube(this.transform, m);
+        return new Cube(this.transform, m, this.parent);
+    }
+
+    local_replace_parent(s: Shape): Shape {
+        return new Cube(this.transform, this.material, s);
     }
 
     check_axis(origin: number, direction: number): number[] {

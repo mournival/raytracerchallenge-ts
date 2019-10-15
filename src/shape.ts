@@ -3,12 +3,12 @@ import {Material} from './material';
 import {Interceptable, Intersection} from './intersection';
 import {Ray, transform} from './ray';
 import {Tuple, vector} from './tuple';
-import {Sphere} from './sphere';
 
 export abstract class Shape implements Interceptable {
 
     protected constructor(public readonly transform: Matrix,
-                          public readonly material: Material) {
+                          public readonly material: Material,
+                          public readonly parent: Shape | null = null) {
     }
 
     static equals(lhs: Shape, rhs: Shape): boolean {
@@ -25,6 +25,8 @@ export abstract class Shape implements Interceptable {
 
     abstract local_replace_material(m: Material): Shape;
 
+    abstract local_replace_parent(s: Shape): Shape;
+
     normal_at(point: Tuple): Tuple {
         const inverseTransform = this.transform.inverse;
         const local_point = Matrix.multiplyVector(inverseTransform, point);
@@ -39,13 +41,16 @@ export abstract class Shape implements Interceptable {
         return this.local_intersection(transform(r, this.transform.inverse));
     }
 
-    replace(prop: Matrix | Material): Shape {
+    replace(prop: Matrix | Material | Shape): Shape {
         if (typeof prop === 'object') {
             if (prop instanceof Matrix) {
                 return this.local_replace_transform(prop);
             }
             if (prop instanceof Material) {
                 return this.local_replace_material(prop);
+            }
+            if (prop instanceof Shape) {
+                return this.local_replace_parent(prop);
             }
         }
         throw 'Unknown replace for : ' + typeof prop;

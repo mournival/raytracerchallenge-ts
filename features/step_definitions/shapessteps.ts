@@ -46,6 +46,10 @@ class ShapeSteps {
         expect(actual, shouldEqualMsg(actual, expected)).to.be.closeTo(expected, 0.001);
     }
 
+    @then(/^([\w\d_]+).parent is nothing$/)
+    public thenTestShapeHasNoParent(shapeId: string) {
+        expect(this.workspace.shapes[shapeId].parent).to.be.null;
+    }
 }
 
 export = ShapeSteps;
