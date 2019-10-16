@@ -28,13 +28,10 @@ export abstract class Shape implements Interceptable {
     abstract local_replace_parent(s: Shape): Shape;
 
     normal_at(point: Tuple): Tuple {
-        const inverseTransform = this.transform.inverse;
-        const local_point = Matrix.multiplyVector(inverseTransform, point);
+        const local_point = this.world_to_object(point);
         const local_normal = this.local_normal_at(local_point);
-        let world_normal = Matrix.multiplyVector(inverseTransform.transpose, local_normal);
-        world_normal = vector(world_normal.x, world_normal.y, world_normal.z);
 
-        return world_normal.normalize;
+        return this.normal_to_world(local_normal);
     }
 
     intersect(r: Ray): Intersection[] {
@@ -63,6 +60,17 @@ export abstract class Shape implements Interceptable {
         }
 
         return Matrix.multiplyVector(this.transform.inverse, p);
+    }
+
+    normal_to_world(normal: Tuple): Tuple {
+        let n = Matrix.multiplyVector(this.transform.inverse.transpose, normal);
+        n = vector(n.x, n.y, n.z).normalize;
+
+        if (this.parent !== null) {
+            n = this.parent.normal_to_world(n);
+        }
+
+        return n;
     }
 }
 

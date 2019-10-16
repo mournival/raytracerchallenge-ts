@@ -4,7 +4,8 @@ import {expect} from 'chai';
 import {Matrix, rotation_y, translation} from '../../src/matrix';
 import {isShape} from '../../src/shape';
 import {test_shape} from '../../src/sphere';
-import {point} from "../../src/tuple";
+import {point, vector} from '../../src/tuple';
+import {when} from 'cucumber-tsflow/dist';
 
 @binding([Workspace])
 class ShapeSteps {
@@ -59,10 +60,16 @@ class ShapeSteps {
         this.workspace.shapes[shapeId] = s.replace(t);
     }
 
-    @given(/^([\w\d_]+) ← world_to_object\(([\w\d_]+), point\(([^,]+), ([^,]+), ([^,]+)\)\)$/)
+    @when(/^([\w\d_]+) ← world_to_object\(([\w\d_]+), point\(([^,]+), ([^,]+), ([^,]+)\)\)$/)
     public whenWorldToObjectSpace(pointId: string, shapeId: string, x: string, y: string, z: string) {
         this.workspace.tuples[pointId] =
             this.workspace.shapes[shapeId].world_to_object(point(parseArg(x), parseArg(y), parseArg(z)));
+    }
+
+    @when(/^([\w\d_]+) ← normal_to_world\(([\w\d_]+), vector\(([^,]+), ([^,]+), ([^,]+)\)\)$/)
+    public whenNormalToSpace(pointId: string, shapeId: string, x: string, y: string, z: string) {
+        this.workspace.tuples[pointId] =
+            this.workspace.shapes[shapeId].normal_to_world(vector(parseArg(x), parseArg(y), parseArg(z)));
     }
 }
 
