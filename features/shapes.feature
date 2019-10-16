@@ -57,18 +57,18 @@ Scenario: A shape has a parent attribute
   Given s ← test_shape()
   Then s.parent is nothing
 
-#Scenario: Converting a point from world to object space
-#  Given g1 ← group()
-#    And set_transform(g1, rotation_y(π/2))
-#    And g2 ← group()
-#    And set_transform(g2, scaling(2, 2, 2))
-#    And add_child(g1, g2)
-#    And s ← sphere()
-#    And set_transform(s, translation(5, 0, 0))
-#    And add_child(g2, s)
-#  When p ← world_to_object(s, point(-2, 0, -10))
-#  Then p = point(0, 0, -1)
-#
+Scenario: Converting a point from world to object space
+  Given g1 ← group()
+    And set_transform(g1, rotation_y(π/2))
+    And g2 ← group()
+    And set_transform(g2, scaling(2, 2, 2))
+    And add_child(g1, g2)
+    And s ← sphere()
+    And set_transform(s, translation(5, 0, 0))
+    And add_child(g2, s)
+  When p ← world_to_object(s, point(-2, 0, -10))
+  Then p = point(0, 0, -1)
+
 #Scenario: Converting a normal from object to world space
 #  Given g1 ← group()
 #    And set_transform(g1, rotation_y(π/2))
@@ -95,7 +95,7 @@ Scenario: A shape has a parent attribute
 
 # Suggestions from chapter 9:
 # 1. Write a test to check that a Sphere is a Shape
-    Given s ← sphere()
-    Then s is a shape
+#    Given s ← sphere()
+#    Then s is a shape
 # 2. remove transform and material tests from sphere
 # - Not sure. At this time, not using OO inheritance with base class.Ability:

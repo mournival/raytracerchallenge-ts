@@ -16,11 +16,11 @@ class GroupsSteps {
     }
 
     @when(/^add_child\(([\w\d_]+), ([\w\d_]+)\)$/)
-    public whenChildAdded(groupId: string, shapeId: string) {
-        const group = this.workspace.shapes[groupId] as Group;
-        const shape = this.workspace.shapes[shapeId].replace(group);
-        this.workspace.shapes[shapeId] = shape;
-        this.workspace.shapes[groupId] = group.add_child(shape);
+    public whenChildAdded(parentId: string, childId: string) {
+        const parent = this.workspace.shapes[parentId] as Group;
+        const child = this.workspace.shapes[childId].replace(parent);
+        this.workspace.shapes[childId] = child;
+        this.workspace.shapes[parentId] = parent.add_child(child);
     }
 
     @then(/^([\w\d_]+) is not empty$/)

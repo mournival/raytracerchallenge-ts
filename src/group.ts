@@ -27,12 +27,12 @@ export class Group extends Shape {
         return vector(0, 0, 0);
     }
 
-    local_replace_material(m: Material): Shape {
-        return new Group(this.transform, m, this.children, this.parent);
-    }
-
     local_replace_transform(t: Matrix): Shape {
         return new Group(t, this.material, this.children, this.parent);
+    }
+
+    local_replace_material(m: Material): Shape {
+        return new Group(this.transform, m, this.children, this.parent);
     }
 
     local_replace_parent(s: Shape): Shape {
@@ -41,7 +41,7 @@ export class Group extends Shape {
 
 
     add_child(shape: Shape): Group {
-        return new Group(this.transform, this.material, [...this.children, shape]);
+        return new Group(this.transform, this.material, [...this.children, shape], this.parent);
     }
 
     includes(shape: Shape): boolean {

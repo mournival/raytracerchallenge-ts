@@ -55,6 +55,15 @@ export abstract class Shape implements Interceptable {
         }
         throw 'Unknown replace for : ' + typeof prop;
     }
+
+    world_to_object(point: Tuple): Tuple {
+        let p= point;
+        if (this.parent !== null) {
+            p = this.parent.world_to_object(point);
+        }
+
+        return Matrix.multiplyVector(this.transform.inverse, p);
+    }
 }
 
 export function isShape(arg: any): arg is Shape {

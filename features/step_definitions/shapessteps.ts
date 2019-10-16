@@ -1,9 +1,10 @@
 import {binding, given, then} from 'cucumber-tsflow';
 import {parseArg, shouldEqualMsg, Workspace} from './Workspace';
 import {expect} from 'chai';
-import {Matrix, translation} from '../../src/matrix';
+import {Matrix, rotation_y, translation} from '../../src/matrix';
 import {isShape} from '../../src/shape';
 import {test_shape} from '../../src/sphere';
+import {point} from "../../src/tuple";
 
 @binding([Workspace])
 class ShapeSteps {
@@ -49,6 +50,19 @@ class ShapeSteps {
     @then(/^([\w\d_]+).parent is nothing$/)
     public thenTestShapeHasNoParent(shapeId: string) {
         expect(this.workspace.shapes[shapeId].parent).to.be.null;
+    }
+
+    @then(/^set_transform\((\w+), rotation_y\(([^,]+)\)\)$/)
+    public whenSetTransformTranslation(shapeId: string, y: string) {
+        const s = this.workspace.shapes[shapeId];
+        const t = rotation_y(parseArg(y));
+        this.workspace.shapes[shapeId] = s.replace(t);
+    }
+
+    @given(/^([\w\d_]+) ← world_to_object\(([\w\d_]+), point\(([^,]+), ([^,]+), ([^,]+)\)\)$/)
+    public whenWorldToObjectSpace(pointId: string, shapeId: string, x: string, y: string, z: string) {
+        this.workspace.tuples[pointId] =
+            this.workspace.shapes[shapeId].world_to_object(point(parseArg(x), parseArg(y), parseArg(z)));
     }
 }
 
