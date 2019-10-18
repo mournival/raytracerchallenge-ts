@@ -28,30 +28,34 @@ export class Triangle extends Shape {
     }
 
     local_intersection(r: Ray): Intersection[] {
-        const [xtmin, xtmax] = this.check_axis(r.origin.x, r.direction.x);
-        const [ytmin, ytmax] = this.check_axis(r.origin.y, r.direction.y);
-        const [ztmin, ztmax] = this.check_axis(r.origin.z, r.direction.z);
+        const dir_cross_e2 = Tuple.cross(r.direction, this.e2);
+        const det = Tuple.dot(this.e1, dir_cross_e2);
 
-        const tmin = Math.max(xtmin, ytmin, ztmin);
-        const tmax = Math.min(xtmax, ytmax, ztmax);
-
-        if (tmin > tmax) {
+        if (Util.closeTo(det, 0)) {
             return [];
         }
-        return [new Intersection(this, tmin), new Intersection(this, tmax)];
+
+        const f = 1 / det;
+
+        const p1_to_origin = Tuple.subtract(r.origin, this.p1);
+        const u = f * Tuple.dot(p1_to_origin, dir_cross_e2);
+        if (u < 0 || u > 1) {
+            return [];
+        }
+
+        const origin_cross_e1 = Tuple.cross(p1_to_origin, this.e1);
+        const v = f * Tuple.dot(r.direction, origin_cross_e1);
+        if (v < 0 || u + v > 1) {
+            return [];
+        }
+
+        const t = f * Tuple.dot(this.e2, origin_cross_e1);
+
+        return [new Intersection(this, t)];
     }
 
     local_normal_at(pt: Tuple): Tuple {
-        const maxc = Math.max(Math.abs(pt.x), Math.abs(pt.y), Math.abs(pt.z));
-
-        if (maxc === Math.abs(pt.x)) {
-            return vector(pt.x, 0, 0);
-        }
-        if (maxc === Math.abs(pt.y)) {
-            return vector(0, pt.y, 0);
-        }
-
-        return vector(0, 0, pt.z);
+        return this.normal;
     }
 
     local_replace_transform(t: Matrix): Shape {
@@ -65,26 +69,6 @@ export class Triangle extends Shape {
     local_replace_parent(s: Shape): Shape {
         return new Triangle(this.p1, this.p2, this.p3, this.transform, this.material, s);
     }
-
-    check_axis(origin: number, direction: number): number[] {
-        const tmin_numerator = (-1 - origin);
-        const tmax_numerator = (1 - origin);
-
-        let tmin, tmax;
-
-        if (!Util.closeTo(direction, 0)) {
-            tmin = tmin_numerator / direction;
-            tmax = tmax_numerator / direction;
-        } else {
-            tmin = tmin_numerator * Number.POSITIVE_INFINITY;
-            tmax = tmax_numerator * Number.POSITIVE_INFINITY;
-        }
-
-        if (tmin > tmax) {
-            return [tmax, tmin];
-        }
-        return [tmin, tmax];
-
-    }
+    
 }
 

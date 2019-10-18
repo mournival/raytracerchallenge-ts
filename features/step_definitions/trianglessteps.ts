@@ -2,7 +2,7 @@ import {binding, when} from 'cucumber-tsflow';
 import {parseArg, shouldEqualMsg, Workspace} from './Workspace';
 import {Triangle} from '../../src/triangle';
 import {then} from 'cucumber-tsflow/dist';
-import {Tuple, vector} from '../../src/tuple';
+import {point, Tuple, vector} from '../../src/tuple';
 import {expect} from 'chai';
 import {fail} from 'assert';
 
@@ -13,8 +13,8 @@ class TrianglesSteps {
     }
 
     @when(/^([\w\d_]+) ← triangle\(([^,]+), ([^,]+), ([^,]+)\)$/)
-    public whenLightCreated(lightId: string, p1Id: string, p2Id: string, p3Id: string) {
-        this.workspace.shapes[lightId] = new Triangle(
+    public givenTriangleByVertexIds(shapeId: string, p1Id: string, p2Id: string, p3Id: string) {
+        this.workspace.shapes[shapeId] = new Triangle(
             this.workspace.tuples[p1Id],
             this.workspace.tuples[p2Id],
             this.workspace.tuples[p3Id]
@@ -62,9 +62,28 @@ class TrianglesSteps {
     }
 
     @then(/^([\w\d_]+).(normal) = vector\(([^,]+), ([^,]+), ([^,]+)\)$/)
-    public thenNormaldgeIs(triangleId: string, edgeId: string, x: string, y: string, z: string) {
+    public thenNormalIs(triangleId: string, edgeId: string, x: string, y: string, z: string) {
         const actual = (this.workspace.shapes[triangleId] as Triangle).normal;
         const expected = vector(parseArg(x), parseArg(y), parseArg(z));
+        expect(Tuple.equals(actual, expected), shouldEqualMsg(actual, expected)).to.be.true;
+    }
+
+    @when(/^([\w\d_]+) ← triangle\(point\(([^,]+), ([^,]+), ([^,]+)\), point\(([^,]+), ([^,]+), ([^,]+)\), point\(([^,]+), ([^,]+), ([^,]+)\)\)$/)
+    public givenTriangleByPoints(shapeId: string,
+                                 p1xId: string, p1yId: string, p1zId: string,
+                                 p2xId: string, p2yId: string, p2zId: string,
+                                 p3xId: string, p3yId: string, p3zId: string) {
+        this.workspace.shapes[shapeId] = new Triangle(
+            point(parseArg(p1xId), parseArg(p1yId), parseArg(p1zId)),
+            point(parseArg(p2xId), parseArg(p2yId), parseArg(p2zId)),
+            point(parseArg(p3xId), parseArg(p3yId), parseArg(p3zId))
+        );
+    }
+
+    @then(/^([\w\d_]+) = ([\w\d_]+).normal$/)
+    public thenNormalVectorIs(normalId: string, triangleId: string) {
+        const actual = (this.workspace.shapes[triangleId] as Triangle).normal;
+        const expected = this.workspace.tuples[normalId];
         expect(Tuple.equals(actual, expected), shouldEqualMsg(actual, expected)).to.be.true;
     }
 }
