@@ -1,10 +1,11 @@
 import {then, when, binding, given} from 'cucumber-tsflow';
-import {parseArg, shouldEqualMsg, Workspace} from './Workspace';
+import {shouldEqualMsg, Workspace} from './Workspace';
 import {expect} from 'chai';
 import {checkers_pattern, gradient_pattern, ring_pattern, stripe_pattern, test_pattern} from '../../src/pattern';
 import {Color} from '../../src/color';
 import {point} from '../../src/tuple';
 import {scaling, translation} from '../../src/matrix';
+import {parseArg} from '../../src/util';
 
 @binding([Workspace])
 class PatternSteps {

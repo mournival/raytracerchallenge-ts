@@ -1,9 +1,10 @@
 import {binding, given, then, when} from 'cucumber-tsflow';
-import {parseArg, shouldEqualMsg, Workspace} from './Workspace';
+import {shouldEqualMsg, Workspace} from './Workspace';
 import {Camera} from '../../src/camera';
 import {expect} from 'chai';
 import {Matrix, rotation_y, translation, view_transform} from '../../src/matrix';
 import {Color} from '../../src/color';
+import {parseArg} from '../../src/util';
 
 @binding([Workspace])
 class CameraSteps {

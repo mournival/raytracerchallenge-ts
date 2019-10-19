@@ -1,8 +1,9 @@
 import {binding, then, when} from 'cucumber-tsflow';
-import {parseArg, shouldEqualMsg, Workspace} from './Workspace';
+import {shouldEqualMsg, Workspace} from './Workspace';
 import {expect} from 'chai';
 import {point, Tuple, vector} from '../../src/tuple';
 import {position, Ray, transform} from '../../src/ray';
+import {parseArg} from '../../src/util';
 
 @binding([Workspace])
 class RaysSteps {

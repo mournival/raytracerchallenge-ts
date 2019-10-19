@@ -1,11 +1,12 @@
 import {binding, given, then, when} from 'cucumber-tsflow';
-import {parseArg, Workspace} from './Workspace';
+import {Workspace} from './Workspace';
 import {Material} from '../../src/material';
 import {expect} from 'chai';
 import {Color} from '../../src/color';
 import {Light} from '../../src/light';
 import {point} from '../../src/tuple';
 import {Pattern, stripe_pattern} from '../../src/pattern';
+import {parseArg} from '../../src/util';
 
 @binding([Workspace])
 class MaterialsSteps {

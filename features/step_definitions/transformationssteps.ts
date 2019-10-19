@@ -1,5 +1,5 @@
 import {binding, given, then, when} from 'cucumber-tsflow';
-import {parseArg, shouldEqualMsg, Workspace} from './Workspace';
+import {shouldEqualMsg, Workspace} from './Workspace';
 import {expect} from 'chai';
 import {
     Matrix,
@@ -12,6 +12,7 @@ import {
     view_transform
 } from '../../src/matrix';
 import {Tuple} from '../../src/tuple';
+import {parseArg} from '../../src/util';
 
 
 @binding([Workspace])

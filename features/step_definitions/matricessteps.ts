@@ -1,10 +1,10 @@
 import {before, binding, given, then} from 'cucumber-tsflow';
-import {parseArg, shouldEqualMsg, Workspace} from './Workspace';
+import {shouldEqualMsg, Workspace} from './Workspace';
 import {expect} from 'chai';
 import {Matrix} from '../../src/matrix';
 import {Tuple} from '../../src/tuple';
 import {fail} from 'assert';
-import {Util} from '../../src/util';
+import {parseArg, Util} from '../../src/util';
 
 @binding([Workspace])
 class MatricesSteps {

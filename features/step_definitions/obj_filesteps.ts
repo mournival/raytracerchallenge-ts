@@ -1,7 +1,9 @@
 import {binding, given, then, when} from 'cucumber-tsflow';
-import {parseArg, Workspace} from './Workspace';
+import {shouldEqualMsg, Workspace} from './Workspace';
 import {ObjFile} from '../../src/obj_file';
 import {expect} from 'chai';
+import {parseArg} from '../../src/util';
+import {point, Tuple} from '../../src/tuple';
 
 @binding([Workspace])
 class ObjFileSteps {
@@ -27,6 +29,13 @@ class ObjFileSteps {
         expect(actual).to.be.equal(expected);
     }
 
+    @then(/^([\w\d_]+).vertices\[([\d]+)] = point\(([^,]+), ([^,]+), ([^,]+)\)$/)
+    public thenVertixNIs(parserId: string, vertexId: string, x: string, y: string, z: string) {
+        const actual = this.workspace.parsers[parserId].vertices[parseArg(vertexId) - 1];
+        const expected = point(parseArg(x), parseArg(y), parseArg(z));
+
+        expect(Tuple.equals(actual, expected), shouldEqualMsg(actual, expected)).to.be.true;
+    }
 }
 
 export = ObjFileSteps;

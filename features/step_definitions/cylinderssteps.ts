@@ -1,10 +1,11 @@
-import {then, binding, given} from 'cucumber-tsflow';
-import {parseArg, Workspace} from './Workspace';
+import {binding, given, then} from 'cucumber-tsflow';
+import {Workspace} from './Workspace';
 import {Cylinder} from '../../src/cylinder';
 import {point, vector} from '../../src/tuple';
 import {Ray} from '../../src/ray';
 import {expect} from 'chai';
 import {Cone} from '../../src/cone';
+import {parseArg} from '../../src/util';
 
 @binding([Workspace])
 class CylinderSteps {

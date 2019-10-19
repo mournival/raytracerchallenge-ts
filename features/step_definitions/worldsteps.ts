@@ -1,5 +1,5 @@
 import {binding, given, then, when} from 'cucumber-tsflow';
-import {parseArg, shouldEqualMsg, Workspace} from './Workspace';
+import {shouldEqualMsg, Workspace} from './Workspace';
 import {default_world, World} from '../../src/world';
 import {expect} from 'chai';
 import {Color} from '../../src/color';
@@ -14,6 +14,7 @@ import {transform} from '../../src/ray';
 import {Plane} from '../../src/plane';
 import {test_pattern} from '../../src/pattern';
 import {Shape} from '../../src/shape';
+import {parseArg} from '../../src/util';
 
 
 @binding([Workspace])
