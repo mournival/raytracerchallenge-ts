@@ -10,6 +10,7 @@ import {World} from '../../src/world';
 import {Camera} from '../../src/camera';
 import {Shape} from '../../src/shape';
 import {Pattern} from '../../src/pattern';
+import {ObjFile, Parser} from '../../src/obj_file';
 
 interface TupleArray {
     [index: string]: Tuple;
@@ -71,6 +72,14 @@ interface PatternArray {
     [index: string]: Pattern;
 }
 
+interface ObjFileArray {
+    [index: string]: ObjFile;
+}
+
+interface ParserArray {
+    [index: string]: Parser;
+}
+
 export class Workspace {
     public tuples: TupleArray = {};
     public canvases: CanvasArray = {};
@@ -87,6 +96,8 @@ export class Workspace {
     public cameras: CameraArray = {};
     public tests: BooleanArray = {};
     public patterns: PatternArray = {};
+    public objFiles: ObjFileArray = {};
+    public parsers: ParserArray = {};
 
     getTransform(shapeId: string) {
         let actual = new Matrix(0, 0);

@@ -1,11 +1,10 @@
-import {binding, given, then} from 'cucumber-tsflow';
+import {binding, given, then, when} from 'cucumber-tsflow';
 import {parseArg, shouldEqualMsg, Workspace} from './Workspace';
 import {expect} from 'chai';
 import {Matrix, rotation_y, translation} from '../../src/matrix';
 import {isShape} from '../../src/shape';
 import {test_shape} from '../../src/sphere';
 import {point, vector} from '../../src/tuple';
-import {when} from 'cucumber-tsflow/dist';
 
 @binding([Workspace])
 class ShapeSteps {

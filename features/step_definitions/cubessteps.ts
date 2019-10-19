@@ -1,7 +1,6 @@
-import {binding, given} from 'cucumber-tsflow';
+import {when, binding, given} from 'cucumber-tsflow';
 import {Workspace} from './Workspace';
 import {Cube} from '../../src/cube';
-import {when} from 'cucumber-tsflow/dist';
 
 @binding([Workspace])
 class CubeSteps {

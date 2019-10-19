@@ -1,7 +1,6 @@
-import {binding, when} from 'cucumber-tsflow';
+import {binding, then, when} from 'cucumber-tsflow';
 import {parseArg, shouldEqualMsg, Workspace} from './Workspace';
 import {Triangle} from '../../src/triangle';
-import {then} from 'cucumber-tsflow/dist';
 import {point, Tuple, vector} from '../../src/tuple';
 import {expect} from 'chai';
 import {fail} from 'assert';

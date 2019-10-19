@@ -1,4 +1,4 @@
-import {binding, given, then} from 'cucumber-tsflow';
+import {binding, given, then, when} from 'cucumber-tsflow';
 import {parseArg, shouldEqualMsg, Workspace} from './Workspace';
 import {expect} from 'chai';
 import {
@@ -12,7 +12,6 @@ import {
     view_transform
 } from '../../src/matrix';
 import {Tuple} from '../../src/tuple';
-import {when} from 'cucumber-tsflow/dist';
 
 
 @binding([Workspace])

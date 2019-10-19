@@ -1,6 +1,5 @@
-import {binding, given} from 'cucumber-tsflow';
+import {then, when, binding, given} from 'cucumber-tsflow';
 import {parseArg, shouldEqualMsg, Workspace} from './Workspace';
-import {then, when} from 'cucumber-tsflow/dist';
 import {expect} from 'chai';
 import {checkers_pattern, gradient_pattern, ring_pattern, stripe_pattern, test_pattern} from '../../src/pattern';
 import {Color} from '../../src/color';

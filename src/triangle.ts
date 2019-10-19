@@ -69,6 +69,6 @@ export class Triangle extends Shape {
     local_replace_parent(s: Shape): Shape {
         return new Triangle(this.p1, this.p2, this.p3, this.transform, this.material, s);
     }
-    
+
 }
 
