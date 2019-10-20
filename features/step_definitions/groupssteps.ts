@@ -17,10 +17,12 @@ class GroupsSteps {
 
     @when(/^add_child\(([\w\d_]+), ([\w\d_]+)\)$/)
     public whenChildAdded(parentId: string, childId: string) {
-        const parent = this.workspace.shapes[parentId] as Group;
+        let parent = this.workspace.shapes[parentId] as Group;
         const child = this.workspace.shapes[childId].replace(parent);
-        this.workspace.shapes[childId] = child;
         this.workspace.shapes[parentId] = parent.add_child(child);
+        parent = this.workspace.shapes[parentId] as Group;
+        
+        this.workspace.shapes[childId] = parent.children[parent.children.length - 1];
     }
 
     @then(/^([\w\d_]+) is not empty$/)

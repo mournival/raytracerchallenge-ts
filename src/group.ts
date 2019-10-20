@@ -7,12 +7,14 @@ import {Material} from './material';
 
 
 export class Group extends Shape {
+    public readonly children: Shape[];
 
     constructor(public readonly transform: Matrix = Matrix.identity(),
                 public readonly material = new Material(),
-                public readonly children: Shape[] = [],
+                children: Shape[] = [],
                 public readonly parent: Shape|null = null) {
         super(transform, material, parent);
+        this.children = children.map(t => t.replace(this))
     }
 
     get empty(): boolean {

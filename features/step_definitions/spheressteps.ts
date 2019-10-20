@@ -6,6 +6,7 @@ import {Matrix, rotation_z, scaling, translation} from '../../src/matrix';
 import {point, Tuple} from '../../src/tuple';
 import {Material} from '../../src/material';
 import {parseArg} from '../../src/util';
+import {Shape} from '../../src/shape';
 
 @binding([Workspace])
 class SpheresSteps {
@@ -51,7 +52,7 @@ class SpheresSteps {
         const actual = this.workspace.intersections[intersectionsId][parseInt(intersectionIndex)].obj;
         const expected = this.workspace.shapes[objectId];
 
-        expect(actual).to.be.equal(expected);
+        expect(Shape.equals(actual, expected), shouldEqualMsg(actual, expected)).to.be.true;
     }
 
     @then(/^(\w+).transform = ([^,]+)$/)
