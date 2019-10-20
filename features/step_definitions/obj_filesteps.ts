@@ -78,6 +78,11 @@ class ObjFileSteps {
         expect(Tuple.equals(actual, expected), shouldEqualMsg(actual, expected)).to.be.true;
     }
 
+    @given(/^([\w\d_]+) ← third child of ([\w\d_]+)$/)
+    public givenThirdChildOfGroup(shapeId: string, groupdId: string) {
+        this.workspace.shapes[shapeId] = (this.workspace.shapes[groupdId] as Group).children[2];
+    }
+
 }
 
 export = ObjFileSteps;

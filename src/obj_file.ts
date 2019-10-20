@@ -29,11 +29,13 @@ export class Parser {
                 if (tokens.length < 4) {
                     skipped++;
                 } else {
-                    triangles.push(new Triangle(
-                        verts[parseArg(tokens[1])-1] ,
-                        verts[parseArg(tokens[2]) -1],
-                        verts[parseArg(tokens[3]) -1])
-                    );
+                    for (let j = 2; j < tokens.length - 1; ++j) {
+                        triangles.push(new Triangle(
+                            verts[parseArg(tokens[1]) -1],
+                            verts[parseArg(tokens[j]) -1],
+                            verts[parseArg(tokens[j + 1]) -1])
+                        );
+                    }
                 }
             }
             else
