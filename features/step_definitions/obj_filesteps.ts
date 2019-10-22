@@ -8,6 +8,9 @@ import {Group} from '../../src/group';
 import {Triangle} from '../../src/triangle';
 import {fail} from 'assert';
 
+const fs = require('fs');
+const sleep = require('util').promisify(setTimeout);
+
 @binding([Workspace])
 class ObjFileSteps {
 
@@ -42,7 +45,7 @@ class ObjFileSteps {
 
     @given(/^([\w\d_]+) ← ([\w\d_]+).default_group$/)
     public givenParserGroup(groupId: string, parserId: string) {
-        this.workspace.shapes[groupId] = this.workspace.parsers[parserId].default_group;
+        this.workspace.shapes[groupId] = this.workspace.parsers[parserId].getGroup('default_group');
     }
 
     @given(/^([\w\d_]+) ← first child of ([\w\d_]+)$/)
@@ -83,6 +86,15 @@ class ObjFileSteps {
         this.workspace.shapes[shapeId] = (this.workspace.shapes[groupdId] as Group).children[2];
     }
 
+    @given(/^([\w\d_]+) ← the file "(.+)"$/)
+    public givenObjFile(objFileId: string, fileName: string) {
+        this.workspace.objFiles[objFileId] = new ObjFile(fs.readFileSync('./files/' + fileName, 'utf8'));
+    }
+
+    @when(/^([\w\d_]+) ← "([\w\d_]+)" from ([\w\d_]+)/)
+    public whenNamedGroupIs(groupId: string, groupName: string, parserId: string) {
+        this.workspace.shapes[groupId] = this.workspace.parsers[parserId].getGroup(groupName);
+    }
 }
 
 export = ObjFileSteps;

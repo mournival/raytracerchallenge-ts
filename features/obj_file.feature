@@ -75,20 +75,20 @@ Scenario: Triangulating polygons
     And t3.p2 = parser.vertices[4]
     And t3.p3 = parser.vertices[5]
 
-#Scenario: Triangles in groups
-#  Given file ← the file "triangles.obj"
-#  When parser ← parse_obj_file(file)
-#    And g1 ← "FirstGroup" from parser
-#    And g2 ← "SecondGroup" from parser
-#    And t1 ← first child of g1
-#    And t2 ← first child of g2
-#  Then t1.p1 = parser.vertices[1]
-#    And t1.p2 = parser.vertices[2]
-#    And t1.p3 = parser.vertices[3]
-#    And t2.p1 = parser.vertices[1]
-#    And t2.p2 = parser.vertices[3]
-#    And t2.p3 = parser.vertices[4]
-#
+Scenario: Triangles in groups
+  Given file ← the file "triangles.obj"
+  When parser ← parse_obj_file(file)
+    And g1 ← "FirstGroup" from parser
+    And g2 ← "SecondGroup" from parser
+    And t1 ← first child of g1
+    And t2 ← first child of g2
+  Then t1.p1 = parser.vertices[1]
+    And t1.p2 = parser.vertices[2]
+    And t1.p3 = parser.vertices[3]
+    And t2.p1 = parser.vertices[1]
+    And t2.p2 = parser.vertices[3]
+    And t2.p3 = parser.vertices[4]
+
 #Scenario: Converting an OBJ file to a group
 #  Given file ← the file "triangles.obj"
 #    And parser ← parse_obj_file(file)

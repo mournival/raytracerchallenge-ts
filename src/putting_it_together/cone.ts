@@ -51,13 +51,13 @@ const right_wall = new Plane(
     ), new Material(new Color(.16, 0.67, 0.16), 0.1, 0.9, 0, 200, 0.05, 0, 1));
 
 const cone = new Cone(
-    rotation_x(-quarterPi/2),
+    rotation_x(-quarterPi / 2),
     new Material(Color.RED, 0.2, 0.9, 1, 200)
     , -2, 2, true
 );
 
 const world = new World([
-        new Light(point(-10, 10, -10), new Color(0.25,  0.5, 0.25)),
+        new Light(point(-10, 10, -10), new Color(0.25, 0.5, 0.25)),
         new Light(point(10, 10, -10), new Color(0.50, 0.25, 0.5))
     ],
     [

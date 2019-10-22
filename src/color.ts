@@ -51,7 +51,7 @@ export class Color {
         );
     }
 
-    scale(s: number) : Color {
+    scale(s: number): Color {
         return new Color(
             this.red * s,
             this.green * s,

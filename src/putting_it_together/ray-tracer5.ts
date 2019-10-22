@@ -13,7 +13,6 @@ import {Sphere} from '../sphere';
 import {Light} from '../light';
 import {Cube} from '../cube';
 import {Cylinder} from '../cylinder';
-import {Cone} from '../cone';
 
 function saveFile(canvas: any) {
     let fs = require('fs');

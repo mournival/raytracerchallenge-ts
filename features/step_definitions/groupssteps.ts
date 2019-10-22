@@ -21,7 +21,7 @@ class GroupsSteps {
         const child = this.workspace.shapes[childId].replace(parent);
         this.workspace.shapes[parentId] = parent.add_child(child);
         parent = this.workspace.shapes[parentId] as Group;
-        
+
         this.workspace.shapes[childId] = parent.children[parent.children.length - 1];
     }
 
@@ -40,7 +40,7 @@ class GroupsSteps {
         const actual = this.workspace.shapes[shapeId].parent;
         const expected = this.workspace.shapes[groupId];
 
-        expect(actual !== null && Shape.equals(actual, expected), shouldEqualMsg(actual, expected)).to.be.true;
+        expect(actual !== null && Shape.equals(actual, expected)).to.be.true;
     }
 }
 

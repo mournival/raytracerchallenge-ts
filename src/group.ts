@@ -12,7 +12,7 @@ export class Group extends Shape {
     constructor(public readonly transform: Matrix = Matrix.identity(),
                 public readonly material = new Material(),
                 children: Shape[] = [],
-                public readonly parent: Shape|null = null) {
+                public readonly parent: Shape | null = null) {
         super(transform, material, parent);
         this.children = children.map(t => t.replace(this))
     }
@@ -22,7 +22,7 @@ export class Group extends Shape {
     }
 
     local_intersection(r: Ray): Intersection[] {
-        return this.children.flatMap( x => x.intersect(r)).sort((a, b) => a.t - b.t);
+        return this.children.flatMap(x => x.intersect(r)).sort((a, b) => a.t - b.t);
     }
 
     local_normal_at(pt: Tuple): Tuple {

@@ -52,7 +52,7 @@ class SpheresSteps {
         const actual = this.workspace.intersections[intersectionsId][parseInt(intersectionIndex)].obj;
         const expected = this.workspace.shapes[objectId];
 
-        expect(Shape.equals(actual, expected), shouldEqualMsg(actual, expected)).to.be.true;
+        expect(Shape.equals(actual, expected)).to.be.true;
     }
 
     @then(/^(\w+).transform = ([^,]+)$/)

@@ -10,7 +10,7 @@ export class Sphere extends Shape {
     constructor(
         public readonly transform: Matrix = Matrix.identity(),
         public readonly material: Material = new Material(),
-        public readonly parent: Shape|null = null
+        public readonly parent: Shape | null = null
     ) {
         super(transform, material, parent);
     }
@@ -59,7 +59,7 @@ export class TestShape extends Shape {
     constructor(
         public readonly transform: Matrix = Matrix.identity(4),
         public readonly material = new Material(),
-        public readonly parent: Shape|null = null
+        public readonly parent: Shape | null = null
     ) {
         super(transform, material, parent);
     }

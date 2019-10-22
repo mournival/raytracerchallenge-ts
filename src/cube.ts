@@ -61,7 +61,7 @@ export class Cube extends Shape {
 
         let tmin, tmax;
 
-        if (!Util.closeTo(direction, 0)){
+        if (!Util.closeTo(direction, 0)) {
             tmin = tmin_numerator / direction;
             tmax = tmax_numerator / direction;
         } else {

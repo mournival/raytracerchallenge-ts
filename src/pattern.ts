@@ -8,6 +8,7 @@ export type PatternFunction = (p: Tuple, object?: Shape) => Color;
 export class Pattern {
 
     private readonly transformInv: Matrix;
+
     constructor(private patternFunction: PatternFunction, public readonly transform = Matrix.identity()) {
         this.transformInv = transform.inverse;
     }
@@ -35,7 +36,7 @@ function stripe_function(a: Color, b: Color): PatternFunction {
 }
 
 export function stripe_pattern(a: Color, b: Color, transform = Matrix.identity()): Pattern {
-    return new Pattern( stripe_function(a, b), transform);
+    return new Pattern(stripe_function(a, b), transform);
 }
 
 //
@@ -89,6 +90,7 @@ export function combine_pattern(a: Pattern, b: Pattern, transform = Matrix.ident
 export function fill(c: Color): PatternFunction {
     return (p: Tuple) => c;
 }
+
 export function fill_pattern(a: Color) {
     return new Pattern(fill(a));
 }

@@ -61,7 +61,7 @@ export abstract class Shape implements Interceptable {
     }
 
     world_to_object(point: Tuple): Tuple {
-        let p= point;
+        let p = point;
         if (this.parent !== null) {
             p = this.parent.world_to_object(point);
         }

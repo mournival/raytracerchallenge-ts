@@ -7,7 +7,7 @@ import {Intersection} from './intersection';
 import {Util} from './util';
 
 export class Cylinder extends Shape {
-    
+
     constructor(
         public readonly transform: Matrix = Matrix.identity(4),
         public readonly material = new Material(),
