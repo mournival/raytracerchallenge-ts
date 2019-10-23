@@ -57,8 +57,17 @@ export class Parser {
         this.groups[group_name] = new Group(Matrix.identity(), new Material(), triangles);
     }
 
-    public getGroup(name: string): Group {
-        return this.groups[name];
+    public getGroup(name?: string): Group {
+        if (name) {
+            return this.groups[name];
+        }
+        let grps: Group[] = [];
+        for(let g in this.groups) {
+            if (this.groups[g].children.length > 0) {
+                grps = [...grps, this.groups[g]];
+            }
+        }
+        return new Group(Matrix.identity(), new Material(), grps);
     }
 
 }

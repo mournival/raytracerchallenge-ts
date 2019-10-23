@@ -12,16 +12,12 @@ export abstract class Shape implements Interceptable {
     }
 
     static equals(lhs: Shape, rhs: Shape): boolean {
+        // Not sure, but there may be issues with parents, but for now only count children
+        // maybe need a local equals for group's children?
         const thisFields = typeof lhs === typeof rhs &&
             Matrix.equals(lhs.transform, rhs.transform) &&
             Material.equals(lhs.material, rhs.material);
-        if (lhs.parent === null && rhs.parent === null) {
-            return thisFields;
-        }
-        if (lhs.parent !== null && rhs.parent !== null) {
-            return thisFields && Shape.equals(lhs.parent, rhs.parent);
-        }
-        return false;
+        return thisFields;
     }
 
     abstract local_intersection(r: Ray): Intersection[];

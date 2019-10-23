@@ -95,6 +95,19 @@ class ObjFileSteps {
     public whenNamedGroupIs(groupId: string, groupName: string, parserId: string) {
         this.workspace.shapes[groupId] = this.workspace.parsers[parserId].getGroup(groupName);
     }
+
+    @when(/^([\w\d_]+) ← obj_to_group\(([\w\d_]+)\)$/)
+    public whenGroupFromParser(groupId: string, parserId: string) {
+        this.workspace.shapes[groupId] = this.workspace.parsers[parserId].getGroup();
+    }
+
+    @then(/^([\w\d_]+) includes "([\w\d_]+)" from ([\w\d_]+)$/)
+    public thenGroupIncludesNamedGroup(groupId: string, groupName: string, parserId: string) {
+        const value = this.workspace.parsers[parserId].getGroup(groupName);
+
+        const group = this.workspace.shapes[groupId] as Group;
+        expect(group.includes(value)).to.be.true;
+    }
 }
 
 export = ObjFileSteps;

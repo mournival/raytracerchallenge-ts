@@ -41,7 +41,6 @@ export class Group extends Shape {
         return new Group(this.transform, this.material, this.children, s);
     }
 
-
     add_child(shape: Shape): Group {
         return new Group(this.transform, this.material, [...this.children, shape], this.parent);
     }

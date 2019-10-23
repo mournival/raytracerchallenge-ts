@@ -89,13 +89,13 @@ Scenario: Triangles in groups
     And t2.p2 = parser.vertices[3]
     And t2.p3 = parser.vertices[4]
 
-#Scenario: Converting an OBJ file to a group
-#  Given file ← the file "triangles.obj"
-#    And parser ← parse_obj_file(file)
-#  When g ← obj_to_group(parser)
-#  Then g includes "FirstGroup" from parser
-#    And g includes "SecondGroup" from parser
-#
+Scenario: Converting an OBJ file to a group
+  Given file ← the file "triangles.obj"
+    And parser ← parse_obj_file(file)
+  When g ← obj_to_group(parser)
+  Then g includes "FirstGroup" from parser
+    And g includes "SecondGroup" from parser
+
 #Scenario: Vertex normal records
 #  Given file ← a file containing:
 #    """
