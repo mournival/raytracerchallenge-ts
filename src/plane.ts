@@ -40,5 +40,13 @@ export class Plane extends Shape {
         return new Plane(this.transform, this.material, s);
     }
 
+    equals(rhs: Shape): boolean {
+        return rhs instanceof Plane
+            && Matrix.equals(this.transform, rhs.transform)
+            && Material.equals(this.material, rhs.material)
+            // && this.parent.equals(rhs.parent)
+            ;
+    }
+
 }
 

@@ -14,10 +14,7 @@ export abstract class Shape implements Interceptable {
     static equals(lhs: Shape, rhs: Shape): boolean {
         // Not sure, but there may be issues with parents, but for now only count children
         // maybe need a local equals for group's children?
-        const thisFields = typeof lhs === typeof rhs &&
-            Matrix.equals(lhs.transform, rhs.transform) &&
-            Material.equals(lhs.material, rhs.material);
-        return thisFields;
+         return lhs.equals(rhs);
     }
 
     abstract local_intersection(r: Ray): Intersection[];
@@ -29,6 +26,8 @@ export abstract class Shape implements Interceptable {
     abstract local_replace_material(m: Material): Shape;
 
     abstract local_replace_parent(s: Shape): Shape;
+
+    abstract equals(rhs: Shape): boolean;
 
     normal_at(point: Tuple): Tuple {
         const local_point = this.world_to_object(point);

@@ -48,4 +48,26 @@ export class Group extends Shape {
     includes(shape: Shape): boolean {
         return !!this.children.find(s => Shape.equals(s, shape));
     }
+
+    equals(rhs: Shape): boolean {
+        return rhs instanceof Group
+            && Matrix.equals(this.transform, rhs.transform)
+            && Material.equals(this.material, rhs.material)
+            && shapeArraysEqual(this.children, rhs.children)
+            // && this.parent.equals(rhs.parent)
+            ;
+
+    }
+}
+
+function shapeArraysEqual(lhs: Shape[], rhs: Shape[]): boolean {
+    if (lhs.length !== rhs.length) {
+        return false;
+    }
+    for (let i = 0; i < lhs.length; ++i) {
+        if (!lhs[i].equals(rhs[i])) {
+            return false;
+        }
+    }
+    return true;
 }

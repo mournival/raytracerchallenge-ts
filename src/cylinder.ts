@@ -99,5 +99,18 @@ export class Cylinder extends Shape {
         return xs;
     }
 
+    equals(rhs: Shape): boolean {
+        return rhs instanceof Cylinder
+            && Util.closeTo(this.minimum, rhs.minimum)
+            && Util.closeTo(this.maximum, rhs.maximum)
+            && this.closed === rhs.closed
+            && Matrix.equals(this.transform, rhs.transform)
+            && Material.equals(this.material, rhs.material)
+            // && this.parent.equals(rhs.parent)
+            ;
+
+    }
+
+
 }
 

@@ -9,7 +9,7 @@ import {Util} from './util';
 export class Cone extends Shape {
 
     constructor(
-        public readonly transform: Matrix = Matrix.identity(4),
+        public readonly transform: Matrix = Matrix.identity(),
         public readonly material = new Material(),
         public readonly minimum = Number.NEGATIVE_INFINITY,
         public readonly maximum = Number.POSITIVE_INFINITY,
@@ -110,6 +110,18 @@ export class Cone extends Shape {
             xs = [...xs, new Intersection(this, t)];
         }
         return xs;
+    }
+
+    equals(rhs: Shape): boolean {
+        return rhs instanceof Cone
+            && Util.closeTo(this.minimum, rhs.minimum)
+            && Util.closeTo(this.maximum, rhs.maximum)
+            && this.closed === rhs.closed
+            && Matrix.equals(this.transform, rhs.transform)
+            && Material.equals(this.material, rhs.material)
+            // && this.parent.equals(rhs.parent)
+            ;
+
     }
 
 }

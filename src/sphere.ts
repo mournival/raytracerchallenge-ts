@@ -49,6 +49,16 @@ export class Sphere extends Shape {
     local_replace_parent(s: Shape): Shape {
         return new Sphere(this.transform, this.material, s);
     }
+
+    equals(rhs: Shape): boolean {
+        return rhs instanceof Sphere
+            && Matrix.equals(this.transform, rhs.transform)
+            && Material.equals(this.material, rhs.material)
+            // && this.parent.equals(rhs.parent)
+            ;
+
+    }
+
 }
 
 export function glass_sphere(): Sphere {
@@ -87,6 +97,15 @@ export class TestShape extends Shape {
 
     local_replace_parent(s: Shape): Shape {
         return new TestShape(this.transform, this.material, s);
+    }
+
+    equals(rhs: Shape): boolean {
+        return rhs instanceof TestShape
+            && Matrix.equals(this.transform, rhs.transform)
+            && Material.equals(this.material, rhs.material)
+            // && this.parent.equals(rhs.parent)
+            ;
+
     }
 
 

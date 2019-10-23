@@ -70,5 +70,19 @@ export class Triangle extends Shape {
         return new Triangle(this.p1, this.p2, this.p3, this.transform, this.material, s);
     }
 
+    equals(rhs: Shape): boolean {
+        return rhs instanceof Triangle
+            && Matrix.equals(this.transform, rhs.transform)
+            && Material.equals(this.material, rhs.material)
+            && Tuple.equals(this.e1, rhs.e1)
+            && Tuple.equals(this.e2, rhs.e2)
+            && Tuple.equals(this.normal, rhs.normal)
+            && Tuple.equals(this.p1, rhs.p1)
+            && Tuple.equals(this.p2, rhs.p2)
+            && Tuple.equals(this.p3, rhs.p3)
+            // && this.parent.equals(rhs.parent)
+            ;
+    }
+
 }
 

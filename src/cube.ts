@@ -9,7 +9,7 @@ import {Util} from './util';
 export class Cube extends Shape {
 
     constructor(
-        public readonly transform: Matrix = Matrix.identity(4),
+        public readonly transform: Matrix = Matrix.identity(),
         public readonly material = new Material(),
         public readonly parent: Shape | null = null
     ) {
@@ -73,7 +73,15 @@ export class Cube extends Shape {
             return [tmax, tmin];
         }
         return [tmin, tmax];
-
     }
+
+    equals(rhs: Shape): boolean {
+        return rhs instanceof Cube
+            && Matrix.equals(this.transform, rhs.transform)
+            && Material.equals(this.material, rhs.material)
+            // && this.parent.equals(rhs.parent)
+            ;
+    }
+
 }
 
