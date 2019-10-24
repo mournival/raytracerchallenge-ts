@@ -2,8 +2,8 @@ import {binding, given, then, when} from 'cucumber-tsflow';
 import {shouldEqualMsg, Workspace} from './Workspace';
 import {expect} from 'chai';
 import {Matrix, rotation_y, translation} from '../../src/matrix';
-import {isShape} from '../../src/shape';
-import {test_shape} from '../../src/sphere';
+import {isShape} from '../../src/shapes/shape';
+import {test_shape} from '../../src/shapes/sphere';
 import {point, vector} from '../../src/tuple';
 import {parseArg} from '../../src/util';
 

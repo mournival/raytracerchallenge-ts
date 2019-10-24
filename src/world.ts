@@ -1,4 +1,4 @@
-import {Sphere} from './sphere';
+import {Shape, Sphere} from './shapes';
 import {Light} from './light';
 import {point, Tuple} from './tuple';
 import {Color} from './color';
@@ -7,7 +7,6 @@ import {Material} from './material';
 import {Ray} from './ray';
 import {Intersection} from './intersection';
 import {PreComputations, prepare_computations} from './pre-computations';
-import {Shape} from './shape';
 import {Util} from './util';
 
 export function hit(intersections: Intersection[]): null | Intersection {

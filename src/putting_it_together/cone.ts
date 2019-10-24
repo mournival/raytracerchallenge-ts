@@ -7,10 +7,9 @@ import {Matrix, rotation_x, rotation_y, scaling, translation, view_transform} fr
 import {Material} from '../material';
 import {World} from '../world';
 import {Camera} from '../camera';
-import {Plane} from '../plane';
+import {Cone, Plane} from '../shapes';
 import {checkers_pattern, combine_pattern, gradient_pattern} from '../pattern';
 import {Light} from '../light';
-import {Cone} from '../cone';
 
 function saveFile(canvas: any) {
     let fs = require('fs');

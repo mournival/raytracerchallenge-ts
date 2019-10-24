@@ -1,6 +1,6 @@
 import {binding, given} from 'cucumber-tsflow';
 import {Workspace} from './Workspace';
-import {Cone} from '../../src/cone';
+import {Cone} from '../../src/shapes/cone';
 
 @binding([Workspace])
 class ConeSteps {

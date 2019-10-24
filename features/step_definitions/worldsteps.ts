@@ -3,7 +3,7 @@ import {shouldEqualMsg, Workspace} from './Workspace';
 import {default_world, World} from '../../src/world';
 import {expect} from 'chai';
 import {Color} from '../../src/color';
-import {glass_sphere, Sphere} from '../../src/sphere';
+import {glass_sphere, Sphere} from '../../src/shapes/sphere';
 import {fail} from 'assert';
 import {Matrix, scaling, translation} from '../../src/matrix';
 import {Material} from '../../src/material';
@@ -11,9 +11,9 @@ import {PreComputations} from '../../src/pre-computations';
 import {Light} from '../../src/light';
 import {point} from '../../src/tuple';
 import {transform} from '../../src/ray';
-import {Plane} from '../../src/plane';
+import {Plane} from '../../src/shapes/plane';
 import {test_pattern} from '../../src/pattern';
-import {Shape} from '../../src/shape';
+import {Shape} from '../../src/shapes/shape';
 import {parseArg} from '../../src/util';
 
 

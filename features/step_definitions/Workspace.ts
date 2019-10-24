@@ -8,7 +8,7 @@ import {Light} from '../../src/light';
 import {Material} from '../../src/material';
 import {World} from '../../src/world';
 import {Camera} from '../../src/camera';
-import {Shape} from '../../src/shape';
+import {Shape} from '../../src/shapes/shape';
 import {Pattern} from '../../src/pattern';
 import {ObjFile, Parser} from '../../src/obj_file';
 

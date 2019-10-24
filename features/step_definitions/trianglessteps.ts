@@ -1,6 +1,6 @@
 import {binding, then, when} from 'cucumber-tsflow';
 import {shouldEqualMsg, Workspace} from './Workspace';
-import {Triangle} from '../../src/triangle';
+import {Triangle} from '../../src/shapes/triangle';
 import {point, Tuple, vector} from '../../src/tuple';
 import {expect} from 'chai';
 import {fail} from 'assert';

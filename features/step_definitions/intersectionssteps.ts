@@ -2,7 +2,7 @@ import {binding, given, then, when} from 'cucumber-tsflow';
 import {shouldEqualMsg, Workspace} from './Workspace';
 import {Intersection} from '../../src/intersection';
 import {expect} from 'chai';
-import {Sphere} from '../../src/sphere';
+import {Sphere} from '../../src/shapes/sphere';
 import {PreComputations, prepare_computations} from '../../src/pre-computations';
 import {point, Tuple, vector} from '../../src/tuple';
 import {hit} from '../../src/world';

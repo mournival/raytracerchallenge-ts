@@ -1,6 +1,6 @@
 import {Color} from './color';
 import {Tuple} from './tuple';
-import {Shape} from './shape';
+import {Shape} from './shapes';
 import {Matrix} from './matrix';
 
 export type PatternFunction = (p: Tuple, object?: Shape) => Color;

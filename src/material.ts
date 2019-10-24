@@ -2,7 +2,7 @@ import {Color} from './color';
 import {Light} from './light';
 import {Tuple} from './tuple';
 import {Pattern} from './pattern';
-import {Shape} from './shape';
+import {Shape} from './shapes';
 import {Util} from './util';
 
 export class Material {

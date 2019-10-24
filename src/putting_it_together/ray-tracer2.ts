@@ -3,7 +3,7 @@
 import {point, vector} from '../tuple';
 import {Canvas} from '../canvas';
 import {Color} from '../color';
-import {Sphere} from '../sphere';
+import {Sphere} from '../shapes';
 import {Matrix, rotation_x, rotation_y, scaling, translation, view_transform} from '../matrix';
 import {Material} from '../material';
 import {Light} from '../light';

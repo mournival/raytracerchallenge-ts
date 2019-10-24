@@ -1,9 +1,9 @@
 import {then, when, binding, given} from 'cucumber-tsflow';
 import {Workspace} from './Workspace';
-import {Plane} from '../../src/plane';
+import {Plane} from '../../src/shapes/plane';
 import {point} from '../../src/tuple';
 import {expect} from 'chai';
-import {Group} from '../../src/group';
+import {Group} from '../../src/shapes/group';
 import {parseArg} from '../../src/util';
 
 @binding([Workspace])

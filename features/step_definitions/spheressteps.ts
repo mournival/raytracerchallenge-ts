@@ -1,12 +1,12 @@
 import {before, binding, given, then, when} from 'cucumber-tsflow';
 import {shouldEqualMsg, Workspace} from './Workspace';
 import {expect} from 'chai';
-import {glass_sphere, Sphere} from '../../src/sphere';
+import {glass_sphere, Sphere} from '../../src/shapes/sphere';
 import {Matrix, rotation_z, scaling, translation} from '../../src/matrix';
 import {point, Tuple} from '../../src/tuple';
 import {Material} from '../../src/material';
 import {parseArg} from '../../src/util';
-import {Shape} from '../../src/shape';
+import {Shape} from '../../src/shapes/shape';
 
 @binding([Workspace])
 class SpheresSteps {

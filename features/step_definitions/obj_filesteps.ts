@@ -4,12 +4,11 @@ import {ObjFile} from '../../src/obj_file';
 import {expect} from 'chai';
 import {parseArg} from '../../src/util';
 import {point, Tuple} from '../../src/tuple';
-import {Group} from '../../src/group';
-import {Triangle} from '../../src/triangle';
+import {Group} from '../../src/shapes/group';
+import {Triangle} from '../../src/shapes/triangle';
 import {fail} from 'assert';
 
 const fs = require('fs');
-const sleep = require('util').promisify(setTimeout);
 
 @binding([Workspace])
 class ObjFileSteps {

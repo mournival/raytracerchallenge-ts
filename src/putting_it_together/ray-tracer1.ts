@@ -4,7 +4,7 @@ import {point, Tuple} from '../tuple';
 import {Canvas} from '../canvas';
 import {Color} from '../color';
 import {position, Ray} from '../ray';
-import {Sphere} from '../sphere';
+import {Sphere} from '../shapes';
 import {Matrix} from '../matrix';
 import {Material} from '../material';
 import {Light} from '../light';

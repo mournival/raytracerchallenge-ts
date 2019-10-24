@@ -1,10 +1,10 @@
 import {binding, given, then} from 'cucumber-tsflow';
 import {Workspace} from './Workspace';
-import {Cylinder} from '../../src/cylinder';
+import {Cylinder} from '../../src/shapes/cylinder';
 import {point, vector} from '../../src/tuple';
 import {Ray} from '../../src/ray';
 import {expect} from 'chai';
-import {Cone} from '../../src/cone';
+import {Cone} from '../../src/shapes/cone';
 import {parseArg} from '../../src/util';
 
 @binding([Workspace])

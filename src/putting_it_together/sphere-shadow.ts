@@ -4,7 +4,7 @@ import {point, Tuple} from '../tuple';
 import {Canvas} from '../canvas';
 import {Color} from '../color';
 import {Ray} from '../ray';
-import {Sphere} from '../sphere';
+import {Sphere} from '../shapes';
 
 function saveFile() {
     let fs = require('fs');

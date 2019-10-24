@@ -1,7 +1,6 @@
 import {point, Tuple} from './tuple';
 import {parseArg} from './util';
-import {Triangle} from './triangle';
-import {Group} from './group';
+import {Group, Triangle} from './shapes';
 import {Material} from './material';
 import {Matrix} from './matrix';
 

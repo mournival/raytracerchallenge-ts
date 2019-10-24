@@ -1,5 +1,5 @@
 import {Ray} from './ray';
-import {Shape} from './shape';
+import {Shape} from './shapes';
 
 export interface Interceptable {
     intersect(r: Ray): Intersection[];

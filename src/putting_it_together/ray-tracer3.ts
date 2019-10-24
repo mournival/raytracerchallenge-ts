@@ -3,13 +3,12 @@
 import {point, vector} from '../tuple';
 import {Canvas} from '../canvas';
 import {Color} from '../color';
-import {Sphere} from '../sphere';
+import {Plane, Sphere} from '../shapes';
 import {Matrix, rotation_x, rotation_y, rotation_z, scaling, translation, view_transform} from '../matrix';
 import {Material} from '../material';
 import {Light} from '../light';
 import {World} from '../world';
 import {Camera} from '../camera';
-import {Plane} from '../plane';
 import {checkers_pattern, combine_pattern, fill_pattern, gradient_pattern} from '../pattern';
 
 function saveFile(canvas: any) {

@@ -7,9 +7,8 @@ import {Matrix, rotation_x, rotation_y, rotation_z, scaling, translation, view_t
 import {Material} from '../material';
 import {World} from '../world';
 import {Camera} from '../camera';
-import {Plane} from '../plane';
+import {Plane, Sphere} from '../shapes';
 import {checkers_pattern, combine_pattern, fill_pattern, gradient_pattern} from '../pattern';
-import {Sphere} from '../sphere';
 import {Light} from '../light';
 
 function saveFile(canvas: any) {
