@@ -134,14 +134,14 @@ class IntersectionsSteps {
         this.workspace.intersection[pcId] = prepare_computations(xs[parseArg(index)], this.workspace.rays[rayId], xs)
     }
 
-    @then(/^([\w\d_]+).n1 = ([^,]+)$/)
+    @then(/^([\w\d_]+).n1 = ([^a-z,]+)$/)
     public thenN1Is(pcId: string, value: string) {
         const actual = (this.workspace.intersection[pcId] as PreComputations).n1;
         const expected = parseArg(value);
         expect(actual).to.be.closeTo(expected, 0.001);
     }
 
-    @then(/^([\w\d_]+).n2 = ([^,]+)$/)
+    @then(/^([\w\d_]+).n2 = ([^a-z,]+)$/)
     public thenN2Is(pcId: string, value: string) {
         const actual = (this.workspace.intersection[pcId] as PreComputations).n2;
         const expected = parseArg(value);
