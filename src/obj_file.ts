@@ -1,4 +1,4 @@
-import {point, Tuple} from './tuple';
+import {point, Tuple, vector} from './tuple';
 import {parseArg} from './util';
 import {Group, Triangle} from './shapes';
 import {Material} from './material';
@@ -14,11 +14,13 @@ export class Parser {
     groups: GroupArray = {};
 
     public readonly vertices: Tuple[];
+    public readonly normals: Tuple[];
     public readonly ingnoredCount: number;
 
     constructor(public readonly lines: string[]) {
         let skipped = 0;
         let verts: Tuple[] = [];
+        let norms: Tuple[] = [];
         let triangles: Triangle[] = [];
         let group_name = 'default_group';
         lines.map(l => l.toString()).forEach(l => {
@@ -28,6 +30,13 @@ export class Parser {
                     skipped++;
                 } else {
                     verts.push(point(parseArg(tokens[1]), parseArg(tokens[2]), parseArg(tokens[3])));
+                }
+            } else if (l.startsWith('vn ')) {
+                let tokens: string[] = l.split(' ');
+                if (tokens.length != 4) {
+                    skipped++;
+                } else {
+                    norms.push(vector(parseArg(tokens[1]), parseArg(tokens[2]), parseArg(tokens[3])));
                 }
             } else if (l.startsWith('f ')) {
                 let tokens: string[] = l.split(' ');
@@ -46,6 +55,13 @@ export class Parser {
                 this.groups[group_name] = new Group(Matrix.identity(), new Material(), triangles);
                 triangles = [];
                 group_name = l.slice(2);
+            } else if (l.startsWith('vn ')) {
+                let tokens: string[] = l.split(' ');
+                if (tokens.length != 4) {
+                    skipped++;
+                } else {
+                    norms.push(vector(parseArg(tokens[1]), parseArg(tokens[2]), parseArg(tokens[3])));
+                }
             } else {
                 skipped++;
             }
@@ -53,6 +69,7 @@ export class Parser {
 
         this.ingnoredCount = skipped;
         this.vertices = verts;
+        this.normals = norms;
         this.groups[group_name] = new Group(Matrix.identity(), new Material(), triangles);
     }
 

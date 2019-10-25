@@ -3,7 +3,7 @@ import {shouldEqualMsg, Workspace} from './Workspace';
 import {ObjFile} from '../../src/obj_file';
 import {expect} from 'chai';
 import {parseArg} from '../../src/util';
-import {point, Tuple} from '../../src/tuple';
+import {point, Tuple, vector} from '../../src/tuple';
 import {Group} from '../../src/shapes/group';
 import {Triangle} from '../../src/shapes/triangle';
 import {fail} from 'assert';
@@ -106,6 +106,15 @@ class ObjFileSteps {
 
         const group = this.workspace.shapes[groupId] as Group;
         expect(group.includes(value)).to.be.true;
+    }
+
+
+    @then(/^([\w\d_]+)\.normals\[(\d+)] = vector\(([^,]+), ([^,]+), ([^,]+)\)$/)
+    public thenVertexNormalEquals(parserId: string, normalIndex: string, x: string, y: string, z: string) {
+        const actual = this.workspace.parsers[parserId].normals[parseArg(normalIndex) - 1];
+        const expected = vector(parseArg(x), parseArg(y), parseArg(z));
+
+        expect(Tuple.equals(actual, expected), shouldEqualMsg(actual, expected)).to.be.true;
     }
 }
 

@@ -96,18 +96,18 @@ Scenario: Converting an OBJaa file to a group
   Then g includes "FirstGroup" from parser
     And g includes "SecondGroup" from parser
 
-#Scenario: Vertex normal records
-#  Given file ← a file containing:
-#    """
-#    vn 0 0 1
-#    vn 0.707 0 -0.707
-#    vn 1 2 3
-#    """
-#  When parser ← parse_obj_file(file)
-#  Then parser.normals[1] = vector(0, 0, 1)
-#    And parser.normals[2] = vector(0.707, 0, -0.707)
-#    And parser.normals[3] = vector(1, 2, 3)
-#
+Scenario: Vertex normal records
+  Given file ← a file containing:
+    """
+    vn 0 0 1
+    vn 0.707 0 -0.707
+    vn 1 2 3
+    """
+  When parser ← parse_obj_file(file)
+  Then parser.normals[1] = vector(0, 0, 1)
+    And parser.normals[2] = vector(0.707, 0, -0.707)
+    And parser.normals[3] = vector(1, 2, 3)
+
 #Scenario: Faces with normals
 #  Given file ← a file containing:
 #    """
