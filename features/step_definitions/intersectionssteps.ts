@@ -158,7 +158,6 @@ class IntersectionsSteps {
         this.workspace.intersections[intersectionsId] = [
             this.workspace.intersection[i1],
             this.workspace.intersection[i2]
-
         ];
     }
 
@@ -169,7 +168,6 @@ class IntersectionsSteps {
             this.workspace.intersection[i2],
             this.workspace.intersection[i3],
             this.workspace.intersection[i4]
-
         ];
     }
 
@@ -263,6 +261,30 @@ class IntersectionsSteps {
     public thenIIsNothing() {
         const actual = this.workspace.intersection['i'];
         expect(actual).to.be.undefined;
+    }
+
+    @when(/^i ← intersection_with_uv\(([^,]+), ([\w]+), ([^,]+), ([^,]+)\)$/)
+    public whenIntersectionWithUVis(t: string, shapeId: string, u: string, v: string) {
+        this.workspace.intersection['i'] = new Intersection(
+            this.workspace.shapes[shapeId],
+            parseArg(t),
+            parseArg(u),
+            parseArg(v)
+        );
+    }
+
+    @then(/^([\w\d_]+)\.u = ([^t]+)$/)
+    public thenUEquals(intersectionId: string, u: string) {
+        const actual = this.workspace.intersection[intersectionId].u;
+        const expected = parseArg(u);
+        expect(actual).to.be.closeTo(expected, 0.0001);
+    }
+
+    @then(/^([\w\d_]+)\.v = ([^t]+)$/)
+    public thenVEquals(intersectionId: string, v: string) {
+        const actual = this.workspace.intersection[intersectionId].v;
+        const expected = parseArg(v);
+        expect(actual).to.be.closeTo(expected, 0.0001);
     }
 
 }

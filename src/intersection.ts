@@ -6,6 +6,6 @@ export interface Interceptable {
 }
 
 export class Intersection {
-    constructor(public readonly obj: Shape, public readonly t: number) {
+    constructor(public readonly obj: Shape, public readonly t: number, public readonly u?: number, public  readonly v?: number) {
     }
 }
