@@ -1,9 +1,10 @@
 import {binding, then, when} from 'cucumber-tsflow';
 import {shouldEqualMsg, Workspace} from './Workspace';
 import {SmoothTriangle} from '../../src/shapes/smooth-triangle';
-import {Tuple, vector} from '../../src/tuple';
+import {point, Tuple, vector} from '../../src/tuple';
 import {expect} from 'chai';
 import {fail} from 'assert';
+import {parseArg} from "../../src/util";
 
 @binding([Workspace])
 class SmoothTrianglesSteps {
@@ -43,6 +44,28 @@ class SmoothTrianglesSteps {
         }
         const expected = this.workspace.tuples[vertexId];
         expect(Tuple.equals(actual, expected), shouldEqualMsg(actual, expected)).to.be.true;
+    }
+
+    @then(/^(\w+)\[(\d+)].u = ([^,]+)$/)
+    public thenIntersectionU(intersectionsId: string, intersectionIndex: string, value: string) {
+        const actual = this.workspace.intersections[intersectionsId][parseInt(intersectionIndex)].u;
+        const expected = parseArg(value);
+        expect(actual).to.be.closeTo(expected, 0.0001);
+    }
+
+    @then(/^(\w+)\[(\d+)].v = ([^,]+)$/)
+    public thenIntersectionV(intersectionsId: string, intersectionIndex: string, value: string) {
+        const actual = this.workspace.intersections[intersectionsId][parseInt(intersectionIndex)].v;
+        const expected = parseArg(value);
+        expect(actual).to.be.closeTo(expected, 0.0001);
+    }
+
+    @when(/^([\w\d_]+) ← normal_at\((\w+), point\(([^,]+), ([^,]+), ([^,]+)\), i\)$/)
+    public whenNormalAtUV(normalId: string, shapeId: string, x: string, y: string, z: string) {
+        this.workspace.tuples[normalId] = this.workspace.shapes[shapeId].normal_at(
+            point(parseArg(x), parseArg(y), parseArg(z)),
+            this.workspace.intersection['i']
+        );
     }
 
 }

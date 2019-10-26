@@ -19,7 +19,7 @@ export abstract class Shape implements Interceptable {
 
     abstract local_intersection(r: Ray): Intersection[];
 
-    abstract local_normal_at(pt: Tuple): Tuple;
+    abstract local_normal_at(pt: Tuple, hit?: Intersection): Tuple;
 
     abstract local_replace_transform(t: Matrix): Shape;
 
@@ -29,9 +29,9 @@ export abstract class Shape implements Interceptable {
 
     abstract equals(rhs: Shape): boolean;
 
-    normal_at(point: Tuple): Tuple {
+    normal_at(point: Tuple, hit: Intersection | null = null): Tuple {
         const local_point = this.world_to_object(point);
-        const local_normal = this.local_normal_at(local_point);
+        const local_normal = hit != null ? this.local_normal_at(local_point, hit) : this.local_normal_at(local_point);
 
         return this.normal_to_world(local_normal);
     }

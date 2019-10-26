@@ -46,11 +46,16 @@ export class SmoothTriangle extends Triangle {
 
         const t = f * Tuple.dot(this.e2, origin_cross_e1);
 
-        return [new Intersection(this, t)];
+        return [new Intersection(this, t, u, v)];
     }
 
-    local_normal_at(pt: Tuple): Tuple {
-        return this.normal;
+    local_normal_at(pt: Tuple, hit: Intersection): Tuple {
+        if (hit && hit.u !== undefined && hit.v !== undefined) {
+            return Tuple.add(Tuple.add(Tuple.multiply(this.n2, hit.u),
+                Tuple.multiply(this.n3, hit.v)),
+                Tuple.multiply(this.n1, 1 - hit.u - hit.v));
+        }
+        throw 'Smooth triangles require intersection';
     }
 
     local_replace_transform(t: Matrix): Shape {

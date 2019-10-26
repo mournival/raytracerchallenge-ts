@@ -90,7 +90,7 @@ export function prepare_computations(i: Intersection, r: Ray, xs: Intersection[]
     const {n1, n2} = calculateN1N2(xs, i);
     const eyev = r.direction.negative;
     const p = position(r, i.t);
-    const normalv = i.obj.normal_at(p);
+    const normalv = i.obj.normal_at(p, i);
     if (Tuple.dot(normalv, eyev) < 0) {
         return new PreComputations(i, p, eyev, normalv.negative, true, n1, n2);
     }

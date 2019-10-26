@@ -54,7 +54,7 @@ export class Triangle extends Shape {
         return [new Intersection(this, t)];
     }
 
-    local_normal_at(pt: Tuple): Tuple {
+    local_normal_at(pt: Tuple, hit: Intersection): Tuple {
         return this.normal;
     }
 
