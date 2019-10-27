@@ -5,7 +5,7 @@ import {Shape} from './shape';
 import {Ray} from '../ray';
 import {Intersection} from '../intersection';
 import {Util} from '../util';
-import {Triangle} from "./triangle";
+import {Triangle} from './triangle';
 
 export class SmoothTriangle extends Triangle {
     constructor(
@@ -59,15 +59,15 @@ export class SmoothTriangle extends Triangle {
     }
 
     local_replace_transform(t: Matrix): Shape {
-        return new Triangle(this.p1, this.p2, this.p3, t, this.material, this.parent);
+        return new SmoothTriangle(this.p1, this.p2, this.p3, this.n1, this.n2, this.n3, t, this.material, this.parent);
     }
 
     local_replace_material(m: Material): Shape {
-        return new Triangle(this.p1, this.p2, this.p3, this.transform, m, this.parent);
+        return new SmoothTriangle(this.p1, this.p2, this.p3, this.n1, this.n2, this.n3, this.transform, m, this.parent);
     }
 
     local_replace_parent(s: Shape): Shape {
-        return new Triangle(this.p1, this.p2, this.p3, this.transform, this.material, s);
+        return new SmoothTriangle(this.p1, this.p2, this.p3, this.n1, this.n2, this.n3, this.transform, this.material, s);
     }
 
     equals(rhs: Shape): boolean {

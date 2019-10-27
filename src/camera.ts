@@ -3,6 +3,7 @@ import {point, Tuple} from './tuple';
 import {Ray} from './ray';
 import {Canvas} from './canvas';
 import {World} from './world';
+import {Color} from './color';
 
 export class Camera {
 
@@ -40,20 +41,20 @@ export class Camera {
         const image = new Canvas(this.hsize, this.vsize);
         for (let y = 0; y < this.vsize; ++y) {
             for (let x = 0; x < this.hsize; ++x) {
-                const ray = this.ray_for_pixel(x, y);
-                const color = world.color_at(ray, 5);
+                // const ray = this.ray_for_pixel(x, y);
+                // const color = world.color_at(ray, 5);
+                //
+                // Canvas.write_pixel(image, y, x, color);
 
-                Canvas.write_pixel(image, y, x, color);
-
-                // let acc = Color.BLACK;
-                // const n = 3;
-                // for (let u = 0; u < n; ++u) {
-                //     for (let v = 0; v < n; ++v) {
-                //         const ray = this.ray_for_pixel(x + (1 / n * u) - 2 / n, y + (1 / n * v) - 2 / n);
-                //         acc = Color.add(acc, world.color_at(ray, 5));
-                //     }
-                // }
-                // Canvas.write_pixel(image, y, x, acc.scale(1 / Math.pow(n, 2)));
+                let acc = Color.BLACK;
+                const n = 3;
+                for (let u = 0; u < n; ++u) {
+                    for (let v = 0; v < n; ++v) {
+                        const ray = this.ray_for_pixel(x + (1 / n * u) - 2 / n, y + (1 / n * v) - 2 / n);
+                        acc = Color.add(acc, world.color_at(ray, 1));
+                    }
+                }
+                Canvas.write_pixel(image, y, x, acc.scale(1 / Math.pow(n, 2)));
 
                 // if (!Color.equals(color, acc.scale(1/9))) {
                 //     console.log(JSON.stringify('x : ' + x + ', y: ' + y));

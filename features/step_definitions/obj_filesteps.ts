@@ -5,7 +5,7 @@ import {expect} from 'chai';
 import {parseArg} from '../../src/util';
 import {point, Tuple, vector} from '../../src/tuple';
 import {Group} from '../../src/shapes/group';
-import {Triangle} from '../../src/shapes/triangle';
+import {Shape, SmoothTriangle, Triangle} from '../../src/shapes';
 import {fail} from 'assert';
 
 const fs = require('fs');
@@ -28,7 +28,7 @@ class ObjFileSteps {
 
     @then(/^([\w\d_]+) should have ignored ([\d]+) lines$/)
     public thenIgnoredLineEquals(parserId: string, count: string) {
-        const actual = this.workspace.parsers[parserId].ingnoredCount;
+        const actual = this.workspace.parsers[parserId].ignoredCount;
         const expected = parseArg(count);
 
         expect(actual).to.be.equal(expected);
@@ -116,6 +116,38 @@ class ObjFileSteps {
 
         expect(Tuple.equals(actual, expected), shouldEqualMsg(actual, expected)).to.be.true;
     }
+
+    @then(/^([\w\d_]+)\.([\w\d_]+) = ([\w\d_]+).normals\[([\d]+)]$/)
+    public thenTriangleVertexNormalEquals(traingleId: string, normalField: string, parserId: string, normalId: string) {
+        const t = this.workspace.shapes[traingleId] as SmoothTriangle;
+        let actual: Tuple;
+        switch (normalField) {
+            case 'n1':
+                actual = t.n1;
+                break;
+            case 'n2':
+                actual = t.n2;
+                break;
+            case 'n3':
+                actual = t.n3;
+                break;
+            default:
+                fail('Unexpected vertex');
+                actual = point(0, 0, 0);
+        }
+        const expected = this.workspace.parsers[parserId].normals[parseArg(normalId) - 1];
+
+        expect(Tuple.equals(actual, expected), shouldEqualMsg(actual, expected)).to.be.true;
+    }
+
+    @then(/^t2 = t1$/)
+    public thenTriangle1EqualsTriangle2() {
+        const actual = this.workspace.shapes['t2'];
+        const expected = this.workspace.shapes['t1'];
+
+        expect(Shape.equals(actual, expected)).to.be.true;
+    }
+
 }
 
 export = ObjFileSteps;

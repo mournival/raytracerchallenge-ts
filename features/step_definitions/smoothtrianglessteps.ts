@@ -4,7 +4,7 @@ import {SmoothTriangle} from '../../src/shapes/smooth-triangle';
 import {point, Tuple, vector} from '../../src/tuple';
 import {expect} from 'chai';
 import {fail} from 'assert';
-import {parseArg} from "../../src/util";
+import {parseArg} from '../../src/util';
 
 @binding([Workspace])
 class SmoothTrianglesSteps {
