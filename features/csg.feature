@@ -11,20 +11,20 @@ Scenario: CSG is created with an operation and two shapes
     And s1.parent = c
     And s2.parent = c
 
-#Scenario Outline: Evaluating the rule for a CSG operation
-#  When result ← intersection_allowed("<op>", <lhit>, <inl>, <inr>)
-#  Then result = <result>
-#
-#  Examples:
-#  | op           | lhit  | inl   | inr   | result |
-#  | union        | true  | true  | true  | false  |
-#  | union        | true  | true  | false | true   |
-#  | union        | true  | false | true  | false  |
-#  | union        | true  | false | false | true   |
-#  | union        | false | true  | true  | false  |
-#  | union        | false | true  | false | false  |
-#  | union        | false | false | true  | true   |
-#  | union        | false | false | false | true   |
+Scenario Outline: Evaluating the rule for a CSG operation
+  When result ← intersection_allowed("<op>", <lhit>, <inl>, <inr>)
+  Then result = <result>
+
+  Examples:
+  | op           | lhit  | inl   | inr   | result |
+  | union        | true  | true  | true  | false  |
+  | union        | true  | true  | false | true   |
+  | union        | true  | false | true  | false  |
+  | union        | true  | false | false | true   |
+  | union        | false | true  | true  | false  |
+  | union        | false | true  | false | false  |
+  | union        | false | false | true  | true   |
+  | union        | false | false | false | true   |
 #  # append after the union examples...
 #  | intersection | true  | true  | true  | true   |
 #  | intersection | true  | true  | false | false  |

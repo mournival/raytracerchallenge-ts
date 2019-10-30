@@ -57,5 +57,12 @@ export class CSG extends Shape {
             ;
     }
 
+    static intersectionAllowed(op: CSGOperation, lhit: boolean, inl: boolean, inr: boolean): boolean {
+        switch (op) {
+            case CSGOperation.UNION:
+                return (lhit && !inr) || (!lhit && !inl);
+        }
+        return false;
+    }
 }
 

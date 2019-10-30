@@ -46,6 +46,16 @@ class CSGsSteps {
         expect(Shape.equals(actual, expected)).to.be.true;
     }
 
+    @when(/^(\w+) ← intersection_allowed\("(\w+)", (\w+), (\w+), (\w+)\)$/)
+    public intersectionAllowed(resultId: string, op: string, lhit: string, inl: string, inr: string) {
+        this.workspace.tests[resultId] = CSG.intersectionAllowed(CSGOperation.UNION, lhit === 'true', inl === 'true', inr === 'true');
+    }
+
+    @then(/^result = (\w+)$/)
+    public intersectionResultId(result: string) {
+        expect(this.workspace.tests['result']).to.be.equal(result === 'true');
+    }
+
 }
 
 export = CSGsSteps;
