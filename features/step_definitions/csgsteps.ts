@@ -48,7 +48,7 @@ class CSGsSteps {
 
     @when(/^(\w+) ← intersection_allowed\("(\w+)", (\w+), (\w+), (\w+)\)$/)
     public intersectionAllowed(resultId: string, op: string, lhit: string, inl: string, inr: string) {
-        this.workspace.tests[resultId] = CSG.intersectionAllowed(CSGOperation.UNION, lhit === 'true', inl === 'true', inr === 'true');
+        this.workspace.tests[resultId] = CSG.intersectionAllowed(stringToCsgOp(op), lhit === 'true', inl === 'true', inr === 'true');
     }
 
     @then(/^result = (\w+)$/)
@@ -56,6 +56,17 @@ class CSGsSteps {
         expect(this.workspace.tests['result']).to.be.equal(result === 'true');
     }
 
+}
+
+function stringToCsgOp(op: string) : CSGOperation {
+    switch (op) {
+        case 'union':
+            return CSGOperation.UNION;
+        case 'intersection':
+            return CSGOperation.INTERSECTION;
+        default:
+            throw 'Unexpected Operation Namee: ' + op;
+    }
 }
 
 export = CSGsSteps;

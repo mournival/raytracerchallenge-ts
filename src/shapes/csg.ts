@@ -7,7 +7,7 @@ import {Util} from '../util';
 import {Tuple, vector} from '../tuple';
 
 export enum CSGOperation {
-    UNION
+    UNION, INTERSECTION
 }
 
 export class CSG extends Shape {
@@ -61,6 +61,8 @@ export class CSG extends Shape {
         switch (op) {
             case CSGOperation.UNION:
                 return (lhit && !inr) || (!lhit && !inl);
+            case CSGOperation.INTERSECTION:
+                return (lhit && inr) || (!lhit && inl);
         }
         return false;
     }

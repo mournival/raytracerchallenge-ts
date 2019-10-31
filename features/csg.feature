@@ -25,15 +25,15 @@ Scenario Outline: Evaluating the rule for a CSG operation
   | union        | false | true  | false | false  |
   | union        | false | false | true  | true   |
   | union        | false | false | false | true   |
-#  # append after the union examples...
-#  | intersection | true  | true  | true  | true   |
-#  | intersection | true  | true  | false | false  |
-#  | intersection | true  | false | true  | true   |
-#  | intersection | true  | false | false | false  |
-#  | intersection | false | true  | true  | true   |
-#  | intersection | false | true  | false | true   |
-#  | intersection | false | false | true  | false  |
-#  | intersection | false | false | false | false  |
+  # append after the union examples...
+  | intersection | true  | true  | true  | true   |
+  | intersection | true  | true  | false | false  |
+  | intersection | true  | false | true  | true   |
+  | intersection | true  | false | false | false  |
+  | intersection | false | true  | true  | true   |
+  | intersection | false | true  | false | true   |
+  | intersection | false | false | true  | false  |
+  | intersection | false | false | false | false  |
 #  # append after the intersection examples...
 #  | difference   | true  | true  | true  | false  |
 #  | difference   | true  | true  | false | true   |
