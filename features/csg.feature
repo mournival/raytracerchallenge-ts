@@ -34,16 +34,16 @@ Scenario Outline: Evaluating the rule for a CSG operation
   | intersection | false | true  | false | true   |
   | intersection | false | false | true  | false  |
   | intersection | false | false | false | false  |
-#  # append after the intersection examples...
-#  | difference   | true  | true  | true  | false  |
-#  | difference   | true  | true  | false | true   |
-#  | difference   | true  | false | true  | false  |
-#  | difference   | true  | false | false | true   |
-#  | difference   | false | true  | true  | true   |
-#  | difference   | false | true  | false | true   |
-#  | difference   | false | false | true  | false  |
-#  | difference   | false | false | false | false  |
-#
+  # append after the intersection examples...
+  | difference   | true  | true  | true  | false  |
+  | difference   | true  | true  | false | true   |
+  | difference   | true  | false | true  | false  |
+  | difference   | true  | false | false | true   |
+  | difference   | false | true  | true  | true   |
+  | difference   | false | true  | false | true   |
+  | difference   | false | false | true  | false  |
+  | difference   | false | false | false | false  |
+
 #Scenario Outline: Filtering a list of intersections
 #  Given s1 ← sphere()
 #    And s2 ← cube()

@@ -64,6 +64,8 @@ function stringToCsgOp(op: string) : CSGOperation {
             return CSGOperation.UNION;
         case 'intersection':
             return CSGOperation.INTERSECTION;
+        case 'difference':
+            return CSGOperation.DIFFERENCE;
         default:
             throw 'Unexpected Operation Namee: ' + op;
     }
