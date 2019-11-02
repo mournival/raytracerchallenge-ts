@@ -49,6 +49,10 @@ export class CSG extends Shape {
         return new CSG(this.left, this.right, this.operation, this.transform, this.material, s);
     }
 
+    local_includes(obj: Shape): boolean {
+        return this.left.includes(obj) || this.right.includes(obj);
+    }
+
     equals(rhs: Shape): boolean {
         return rhs instanceof CSG
             && Matrix.equals(this.transform, rhs.transform)
@@ -67,6 +71,29 @@ export class CSG extends Shape {
                 return (lhit && !inr) || (!lhit && inl);
         }
         return false;
+    }
+
+    filter_intersections(xs: Intersection[]): Intersection[] {
+        let inl = false;
+        let inr = false;
+
+        let result: Intersection[] = [];
+
+        xs.forEach(i => {
+            let lhit = this.left.includes(i.obj);
+
+            if (CSG.intersectionAllowed(this.operation, lhit, inl, inr)) {
+                result.push(i);
+            }
+
+            if (lhit) {
+                inl = !inl;
+            } else {
+                inr = !inr;
+            }
+        });
+
+        return result;
     }
 }
 

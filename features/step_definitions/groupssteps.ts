@@ -32,7 +32,7 @@ class GroupsSteps {
 
     @then(/^([\w\d_]+) includes ([\w\d_]+)$/)
     public thenGroupIncludesShape(groupId: string, shapeId: string) {
-        expect((this.workspace.shapes[groupId] as Group).includes(this.workspace.shapes[shapeId])).to.be.true;
+        expect((this.workspace.shapes[groupId] as Group).local_includes(this.workspace.shapes[shapeId])).to.be.true;
     }
 
     @then(/^([\w\d_]+).parent = ([\w\d_]+)$/)

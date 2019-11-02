@@ -44,21 +44,21 @@ Scenario Outline: Evaluating the rule for a CSG operation
   | difference   | false | false | true  | false  |
   | difference   | false | false | false | false  |
 
-#Scenario Outline: Filtering a list of intersections
-#  Given s1 ← sphere()
-#    And s2 ← cube()
-#    And c ← csg("<operation>", s1, s2)
-#    And xs ← intersections(1:s1, 2:s2, 3:s1, 4:s2)
-#  When result ← filter_intersections(c, xs)
-#  Then result.count = 2
-#    And result[0] = xs[<x0>]
-#    And result[1] = xs[<x1>]
-#
-#  Examples:
-#  | operation    | x0 | x1 |
-#  | union        | 0  | 3  |
-#  | intersection | 1  | 2  |
-#  | difference   | 0  | 1  |
+Scenario Outline: Filtering a list of intersections
+  Given s1 ← sphere()
+    And s2 ← cube()
+    And c ← csg("<operation>", s1, s2)
+    And xs ← intersections(1:s1, 2:s2, 3:s1, 4:s2)
+  When result ← filter_intersections(c, xs)
+  Then result.count = 2
+    And result[0] = xs[<x0>]
+    And result[1] = xs[<x1>]
+
+  Examples:
+  | operation    | x0 | x1 |
+  | union        | 0  | 3  |
+  | intersection | 1  | 2  |
+  | difference   | 0  | 1  |
 #
 #Scenario: A ray misses a CSG object
 #  Given c ← csg("union", sphere(), cube())

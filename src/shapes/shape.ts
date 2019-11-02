@@ -27,6 +27,10 @@ export abstract class Shape implements Interceptable {
 
     abstract local_replace_parent(s: Shape): Shape;
 
+    local_includes(obj: Shape): boolean {
+        return false
+    };
+
     abstract equals(rhs: Shape): boolean;
 
     normal_at(point: Tuple, hit: Intersection | null = null): Tuple {
@@ -73,6 +77,10 @@ export abstract class Shape implements Interceptable {
         }
 
         return n;
+    }
+
+    includes(obj: Shape) {
+        return Shape.equals(this, obj) || this.local_includes(obj);
     }
 }
 

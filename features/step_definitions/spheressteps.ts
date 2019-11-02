@@ -39,7 +39,7 @@ class SpheresSteps {
         expect(actual).to.be.equal(expected);
     }
 
-    @then(/^(\w+)\[(\d+)] = ([^,]+)$/)
+    @then(/^(\w+)\[(\d+)] = ([^,xs]+)$/)
     public thenIntersectionValue(intersectionsId: string, intersectionIndex: string, value: string) {
         const actual = this.workspace.intersections[intersectionsId][parseInt(intersectionIndex)].t;
         const expected = parseArg(value);

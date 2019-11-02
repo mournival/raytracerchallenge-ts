@@ -11,12 +11,12 @@ class CSGsSteps {
     constructor(protected workspace: Workspace) {
     }
 
-    @when(/^(\w+) ← csg\("union", ([\w\d]+), ([\w\d]+)\)$/)
-    public whenCSG(csgId: string, s1Id: string, s2Id: string) {
+    @when(/^(\w+) ← csg\("(\w+)", ([\w\d]+), ([\w\d]+)\)$/)
+    public whenCSG(csgId: string, op: string, s1Id: string, s2Id: string) {
         this.workspace.shapes[csgId] = new CSG(
             this.workspace.shapes[s1Id],
             this.workspace.shapes[s2Id],
-            CSGOperation.UNION
+            stringToCsgOp(op)
         );
         this.workspace.shapes[s1Id] = (this.workspace.shapes[csgId] as CSG).left;
         this.workspace.shapes[s2Id] = (this.workspace.shapes[csgId] as CSG).right;
@@ -54,6 +54,23 @@ class CSGsSteps {
     @then(/^result = (\w+)$/)
     public intersectionResultId(result: string) {
         expect(this.workspace.tests['result']).to.be.equal(result === 'true');
+    }
+
+    @when(/^(\w+) ← filter_intersections\((\w+), (\w+)\)$/)
+    public whenFilterIntersections(filteredIntersection: string, shapeId: string, intersectionsId: string) {
+        this.workspace.intersections[filteredIntersection] = (this.workspace.shapes[shapeId] as CSG).filter_intersections(
+            this.workspace.intersections[intersectionsId]
+        );
+    }
+
+    @then(/^(\w+)\[(\d+)] = xs\[([^,xs]+)]$/)
+    public thenIntersectionValue(intersectionsId: string, intersectionIndex: string, value: string) {
+        const actual = this.workspace.intersections[intersectionsId][parseInt(intersectionIndex)];
+        const expected = this.workspace.intersections['xs'][parseInt(value)];
+
+
+        expect(actual.t).to.be.closeTo(expected.t, 0.0001);
+        expect(Shape.equals(actual.obj, expected.obj)).to.be.true;
     }
 
 }

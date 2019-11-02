@@ -45,7 +45,7 @@ export class Group extends Shape {
         return new Group(this.transform, this.material, [...this.children, shape], this.parent);
     }
 
-    includes(shape: Shape): boolean {
+    local_includes(shape: Shape): boolean {
         return !!this.children.find(s => Shape.equals(s, shape));
     }
 
