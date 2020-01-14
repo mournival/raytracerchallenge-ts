@@ -59,22 +59,22 @@ Scenario Outline: Filtering a list of intersections
   | union        | 0  | 3  |
   | intersection | 1  | 2  |
   | difference   | 0  | 1  |
-#
-#Scenario: A ray misses a CSG object
-#  Given c ← csg("union", sphere(), cube())
-#    And r ← ray(point(0, 2, -5), vector(0, 0, 1))
-#  When xs ← local_intersect(c, r)
-#  Then xs is empty
-#
-#Scenario: A ray hits a CSG object
-#  Given s1 ← sphere()
-#    And s2 ← sphere()
-#    And set_transform(s2, translation(0, 0, 0.5))
-#    And c ← csg("union", s1, s2)
-#    And r ← ray(point(0, 0, -5), vector(0, 0, 1))
-#  When xs ← local_intersect(c, r)
-#  Then xs.count = 2
-#    And xs[0].t = 4
-#    And xs[0].object = s1
-#    And xs[1].t = 6.5
-#    And xs[1].object = s2
+
+Scenario: A ray misses a CSG object
+  Given c ← csg("union", sphere(), cube())
+    And r ← ray(point(0, 2, -5), vector(0, 0, 1))
+  When xs ← local_intersect(c, r)
+  Then xs is empty
+
+Scenario: A ray hits a CSG object
+  Given s1 ← sphere()
+    And s2 ← sphere()
+    And set_transform(s2, translation(0, 0, 0.5))
+    And c ← csg("union", s1, s2)
+    And r ← ray(point(0, 0, -5), vector(0, 0, 1))
+  When xs ← local_intersect(c, r)
+  Then xs.count = 2
+    And xs[0].t = 4
+    And xs[0].object = s1
+    And xs[1].t = 6.5
+    And xs[1].object = s2

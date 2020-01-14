@@ -3,7 +3,6 @@ import {Material} from '../material';
 import {Shape} from './shape';
 import {Ray} from '../ray';
 import {Intersection} from '../intersection';
-import {Util} from '../util';
 import {Tuple, vector} from '../tuple';
 
 export enum CSGOperation {
@@ -26,11 +25,9 @@ export class CSG extends Shape {
     }
 
     local_intersection(r: Ray): Intersection[] {
-        if (Util.closeTo(r.direction.y, 0)) {
-            return [];
-        }
-
-        return [new Intersection(this, -r.origin.y / r.direction.y)];
+        const leftxs: Intersection[] = this.left.intersect(r);
+        const rightxs: Intersection[] = this.right.intersect(r);
+        return this.filter_intersections([...leftxs, ...rightxs].sort((a, b) => a.t - b.t));
     }
 
     local_normal_at(pt: Tuple): Tuple {

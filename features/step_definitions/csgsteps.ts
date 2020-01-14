@@ -1,9 +1,9 @@
 import {binding} from 'cucumber-tsflow';
 import {Workspace} from './Workspace';
 import {CSG, CSGOperation} from '../../src/shapes/csg';
-import {then, when} from 'cucumber-tsflow/dist';
+import {given, then, when} from 'cucumber-tsflow/dist';
 import {expect} from 'chai';
-import {Shape} from '../../src/shapes';
+import {Cube, Shape, Sphere} from '../../src/shapes';
 
 @binding([Workspace])
 class CSGsSteps {
@@ -68,9 +68,13 @@ class CSGsSteps {
         const actual = this.workspace.intersections[intersectionsId][parseInt(intersectionIndex)];
         const expected = this.workspace.intersections['xs'][parseInt(value)];
 
-
         expect(actual.t).to.be.closeTo(expected.t, 0.0001);
         expect(Shape.equals(actual.obj, expected.obj)).to.be.true;
+    }
+
+    @given(/c ← csg\("(\w+)", sphere\(\), cube\(\)\)/)
+    public givenCSGUnion(op: string) {
+        this.workspace.shapes['c'] = new CSG(new Sphere(), new Cube(), stringToCsgOp(op));
     }
 
 }
@@ -84,7 +88,7 @@ function stringToCsgOp(op: string) : CSGOperation {
         case 'difference':
             return CSGOperation.DIFFERENCE;
         default:
-            throw 'Unexpected Operation Namee: ' + op;
+            throw 'Unexpected Operation Name: ' + op;
     }
 }
 
