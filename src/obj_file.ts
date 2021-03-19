@@ -24,21 +24,21 @@ export class Parser {
         let group_name = 'default_group';
         lines.map(l => l.toString()).forEach(l => {
             if (l.startsWith('v ')) {
-                let tokens: string[] = l.split(' ');
+                let tokens: string[] = l.trim().split(' ');
                 if (tokens.length != 4) {
                     skipped++;
                 } else {
                     verts.push(point(parseArg(tokens[1]), parseArg(tokens[2]), parseArg(tokens[3])));
                 }
             } else if (l.startsWith('vn ')) {
-                let tokens: string[] = l.split(' ');
+                let tokens: string[] = l.trim().split(' ');
                 if (tokens.length != 4) {
                     skipped++;
                 } else {
                     norms.push(vector(parseArg(tokens[1]), parseArg(tokens[2]), parseArg(tokens[3])));
                 }
             } else if (l.startsWith('f ')) {
-                let tokens: string[] = l.split(' ');
+                let tokens: string[] = l.trim().split(' ');
                 if (tokens.length < 4) {
                     skipped++;
                 } else {
@@ -68,10 +68,10 @@ export class Parser {
                 }
             } else if (l.startsWith('g ')) {
                 this.groups[group_name] = new Group(Matrix.identity(), new Material(), triangles);
+                group_name = l.slice(2).trim();
                 triangles = [];
-                group_name = l.slice(2);
             } else if (l.startsWith('vn ')) {
-                let tokens: string[] = l.split(' ');
+                let tokens: string[] = l.trim().split(' ');
                 if (tokens.length != 4) {
                     skipped++;
                 } else {
