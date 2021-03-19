@@ -81,23 +81,23 @@ interface ParserArray {
 }
 
 export class Workspace {
-    public tuples: TupleArray = {};
+    public cameras: CameraArray = {};
     public canvases: CanvasArray = {};
     public colors: ColorArray = {};
-    public matrices: MatrixArray = {};
-    public rays: RayArray = {};
-    public shapes: ShapeArray = {};
     public intersection: IntersectionArray = {};
     public intersections: IntersectionArrayArray = {};
     public lights: LightsArray = {};
     public materials: MaterialsArray = {};
-    public worlds: WorldArray = {};
+    public matrices: MatrixArray = {};
     public numbers: NumberArray = {};
-    public cameras: CameraArray = {};
-    public tests: BooleanArray = {};
-    public patterns: PatternArray = {};
     public objFiles: ObjFileArray = {};
     public parsers: ParserArray = {};
+    public patterns: PatternArray = {};
+    public rays: RayArray = {};
+    public shapes: ShapeArray = {};
+    public tests: BooleanArray = {};
+    public tuples: TupleArray = {};
+    public worlds: WorldArray = {};
 
     getTransform(shapeId: string) {
         let actual = new Matrix(0, 0);

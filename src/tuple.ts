@@ -37,7 +37,10 @@ export class Tuple {
         return Tuple.multiply(this, -1);
     }
 
-    static equals(lhs: Tuple, rhs: Tuple): boolean {
+    static equals(lhs: Tuple | undefined, rhs: Tuple | undefined): boolean {
+        if (lhs === undefined || rhs === undefined) {
+            return false;
+        }
         return Util.closeTo(lhs.x, rhs.x) &&
             Util.closeTo(lhs.y, rhs.y) &&
             Util.closeTo(lhs.z, rhs.z) &&

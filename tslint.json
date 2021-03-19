@@ -1,6 +1,6 @@
 {
   "extends": [
-    "tslint-clean-code"
+//    "tslint-clean-code"
   ],
   "rules": {
     "newspaper-order": true

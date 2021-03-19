@@ -10,7 +10,6 @@ import {Material} from '../../src/material';
 import {PreComputations} from '../../src/pre-computations';
 import {Light} from '../../src/light';
 import {point} from '../../src/tuple';
-import {transform} from '../../src/ray';
 import {Plane} from '../../src/shapes/plane';
 import {test_pattern} from '../../src/pattern';
 import {Shape} from '../../src/shapes/shape';

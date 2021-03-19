@@ -1,4 +1,4 @@
-import {then, when, binding, given} from 'cucumber-tsflow';
+import {binding, given, then, when} from 'cucumber-tsflow';
 import {shouldEqualMsg, Workspace} from './Workspace';
 import {expect} from 'chai';
 import {checkers_pattern, gradient_pattern, ring_pattern, stripe_pattern, test_pattern} from '../../src/pattern';
@@ -68,7 +68,10 @@ class PatternSteps {
 
     @given(/^([\w\d_]+) ← test_pattern\(\)$/)
     public givenTestPattern(patternId: string) {
-        this.workspace.patterns[patternId] = test_pattern();
+        const p = test_pattern();
+        if (p) {
+            this.workspace.patterns[patternId] = p;
+        }
     }
 
     @when(/^([\w\d_]+) ← pattern_at_shape\(([\w\d_]+), ([\w\d_]+), point\(([^,]+), ([^,]+), ([^,]+)\)\)$/)
@@ -101,16 +104,18 @@ class PatternSteps {
 
     @given(/^([\w\d_]+) ← ring_pattern\(([\w\d_]+), ([\w\d_]+)\)$/)
     public givenRingPattern(patternId: string, aColorId: string, bColorId: string) {
-        this.workspace.patterns[patternId] = ring_pattern(
-            this.workspace.colors[aColorId],
-            this.workspace.colors[bColorId]);
+        const p = ring_pattern(this.workspace.colors[aColorId], this.workspace.colors[bColorId]);
+        if (p) {
+            this.workspace.patterns[patternId] = p;
+        }
     }
 
     @given(/^([\w\d_]+) ← checkers_pattern\(([\w\d_]+), ([\w\d_]+)\)$/)
     public givenCheckerPattern(patternId: string, aColorId: string, bColorId: string) {
-        this.workspace.patterns[patternId] = checkers_pattern(
-            this.workspace.colors[aColorId],
-            this.workspace.colors[bColorId]);
+        const p = checkers_pattern(this.workspace.colors[aColorId], this.workspace.colors[bColorId]);
+        if (p) {
+            this.workspace.patterns[patternId] = p;
+        }
     }
 }
 

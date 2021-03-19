@@ -5,7 +5,7 @@ import {expect} from 'chai';
 import {Color} from '../../src/color';
 import {Light} from '../../src/light';
 import {point} from '../../src/tuple';
-import {Pattern, stripe_pattern} from '../../src/pattern';
+import {stripe_pattern} from '../../src/pattern';
 import {parseArg} from '../../src/util';
 
 @binding([Workspace])

@@ -1,5 +1,5 @@
 import {binding, then, when} from 'cucumber-tsflow';
-import {shouldEqualMsg, Workspace} from './Workspace';
+import {Workspace} from './Workspace';
 import {Group} from '../../src/shapes/group';
 import {expect} from 'chai';
 import {Shape} from '../../src/shapes/shape';

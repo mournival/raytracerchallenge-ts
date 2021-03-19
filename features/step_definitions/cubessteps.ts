@@ -1,4 +1,4 @@
-import {when, binding, given} from 'cucumber-tsflow';
+import {binding, given, when} from 'cucumber-tsflow';
 import {Workspace} from './Workspace';
 import {Cube} from '../../src/shapes/cube';
 
