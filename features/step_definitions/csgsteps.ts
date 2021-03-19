@@ -79,7 +79,7 @@ class CSGsSteps {
 
 }
 
-function stringToCsgOp(op: string) : CSGOperation {
+function stringToCsgOp(op: string): CSGOperation {
     switch (op) {
         case 'union':
             return CSGOperation.UNION;

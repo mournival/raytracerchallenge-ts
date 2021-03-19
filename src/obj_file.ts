@@ -93,7 +93,7 @@ export class Parser {
             return this.groups[name];
         }
         let grps: Group[] = [];
-        for(let g in this.groups) {
+        for (let g in this.groups) {
             if (this.groups[g].children.length > 0) {
                 grps.push(this.groups[g]);
             }

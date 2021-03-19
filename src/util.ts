@@ -2,6 +2,10 @@ export class Util {
     public static readonly EPSILON = 0.0001;
 
     static closeTo(lhs: number, rhs: number) {
+        if ((lhs === Number.NEGATIVE_INFINITY && rhs === Number.NEGATIVE_INFINITY) ||
+            (lhs === Number.POSITIVE_INFINITY && rhs === Number.POSITIVE_INFINITY)) {
+            return true;
+        }
         return Math.abs(lhs - rhs) < Util.EPSILON;
     }
 }

@@ -71,6 +71,13 @@ class ShapeSteps {
         this.workspace.tuples[pointId] =
             this.workspace.shapes[shapeId].normal_to_world(vector(parseArg(x), parseArg(y), parseArg(z)));
     }
+
+    @then(/^(\w+) shape.equals (\w+)$/)
+    public thenShapeEquals(lhsName: string, rhsName: string) {
+        const lhs = this.workspace.shapes[lhsName];
+        const rhs = this.workspace.shapes[rhsName];
+        expect(lhs.equals(rhs)).to.be.true;
+    }
 }
 
 export = ShapeSteps;

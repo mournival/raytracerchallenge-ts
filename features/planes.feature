@@ -38,6 +38,10 @@ Feature: Planes
     And xs[0].t = 1
     And xs[0].object = p
 
+
+  Scenario: Comparing Planes
+    Given shape ← plane()
+    Then shape shape.equals shape
   # Bug Fixes
 
 

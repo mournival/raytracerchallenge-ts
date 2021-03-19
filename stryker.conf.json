@@ -8,9 +8,13 @@
   ],
   "testRunner": "command",
   "coverageAnalysis": "off",
-  "checkers": ["typescript"],
+  "checkers": [
+    "typescript"
+  ],
   "tsconfigFile": "tsconfig.json",
-  "mutate": [ "src/**/*.ts",
-              "!src/putting_it_together/**/*.ts"
-            ]
+  "mutate": [
+    "src/**/*.ts",
+    "!src/putting_it_together/**/*.ts",
+    "src/cucumber.ts"
+  ]
 }

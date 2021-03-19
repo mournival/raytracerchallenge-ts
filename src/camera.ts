@@ -3,7 +3,6 @@ import {point, Tuple} from './tuple';
 import {Ray} from './ray';
 import {Canvas} from './canvas';
 import {World} from './world';
-import {Color} from './color';
 
 export class Camera {
 

@@ -14,7 +14,7 @@ export abstract class Shape implements Interceptable {
     static equals(lhs: Shape, rhs: Shape): boolean {
         // Not sure, but there may be issues with parents, but for now only count children
         // maybe need a local equals for group's children?
-         return lhs.equals(rhs);
+        return lhs.equals(rhs);
     }
 
     abstract local_intersection(r: Ray): Intersection[];

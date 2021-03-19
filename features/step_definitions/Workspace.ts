@@ -113,7 +113,7 @@ export class Workspace {
     }
 }
 
-export function shouldEqualMsg(actual: Object|null, expected: Object): string {
+export function shouldEqualMsg(actual: Object | null, expected: Object): string {
     return JSON.stringify(actual) + ' should equal ' + JSON.stringify(expected);
     // return actual + ' should equal ' + expected;
 }
