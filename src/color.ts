@@ -16,10 +16,11 @@ export class Color {
     }
 
     static mapColor(n: number): number {
-        const c = Math.round(255 * n);
-        if (c < 0) return 0;
-        if (c > 255) return 255;
-        return c;
+
+        if (n > 0 && n < 1) {
+            return Math.round(255 * n);
+        }
+        return n > 0 ? 255 : 0;
     }
 
     static equals(lhs: Color, rhs: Color): boolean {

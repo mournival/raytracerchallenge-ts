@@ -33,6 +33,12 @@ class LightsSteps {
         expect(Color.equals(actual, expected), shouldEqualMsg(actual, expected)).to.be.true;
     }
 
+    @then(/^([\w\d_]+) does not light.equals ([\w\d_]+)$/)
+    public thenLightNotEquals(lhs: string, rhs: string) {
+        expect(Light.equals(this.workspace.lights[lhs], this.workspace.lights[rhs])
+        ).to.be.false;
+    }
+
 }
 
 export = LightsSteps;

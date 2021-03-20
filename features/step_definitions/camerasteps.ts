@@ -88,9 +88,12 @@ class CameraSteps {
 
     @when(/^(\w+) ← render\(([^,]+), ([^,]+)\)$/)
     public whenImageRenderedIs(key: string, cameraId: string, worldId: string) {
-        const c = this.workspace.cameras[cameraId];
+        const camera = this.workspace.cameras[cameraId];
         const w = this.workspace.worlds[worldId];
-        this.workspace.canvases[key] = c.render(w);
+        const canvas = camera.render(w);
+        this.workspace.canvases[key] = canvas;
+        expect(camera.hsize).to.equal(canvas.data.length)
+        expect(camera.vsize).to.equal(canvas.data[0].length)
     }
 
 

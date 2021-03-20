@@ -15,6 +15,6 @@
   "mutate": [
     "src/**/*.ts",
     "!src/putting_it_together/**/*.ts",
-    "src/cucumber.ts"
+    "!src/cucumber.ts"
   ]
 }

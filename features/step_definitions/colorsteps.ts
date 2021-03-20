@@ -3,7 +3,7 @@ import {Workspace} from './Workspace';
 import {expect} from 'chai';
 import {Color} from '../../src/color';
 import {parseArg} from '../../src/util';
-import {when} from "cucumber-tsflow/dist";
+import {when} from 'cucumber-tsflow/dist';
 
 @binding([Workspace])
 class ColorSteps {
@@ -19,7 +19,8 @@ class ColorSteps {
     @then(/^mapColor\(([\w]+)\) = (.+)$/)
     public thenMapColorIs(numberId: string, expectedValue: string) {
         const expected = parseArg(expectedValue);
-        const actual = Color.mapColor(this.workspace.numbers[numberId])
+        const n = this.workspace.numbers[numberId];
+        const actual = Color.mapColor(n)
         expect(actual).to.be.closeTo(expected, 0.00001);
     }
 
