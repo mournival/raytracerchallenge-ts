@@ -7,7 +7,7 @@ export class Color {
     static RED = new Color(1, 0, 0);
 
     static WHITE = new Color(1, 1, 1);
-    static CLEMSON_ORANGE = new Color(246, 103, 51).scale(1 / 255);
+    static CLEMSON_ORANGE = new Color(0.9647, 0.4039, 0.2);
 
     constructor(public readonly red: number,
                 public readonly green: number,
@@ -16,9 +16,10 @@ export class Color {
     }
 
     static mapColor(n: number): number {
-        if (n <= 0) return 0;
-        if (n >= 1) return 255;
-        return Math.round(255 * n);
+        const c = Math.round(255 * n);
+        if (c < 0) return 0;
+        if (c > 255) return 255;
+        return c;
     }
 
     static equals(lhs: Color, rhs: Color): boolean {

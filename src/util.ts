@@ -38,17 +38,17 @@ export function parseArg(s: string): number {
     }
 
     // π
-    if (s.match(/^π\s*\/\s*\d+$/)) {
+    if (s.match(/^π\s*\/\s*\d+/)) {
         const matchArray = s.split('/');
         return Math.PI / parseInt(matchArray[1]);
     }
 
     // rational
-    if (s.match(/^[+-]?\d+\s*\/\s*\d+$/)) {
+    if (s.match(/^[+-]?\d+\s*\/\s*\d+/)) {
         const matchArray = s.split('/');
         return parseInt(matchArray[0]) / parseInt(matchArray[1]);
     }
-    if (s.match(/^√\d+$/)) {
+    if (s.match(/^√\d+/)) {
         return Math.sqrt(parseInt(s.slice(1)));
     }
 

@@ -23,7 +23,7 @@ class CSGsSteps {
     }
 
     @then(/^(\w+)\.operation = "([\w]+)"/)
-    public thenCsgoperationIs(csgId: string, shapeId: string) {
+    public thenCsgOperationIs(csgId: string, shapeId: string) {
         const actual = (this.workspace.shapes[csgId] as CSG).operation;
         const expected = CSGOperation.UNION;
 

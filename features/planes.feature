@@ -42,6 +42,22 @@ Feature: Planes
   Scenario: Comparing Planes
     Given shape ← plane()
     Then shape shape.equals shape
+
+  Scenario: Comparing Planes not equal
+    Given a ← plane()
+    And b ← plane()
+    And set_transform(b, translation(0, 0, -3))
+    Then a does not shape.equals b
+
+  Scenario: Comparing Planes not equal
+    Given a ← plane()
+    And b ← plane()
+    And set_transform(b, translation(0, 0, -3))
+    And m ← material()
+    And m.pattern ← stripe_pattern(color(1, 1, 1), color(0, 0, 0))
+    And set_material(b, m)
+    Then a does not shape.equals b
+
   # Bug Fixes
 
 

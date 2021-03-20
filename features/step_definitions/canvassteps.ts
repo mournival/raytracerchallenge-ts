@@ -45,6 +45,16 @@ class CanvasSteps {
 
     }
 
+    @then(/^(\w+) has ([^,]+) columns$/)
+    public canvasDataWidthEquals(id: string, value: string) {
+        expect(this.workspace.canvases[id].data[0].length).to.eq(parseArg(value));
+    }
+
+    @then(/^(\w+) has ([^,]+) rows$/)
+    public canvasDataHeightEquals(id: string, value: string) {
+        expect(this.workspace.canvases[id].data.length).to.eq(parseArg(value));
+    }
+
     @when(/^write_pixel\((\w+), ([^,]+), ([^,]+), (\w+)\)$/)
     public doWritePixel(canvasId: string, col: string, row: string, colorId: string) {
         Canvas.write_pixel(this.workspace.canvases[canvasId], parseArg(row), parseArg(col), this.workspace.colors[colorId] as Color);

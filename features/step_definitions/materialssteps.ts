@@ -79,27 +79,23 @@ class MaterialsSteps {
 
     @given(/^([\w\d_]+).pattern ← stripe_pattern\(color\(([\w\d_]+), ([\w\d_]+), ([\w\d_]+)\), color\(([\w\d_]+), ([\w\d_]+), ([\w\d_]+)\)\)$/)
     public givenPattern(matId: string, ar: string, ag: string, ab: string, br: string, bg: string, bb: string) {
-        const m = this.workspace.materials[matId].replace('pattern',
+        this.workspace.materials[matId] = this.workspace.materials[matId].replace('pattern',
             stripe_pattern(
                 new Color(parseArg(ar), parseArg(ag), parseArg(ab)),
                 new Color(parseArg(br), parseArg(bg), parseArg(bb)
                 )
             )
         );
-
-        this.workspace.materials[matId] = m;
     }
 
     @given(/^([\w\d_]+).diffuse ← ([^,]+)$/)
     public givenDiffuse(matId: string, value: string) {
-        const m = this.workspace.materials[matId].replace('diffuse', parseArg(value));
-        this.workspace.materials[matId] = m;
+        this.workspace.materials[matId] = this.workspace.materials[matId].replace('diffuse', parseArg(value));
     }
 
     @given(/^([\w\d_]+).specular ← ([^,]+)$/)
     public givenSpecular(matId: string, value: string) {
-        const m = this.workspace.materials[matId].replace('specular', parseArg(value));
-        this.workspace.materials[matId] = m;
+        this.workspace.materials[matId] = this.workspace.materials[matId].replace('specular', parseArg(value));
     }
 
     @when(/^([\w\d_]+) ← lighting\(([^,]+), ([^,]+), point\(([^,]+), ([^,]+), ([^,]+)\), ([^,]+), ([^,]+), ([^,]+)\)$/)

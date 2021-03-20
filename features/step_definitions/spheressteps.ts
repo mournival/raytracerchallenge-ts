@@ -90,6 +90,14 @@ class SpheresSteps {
         this.workspace.shapes[shapeId] = s.replace(t);
     }
 
+    @then(/^set_material\((\w+), (\w+)\)$/)
+    public whenSetMaterial(shapeId: string, materialId: string) {
+        const s = this.workspace.shapes[shapeId];
+        const m = this.workspace.materials[materialId]
+        const t = s.local_replace_material(m);
+        this.workspace.shapes[shapeId] = t;
+    }
+
     @when(/^([\w\d_]+) ← normal_at\((\w+), point\(([^,]+), ([^,]+), ([^,]+)\)\)$/)
     public whenNormalAt(normalId: string, shapeId: string, x: string, y: string, z: string) {
         this.workspace.tuples[normalId] = this.workspace.shapes[shapeId].normal_at(

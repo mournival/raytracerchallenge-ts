@@ -64,7 +64,7 @@ export class Cone extends Shape {
 
     local_normal_at(pt: Tuple): Tuple {
         const dist = pt.x * pt.x + pt.z * pt.z;
-        const y = pt.y <= 0 ? Math.sqrt(dist) : -Math.sqrt(dist);
+        const y = pt.y < 0 ? Math.sqrt(dist) : -Math.sqrt(dist);
         if (dist < 1 && pt.y > this.maximum - Util.EPSILON) {
             return vector(0, y, 0);
         }

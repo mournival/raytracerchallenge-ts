@@ -1,10 +1,9 @@
 import {binding, given, then} from 'cucumber-tsflow';
 import {Workspace} from './Workspace';
-import {Cylinder} from '../../src/shapes/cylinder';
+import {Cone, Cylinder} from '../../src/shapes';
 import {point, vector} from '../../src/tuple';
 import {Ray} from '../../src/ray';
 import {expect} from 'chai';
-import {Cone} from '../../src/shapes/cone';
 import {parseArg} from '../../src/util';
 
 @binding([Workspace])
@@ -40,9 +39,7 @@ class CylinderSteps {
 
     @then(/^([\w\d_]+).maximum = infinity$/)
     public thenMaximumIs(cylId: string) {
-        const actual = (this.workspace.shapes[cylId] as Cylinder).maximum;
-
-        expect(actual).to.be.equal(Number.POSITIVE_INFINITY);
+        expect((this.workspace.shapes[cylId] as Cylinder).maximum).to.be.equal(Number.POSITIVE_INFINITY);
     }
 
     @given(/^([\w\d_]+).minimum ← ([^,]+)$/)

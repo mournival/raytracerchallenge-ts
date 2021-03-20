@@ -134,6 +134,11 @@ class TupleSteps {
         expect(Tuple.equals(actualVal, expectedVal)).to.be.true;
     }
 
+    @then(/tuple (.*) is not equal to (.*)/)
+    public thenTuplesNotEqual(lhs: string, rhs: string) {
+        expect(Tuple.equals(this.workspace.tuples[lhs], this.workspace.tuples[rhs])).to.be.false
+    }
+
     private colorOp(op: string, lhs: string, rhs: string, x: string, y: string, z: string) {
         switch (op) {
             case '+':

@@ -27,6 +27,11 @@ Feature: Tuples, Vectors, and Points
     Given v ← vector(4, -4, 3)
     Then v = tuple(4, -4, 3, 0)
 
+  Scenario: point() is not equal to a vector()
+    Given p ← point(4, -4, 3)
+    And v ← vector(4, -4, 3)
+    Then tuple p is not equal to v
+
   Scenario: Adding two tuples
     Given a1 ← tuple(3, -2, 5, 1)
     And a2 ← tuple(-2, 3, 1, 0)

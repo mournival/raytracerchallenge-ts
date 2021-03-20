@@ -45,18 +45,13 @@ export abstract class Shape implements Interceptable {
     }
 
     replace(prop: Matrix | Material | Shape): Shape {
-        if (typeof prop === 'object') {
-            if (prop instanceof Matrix) {
-                return this.local_replace_transform(prop);
-            }
-            if (prop instanceof Material) {
-                return this.local_replace_material(prop);
-            }
-            if (prop instanceof Shape) {
-                return this.local_replace_parent(prop);
-            }
+        if (prop instanceof Matrix) {
+            return this.local_replace_transform(prop);
         }
-        throw 'Unknown replace for : ' + typeof prop;
+        if (prop instanceof Material) {
+            return this.local_replace_material(prop);
+        }
+        return this.local_replace_parent(prop);
     }
 
     world_to_object(point: Tuple): Tuple {

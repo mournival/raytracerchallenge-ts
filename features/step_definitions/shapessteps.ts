@@ -2,8 +2,7 @@ import {binding, given, then, when} from 'cucumber-tsflow';
 import {shouldEqualMsg, Workspace} from './Workspace';
 import {expect} from 'chai';
 import {Matrix, rotation_y, translation} from '../../src/matrix';
-import {isShape} from '../../src/shapes/shape';
-import {test_shape} from '../../src/shapes/sphere';
+import {isShape, test_shape} from '../../src/shapes';
 import {point, vector} from '../../src/tuple';
 import {parseArg} from '../../src/util';
 
@@ -77,6 +76,11 @@ class ShapeSteps {
         const lhs = this.workspace.shapes[lhsName];
         const rhs = this.workspace.shapes[rhsName];
         expect(lhs.equals(rhs)).to.be.true;
+    }
+
+    @then(/^(\w+) does not shape.equals (\w+)$/)
+    public thenColorsAreNotEqual(lhs: string, rhs: string) {
+        expect(this.workspace.shapes[lhs].equals(this.workspace.shapes[rhs])).to.not.be.true;
     }
 }
 
