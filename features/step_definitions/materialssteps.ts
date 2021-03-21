@@ -93,7 +93,7 @@ class MaterialsSteps {
     public givenColor(matId: string, r: string, g: string, b: string) {
         this.workspace.materials[matId] = this.workspace.materials[matId].replace('color', new Color(parseArg(r), parseArg(g), parseArg(b)));
     }
-    
+
     @given(/^([\w\d_]+).diffuse ← ([^,]+)$/)
     public givenDiffuse(matId: string, value: string) {
         this.workspace.materials[matId] = this.workspace.materials[matId].replace('diffuse', parseArg(value));
