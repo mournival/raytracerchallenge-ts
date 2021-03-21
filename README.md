@@ -59,6 +59,7 @@ npm test
 * [Typescript](https://www.typescriptlang.org/) - Principal development language
 * [Cucumber](https://cucumber.io/) - Test framework
 * [Node.js](https://nodejs.org/en/) - Run time
+* [Stryker Mutator](https://stryker-mutator.io/) - Mutation test framework
 
 ## Contributing
 *TBD*
@@ -91,6 +92,17 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 - Fix mutable Matrix
 - Fix mutable Canvas(?). Not entirely sure if this is the correct decision for the global model that may have 1M+ pixels.
 - Refactor worldsteps.ts wrt inner/outer/world mutability
+- Add stryker test scripts to package.json
+
+### 20210321
+- Updated libraries versions
+- Added Stryker Mutation Testing<br>This was big. Learned a bit about this at work. It takes a wile to run the full test (~30 mins on my dev machine), but it can point to some real problem spots.
+I did find non-trivial areas for fixing: the parseArgs() helper, and the Matrix class. 
+- Learned some guideline
+  - Test equality is commutative
+  - Test the inequality one field at a time for classe (e.g., two of the same class that diffes in only one respect)
+  - Fixing some mutations appears to allow more to surface (or styrker isn't deterministic)
+  - In some cases, limiting stryker to specific file can speed dev cycle up, BUT you lose the 'extra' testing of class use in other tests (using the class in other tests provides more cases to ill mutants), so it can appear tessting it degenrating. OTOH, for components, this may be a good thing to know ...
 
 ### 20190929
 Chapter 11: Reflection
