@@ -21,8 +21,8 @@ export class Matrix {
 
         const m_prime = new Matrix(this.rDim, this.cDim);
         const det = this.det;
-        for (let r = 0; r < this.rDim; ++r) {
-            for (let c = 0; c < this.cDim; ++c) {
+        for (let c = 0; c < this.cDim; ++c) {
+            for (let r = 0; r < this.rDim; ++r) {
                 const cofactorC = this.cofactor(r, c);
                 m_prime.data[c][r] = cofactorC / det;
             }
@@ -48,8 +48,8 @@ export class Matrix {
 
     public get transpose(): Matrix {
         let mPrime = new Matrix(this.cDim, this.rDim);
-        for (let r = 0; r < this.rDim; ++r) {
-            for (let c = 0; c < this.cDim; ++c) {
+        for (let c = 0; c < this.cDim; ++c) {
+            for (let r = 0; r < this.rDim; ++r) {
                 mPrime.data[c][r] = this.data[r][c];
             }
         }
@@ -65,13 +65,11 @@ export class Matrix {
     }
 
     static equals(lhs: Matrix, rhs: Matrix): boolean {
-        if (lhs.rDim !== rhs.rDim ||
-            lhs.data[0].length !== rhs.data[0].length
-        ) {
-            return false;
-        }
-        for (let r = 0; r < lhs.rDim; ++r) {
-            for (let c = 0; c < lhs.data[0].length; ++c) {
+        if (lhs.rDim !== rhs.rDim) return false;
+        if (lhs.data[0].length !== rhs.data[0].length) return false;
+
+        for (let c = 0; c < lhs.data[0].length; ++c) {
+            for (let r = 0; r < lhs.rDim; ++r) {
                 if (!Util.closeTo(lhs.get(r, c), rhs.get(r, c))) {
                     return false;
                 }
@@ -83,8 +81,8 @@ export class Matrix {
     static multiply(lhs: Matrix, rhs: Matrix): Matrix {
         let product = new Matrix(4, 4);
 
-        for (let r = 0; r < 4; ++r) {
-            for (let c = 0; c < 4; ++c) {
+        for (let c = 0; c < 4; ++c) {
+            for (let r = 0; r < 4; ++r) {
                 product.data[r][c] = Matrix.dot4(lhs, r, rhs, c);
             }
         }

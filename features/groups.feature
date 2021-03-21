@@ -51,3 +51,17 @@ Feature: Groups
   Scenario: Comparing Groups
     Given g ← group()
     Then g shape.equals g
+
+  Scenario: Comparing Groups Not Equal
+    Given g ← group()
+    Given h ← group()
+    And s ← sphere()
+    And add_child(g, s)
+    Then g does not shape.equals h
+
+  Scenario: Comparing Groups Not Equal
+    Given g ← group()
+    Given h ← group()
+    And s ← sphere()
+    And add_child(h, s)
+    Then g does not shape.equals h

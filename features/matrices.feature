@@ -57,7 +57,36 @@ Feature: Matrices
       | 6 | 7 | 8 | 9 |
       | 8 | 7 | 6 | 5 |
       | 4 | 3 | 2 | 1 |
-    Then A != B
+    Then matrix A != B
+
+  Scenario: Matrix equality with different matrices
+    Given the following matrix A:
+      | 1 | 2 | 3 | 4 |
+      | 5 | 6 | 7 | 8 |
+      | 9 | 8 | 7 | 6 |
+      | 5 | 4 | 3 | 2 |
+    And the following matrix B:
+      | 2 | 3 | 4 | 5 |
+      | 6 | 7 | 8 | 9 |
+      | 8 | 7 | 6 | 5 |
+      | 4 | 3 | 2 | 1 |
+      | 5 | 4 | 3 | 2 |
+    Then matrix A != B
+    Then matrix B != A
+
+  Scenario: Matrix equality with different matrices
+    Given the following matrix A:
+      | 1 | 2 | 3 | 4 |
+      | 5 | 6 | 7 | 8 |
+      | 9 | 8 | 7 | 6 |
+      | 5 | 4 | 3 | 2 |
+    And the following matrix B:
+      | 2 | 3 | 4 | 5 | 6 |
+      | 6 | 7 | 8 | 9 | 7 |
+      | 8 | 7 | 6 | 5 | 8 |
+      | 4 | 3 | 2 | 1 | 9 |
+    Then matrix A != B
+    Then matrix B != A
 
   Scenario: Multiplying two matrices
     Given the following matrix A:

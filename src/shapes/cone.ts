@@ -5,6 +5,7 @@ import {Shape} from './shape';
 import {Ray} from '../ray';
 import {Intersection} from '../intersection';
 import {Util} from '../util';
+import {intersect_wall} from "./cylinder";
 
 export class Cone extends Shape {
 
@@ -40,26 +41,7 @@ export class Cone extends Shape {
             return this.intersect_cap(r);
         }
 
-        const disc = b * b - 4 * a * c;
-        if (disc < 0) {
-            return [];
-        }
-
-        const t0 = (-b - Math.sqrt(disc)) / (2 * a);
-        const t1 = (-b + Math.sqrt(disc)) / (2 * a);
-
-        let xs: Intersection[] = [];
-        const y0 = r.origin.y + t0 * r.direction.y;
-        if (this.minimum < y0 && y0 < this.maximum) {
-            xs = [new Intersection(this, t0)];
-        }
-
-        const y1 = r.origin.y + t1 * r.direction.y;
-        if (this.minimum < y1 && y1 < this.maximum) {
-            xs = [...xs, new Intersection(this, t1)];
-        }
-
-        return [...xs, ...this.intersect_cap(r)];
+        return intersect_wall(this, b, a, c, r);
     }
 
     local_normal_at(pt: Tuple): Tuple {

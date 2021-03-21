@@ -14,13 +14,13 @@ class MatricesSteps {
 
     private static createMatrixFromDataTable(dataTable: { rawTable: [][] }) {
         const data = dataTable.rawTable;
-        const rows = data.length;
-        const cols = data[0].length;
+        const rows = data[0].length;
+        const cols = data.length;
 
         const expected = new Matrix(rows, cols);
-        for (let r = 0; r < rows; ++r) {
-            for (let c = 0; c < cols; ++c) {
-                expected.set(r, c, parseArg(data[r][c]));
+        for (let c = 0; c < cols; ++c) {
+            for (let r = 0; r < rows; ++r) {
+                expected.set(c, r, parseArg(data[c][r]));
             }
         }
         return expected;
@@ -63,9 +63,9 @@ class MatricesSteps {
         expect(Matrix.equals(this.workspace.matrices['C'], this.workspace.matrices['B'])).to.be.true;
     }
 
-    @then(/^A != B$/)
-    public matrixANotEqualsB() {
-        expect(Matrix.equals(this.workspace.matrices['A'], this.workspace.matrices['B'])).to.be.false;
+    @then(/^matrix (\w+) != (\w+)$/)
+    public matrixANotEqualsB(lhs: string, rhs: string) {
+        expect(Matrix.equals(this.workspace.matrices[lhs], this.workspace.matrices[rhs])).to.be.false;
     }
 
     @then(/^(\w+) \* (\w+) is the following 4x4 matrix:$/)
