@@ -24,16 +24,19 @@ Feature: Color
     Given a ← color(246, 103, 51)
     And b ← color(0, 103, 51)
     Then color a does not equal color b
+    Then color b does not equal color a
 
   Scenario: Color Differs B Not Equals
     Given a ← color(246, 103, 51)
     And b ← color(246, 103, 0)
     Then color a does not equal color b
+    Then color b does not equal color a
 
   Scenario: Color Differs G Not Equals
     Given a ← color(246, 103, 51)
     And b ← color(246, 0, 51)
     Then color a does not equal color b
+    Then color b does not equal color a
 
   Scenario: Color Multiply 0
     Given a ← color(246, 103, 51)
