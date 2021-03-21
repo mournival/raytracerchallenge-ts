@@ -13,7 +13,7 @@
   ],
   "tsconfigFile": "tsconfig.json",
   "mutate": [
-    "src/**/*.ts",
+    "src/**/mat*.ts",
     "!src/putting_it_together/**/*.ts",
     "!src/cucumber.ts"
   ]

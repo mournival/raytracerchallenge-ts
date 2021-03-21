@@ -78,13 +78,66 @@ Feature: Materials
     Then c1 = color(1, 1, 1)
     And c2 = color(0, 0, 0)
 
+  Scenario: Bad Materials Field Throws
+    Given m ← material()
+    Then m.not_a_field ← 0 throws
+
   Scenario: Comparing Materials
     Given m ← material()
     Then m material.equals m
 
   Scenario: Comparing Materials
     Given m ← material()
-    Given n ← material()
+    And n ← material()
+    And n.color ← color(1, 2, 3)
+    Then m does not material.equals n
+    Then n does not material.equals m
+
+  Scenario: Comparing Materials
+    Given m ← material()
+    And n ← material()
+    And n.ambient ← 0
+    Then m does not material.equals n
+    Then n does not material.equals m
+
+  Scenario: Comparing Materials
+    Given m ← material()
+    And n ← material()
+    And n.diffuse ← 0
+    Then m does not material.equals n
+    Then n does not material.equals m
+
+  Scenario: Comparing Materials
+    Given m ← material()
+    And n ← material()
+    And n.specular ← 0
+    Then m does not material.equals n
+    Then n does not material.equals m
+
+  Scenario: Comparing Materials
+    Given m ← material()
+    And n ← material()
     And n.shininess ← 0
+    Then m does not material.equals n
+    Then n does not material.equals m
+
+  Scenario: Comparing Materials
+    Given m ← material()
+    And n ← material()
+    And n.reflective ← 10
+    Then m does not material.equals n
+    Then n does not material.equals m
+
+  Scenario: Comparing Materials
+    Given m ← material()
+    And n ← material()
+    And n.refractive_index ← 10
+    Then m does not material.equals n
+    Then n does not material.equals m
+
+  Scenario: Comparing Materials
+    Given m ← material()
+    And n ← material()
+    And n.transparency ← 10
     Then m does not material.equals n
     Then n does not material.equals m

@@ -7,6 +7,7 @@ import {Light} from '../../src/light';
 import {point} from '../../src/tuple';
 import {stripe_pattern} from '../../src/pattern';
 import {parseArg} from '../../src/util';
+import assert from "node:assert";
 
 @binding([Workspace])
 class MaterialsSteps {
@@ -88,6 +89,11 @@ class MaterialsSteps {
         );
     }
 
+    @given(/^([\w\d_]+).color ← color\(([^,]+), ([^,]+), ([^,]+)\)$/)
+    public givenColor(matId: string, r: string, g: string, b: string) {
+        this.workspace.materials[matId] = this.workspace.materials[matId].replace('color', new Color(parseArg(r), parseArg(g), parseArg(b)));
+    }
+    
     @given(/^([\w\d_]+).diffuse ← ([^,]+)$/)
     public givenDiffuse(matId: string, value: string) {
         this.workspace.materials[matId] = this.workspace.materials[matId].replace('diffuse', parseArg(value));
@@ -102,6 +108,31 @@ class MaterialsSteps {
     public givenShininess(matId: string, value: string) {
         this.workspace.materials[matId] = this.workspace.materials[matId].replace('shininess', parseArg(value));
     }
+
+    @then(/^([\w\d_]+).not_a_field ← ([^,]+) throws$/)
+    public givenABadField(matId: string, value: string) {
+        try {
+            this.workspace.materials[matId] = this.workspace.materials[matId].replace('not_a_field', parseArg(value));
+        } catch (e) {
+            expect(e).is.equal('Unexpected field: not_a_field')
+        }
+    }
+
+    @given(/^([\w\d_]+).reflective ← ([^,]+)$/)
+    public givenReflective(matId: string, value: string) {
+        this.workspace.materials[matId] = this.workspace.materials[matId].replace('reflective', parseArg(value));
+    }
+
+    @given(/^([\w\d_]+).transparency ← ([^,]+)$/)
+    public givenTransparency(matId: string, value: string) {
+        this.workspace.materials[matId] = this.workspace.materials[matId].replace('transparency', parseArg(value));
+    }
+
+    @given(/^([\w\d_]+).refractive_index ← ([^,]+)$/)
+    public givenRefractive_index(matId: string, value: string) {
+        this.workspace.materials[matId] = this.workspace.materials[matId].replace('refractive_index', parseArg(value));
+    }
+
 
     @when(/^([\w\d_]+) ← lighting\(([^,]+), ([^,]+), point\(([^,]+), ([^,]+), ([^,]+)\), ([^,]+), ([^,]+), ([^,]+)\)$/)
     public lightingByPointResultWShadow(resColorId: string, matId: string, lightId: string, x: string, y: string, z: string,
