@@ -57,3 +57,11 @@ Feature: Cones
   Scenario: Comparing Cones
     Given shape ← cone()
     Then shape shape.equals shape
+
+  Scenario: Comparing Cones
+    Given a ← cone()
+    And a.closed ← true
+    And b ← cone()
+    And a.closed ← false
+    Then a does not shape.equals b
+    Then b does not shape.equals a

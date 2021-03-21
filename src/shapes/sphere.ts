@@ -56,9 +56,7 @@ export class Sphere extends Shape {
             && Material.equals(this.material, rhs.material)
             // && this.parent.equals(rhs.parent)
             ;
-
     }
-
 }
 
 export function glass_sphere(): Sphere {

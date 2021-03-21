@@ -107,6 +107,17 @@ Feature: Abstract Shapes
     Given a ← cone()
     Then a is a shape
 
+  Scenario: Test Shape Equals
+    Given s ← test_shape()
+    Then s shape.equals s
+
+  Scenario: Test Shape Does not Equal
+    Given s ← test_shape()
+    And t ← test_shape()
+    When set_transform(s, translation(0, 1, 0))
+    Then s does not shape.equals t
+    Then t does not shape.equals s
+
   Scenario: Comparing Shapes
     Given a ← cone()
     And b ← cylinder()
@@ -119,6 +130,7 @@ Feature: Abstract Shapes
     And p2 ← point(-1, 0, 0)
     And p3 ← point(1, 0, 0)
     And h ← triangle(p1, p2, p3)
+    And i ← test_shape()
     Then a is a shape
     Then a does not shape.equals b
     Then b does not shape.equals c
@@ -127,4 +139,6 @@ Feature: Abstract Shapes
     Then e does not shape.equals f
     Then f does not shape.equals g
     Then g does not shape.equals h
-    Then h does not shape.equals a
+    Then h does not shape.equals i
+    Then i does not shape.equals a
+
