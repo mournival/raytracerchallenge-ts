@@ -79,7 +79,7 @@ export abstract class Shape implements Interceptable {
     }
 }
 
-export function isShape(arg: any): arg is Shape {
-    return true;
+export function isShape(arg: any) {
+    return arg instanceof Shape ;
 }
 

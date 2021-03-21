@@ -31,6 +31,11 @@ class ShapeSteps {
         expect(isShape(this.workspace.shapes[shapeId])).to.be.true;
     }
 
+    @then(/^([\w\d_]+) is not a shape$/)
+    public thenIsNotAShape(id: string) {
+        expect(isShape(this.workspace.tuples[id])).to.be.false;
+    }
+
     @then(/^([\w\d_]+).material.transparency = ([^,]+)$/)
     public thenShapeMaterialTransparencyIs(objectId: string, value: string) {
         const actual = this.workspace.shapes[objectId].material.transparency;

@@ -99,6 +99,13 @@ Feature: Abstract Shapes
 #    Then s is a shape
 # 2. remove transform and material tests from sphere
 # - Not sure. At this time, not using OO inheritance with base class.Ability:
+  Scenario: Vector is not a shape
+    Given v ← vector(1, -2, 3)
+    Then v is not a shape
+
+  Scenario: Cone is a shape
+    Given a ← cone()
+    Then a is a shape
 
   Scenario: Comparing Shapes
     Given a ← cone()
@@ -112,6 +119,7 @@ Feature: Abstract Shapes
     And p2 ← point(-1, 0, 0)
     And p3 ← point(1, 0, 0)
     And h ← triangle(p1, p2, p3)
+    Then a is a shape
     Then a does not shape.equals b
     Then b does not shape.equals c
     Then c does not shape.equals d
