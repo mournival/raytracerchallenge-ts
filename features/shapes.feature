@@ -99,3 +99,24 @@ Feature: Abstract Shapes
 #    Then s is a shape
 # 2. remove transform and material tests from sphere
 # - Not sure. At this time, not using OO inheritance with base class.Ability:
+
+  Scenario: Comparing Shapes
+    Given a ← cone()
+    And b ← cylinder()
+    And c ← cube()
+    And d ← sphere()
+    And e ← csg("union", a, b)
+    And f ← plane()
+    And g ← group()
+    And p1 ← point(0, 1, 0)
+    And p2 ← point(-1, 0, 0)
+    And p3 ← point(1, 0, 0)
+    And h ← triangle(p1, p2, p3)
+    Then a does not shape.equals b
+    Then b does not shape.equals c
+    Then c does not shape.equals d
+    Then d does not shape.equals e
+    Then e does not shape.equals f
+    Then f does not shape.equals g
+    Then g does not shape.equals h
+    Then h does not shape.equals a
