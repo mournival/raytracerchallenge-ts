@@ -153,6 +153,11 @@ class MatricesSteps {
     public isNotInvertible(matId: string) {
         const actual = this.workspace.matrices[matId].invertible;
         expect(actual).to.be.false;
+        try {
+            this.workspace.matrices[matId].inverse
+        } catch (e) {
+            expect(e).to.be.equal('Cannot invert this matrix')
+        }
     }
 
     @given(/^([\w\d_]+) ← inverse\((\w+)\)$/)

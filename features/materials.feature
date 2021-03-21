@@ -77,3 +77,14 @@ Feature: Materials
     And c2 ← lighting(m, light, point(1.1, 0, 0), eyev, normalv, false)
     Then c1 = color(1, 1, 1)
     And c2 = color(0, 0, 0)
+
+  Scenario: Comparing Materials
+    Given m ← material()
+    Then m material.equals m
+
+  Scenario: Comparing Materials
+    Given m ← material()
+    Given n ← material()
+    And n.shininess ← 0
+    Then m does not material.equals n
+    Then n does not material.equals m

@@ -218,6 +218,7 @@ Feature: Matrices
     Then determinant(A) = -2120
     And A is invertible
 
+
   Scenario: Testing a noninvertible matrix for invertibility
     Given the following 4x4 matrix A:
       | -4 | 2  | -2 | -3 |

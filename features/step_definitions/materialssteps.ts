@@ -98,6 +98,11 @@ class MaterialsSteps {
         this.workspace.materials[matId] = this.workspace.materials[matId].replace('specular', parseArg(value));
     }
 
+    @given(/^([\w\d_]+).shininess ← ([^,]+)$/)
+    public givenShininess(matId: string, value: string) {
+        this.workspace.materials[matId] = this.workspace.materials[matId].replace('shininess', parseArg(value));
+    }
+
     @when(/^([\w\d_]+) ← lighting\(([^,]+), ([^,]+), point\(([^,]+), ([^,]+), ([^,]+)\), ([^,]+), ([^,]+), ([^,]+)\)$/)
     public lightingByPointResultWShadow(resColorId: string, matId: string, lightId: string, x: string, y: string, z: string,
                                         eyeVectorId: string, normalVectorId: string, shadowTestId: string) {
@@ -124,6 +129,21 @@ class MaterialsSteps {
         const expected = parseArg(value);
         expect(actual).to.be.closeTo(expected, 0.0001);
     }
+
+    @then(/^(\w+) material.equals (\w+)$/)
+    public thenMaterialEquals(lhsName: string, rhsName: string) {
+        const lhs = this.workspace.materials[lhsName];
+        const rhs = this.workspace.materials[rhsName];
+        expect(Material.equals(lhs, rhs)).to.be.true;
+    }
+
+    @then(/^(\w+) does not material.equals (\w+)$/)
+    public thenMaterailNotEquals(lhsName: string, rhsName: string) {
+        const lhs = this.workspace.materials[lhsName];
+        const rhs = this.workspace.materials[rhsName];
+        expect(Material.equals(lhs, rhs)).to.be.false;
+    }
+
 }
 
 export = MaterialsSteps;
