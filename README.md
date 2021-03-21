@@ -9,7 +9,7 @@ The principal objective is personal development (in particular mine), with an em
 
 Constraints
 * Do **NOT** change / rewrite any of the given tests. 
-* If adding tests to doc my discovered bugs / 'Putting it all together' implementations, they will be identified as added and separated from the original tests. 
+* If adding tests to doc my discovered bugs / 'Putting it all together' implementations, they will be identified as added and separated from the original tests. (Honored in the break at this point, been adding new tests and files, added extra 'Then ... clauses for mutation testing')
 
 ## Getting Started
 
