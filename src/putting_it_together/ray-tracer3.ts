@@ -4,16 +4,15 @@ import {point, vector} from '../tuple';
 import {Canvas} from '../canvas';
 import {Color} from '../color';
 import {Plane, Sphere} from '../shapes';
-import {Matrix, rotation_x, rotation_y, rotation_z, scaling, translation, view_transform} from '../matrix';
+import {Matrix, rotation_x, rotation_y, scaling, translation, view_transform} from '../matrix';
 import {Material} from '../material';
 import {Light} from '../light';
 import {World} from '../world';
 import {Camera} from '../camera';
 import {checkers_pattern, combine_pattern, fill_pattern, gradient_pattern} from '../pattern';
+import * as fs from 'fs';
 
-function saveFile(canvas: any) {
-    let fs = require('fs');
-    // @ts-ignore
+function saveFile(canvas: Canvas) {
     fs.writeFile('./ppm/ray-tracer3.ppm', Canvas.canvas_to_ppm(canvas).join('\n'), function (err) {
         if (err) {
             return console.error(err);
@@ -22,8 +21,6 @@ function saveFile(canvas: any) {
     });
 }
 
-
-const s1 = scaling(10, 0.01, 10);
 const quarterPi = Math.PI / 4;
 
 const defaultMaterial = new Material(new Color(1, 0.9, 0.9), 0.1, 0.9, 0, 200, 0.0, 0, 1, checkers_pattern(Color.BLACK, Color.WHITE));
@@ -53,12 +50,6 @@ const right_wall = new Plane(
         )
     ), defaultMaterial.replace('pattern', gradient_pattern(Color.BLACK, Color.WHITE))
 );
-
-const ceiling = new Plane(
-    Matrix.multiply(translation(0, 15, 0), rotation_z(-quarterPi)),
-    defaultMaterial.replace('pattern', checkers_pattern(Color.BLACK, Color.WHITE))
-);
-
 
 const middle = new Sphere(
     translation(-0.5, 1, 0.5),

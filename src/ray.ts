@@ -6,7 +6,7 @@ export class Ray {
     }
 }
 
-export function position(r: Ray, t: number) {
+export function position(r: Ray, t: number): Tuple {
     return Tuple.add(r.origin, Tuple.multiply(r.direction, t));
 }
 

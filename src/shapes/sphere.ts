@@ -72,7 +72,7 @@ export class TestShape extends Shape {
         super(transform, material, parent);
     }
 
-    intersect(r: Ray): Intersection[] {
+    intersect(_r: Ray): Intersection[] {
         return [];
     }
 
@@ -80,7 +80,7 @@ export class TestShape extends Shape {
         return (new Sphere()).local_normal_at(pt);
     }
 
-    local_intersection(r: Ray): Intersection[] {
+    local_intersection(_r: Ray): Intersection[] {
         return [];
 
     }

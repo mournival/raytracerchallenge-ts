@@ -57,7 +57,7 @@ function calculateN1N2(xs: Intersection[], i: Intersection) {
     let n1 = 0;
     let n2 = 0;
     for (let n = 0; n < xs.length; ++n) {
-        let x = xs[n];
+        const x = xs[n];
         if (Shape.equals(i.obj, x.obj) && Util.closeTo(i.t, x.t)) {
             if (containers.length === 0) {
                 n1 = 1.0;

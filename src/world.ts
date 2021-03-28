@@ -26,10 +26,7 @@ export class World {
         if (o instanceof Shape) {
             return this.objects.find(os => Shape.equals(os, o)) != undefined;
         }
-        if (o instanceof Light) {
-            return this.lights.find(os => Light.equals(os, o)) != undefined;
-        }
-        return false;
+        return this.lights.find(os => Light.equals(os, o)) != undefined;
     }
 
     public replace(oldShape: Shape, newShape: Shape): World {

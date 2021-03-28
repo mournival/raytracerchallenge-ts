@@ -1,4 +1,3 @@
-#noinspection CucumberUndefinedStep
 Feature: Intersections
 
   Scenario: An intersection encapsulates t and object
@@ -46,6 +45,7 @@ Feature: Intersections
   Scenario: The hit should offset the point
     Given r ← ray(point(0, 0, -5), vector(0, 0, 1))
     And shape ← sphere() with:
+      | field     | value                |
       | transform | translation(0, 0, 1) |
     And i ← intersection(5, shape)
     When comps ← prepare_computations(i, r)
@@ -55,6 +55,7 @@ Feature: Intersections
   Scenario: The under point is offset below the surface
     Given r ← ray(point(0, 0, -5), vector(0, 0, 1))
     And shape ← glass_sphere() with:
+      | field     | value                |
       | transform | translation(0, 0, 1) |
     And i ← intersection(5, shape)
     And xs ← intersections(i)
@@ -107,12 +108,15 @@ Feature: Intersections
 
   Scenario Outline: Finding n1 and n2 at various intersections
     Given A ← glass_sphere() with:
+      | field                     | value            |
       | transform                 | scaling(2, 2, 2) |
       | material.refractive_index | 1.5              |
     And B ← glass_sphere() with:
+      | field                     | value                    |
       | transform                 | translation(0, 0, -0.25) |
       | material.refractive_index | 2.0                      |
     And C ← glass_sphere() with:
+      | field                     | value                   |
       | transform                 | translation(0, 0, 0.25) |
       | material.refractive_index | 2.5                     |
     And r ← ray(point(0, 0, -4), vector(0, 0, 1))
@@ -120,7 +124,6 @@ Feature: Intersections
     When comps ← prepare_computations(xs[<index>], r, xs)
     Then comps.n1 = <n1>
     And comps.n2 = <n2>
-
     Examples:
       | index | n1  | n2  |
       | 0     | 1.0 | 1.5 |

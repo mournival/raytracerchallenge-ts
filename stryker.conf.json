@@ -16,5 +16,15 @@
     "src/**/*.ts",
     "!src/putting_it_together/**/*.ts",
     "!src/cucumber.ts"
-  ]
+  ],
+  "timeoutMS": 10000,
+  "mutator": {
+    "excludedMutations": [
+      "StringLiteral"
+    ]
+  },
+  "jest": {
+    "projectType": "custom",
+    "configFile": "jest.config.js"
+  }
 }

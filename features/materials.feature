@@ -1,4 +1,3 @@
-#noinspection CucumberUndefinedStep
 Feature: Materials
 
   Background:
@@ -6,7 +5,6 @@ Feature: Materials
     And position ← point(0, 0, 0)
 
   Scenario: The default material
-    Given m ← material()
     Then m.color = color(1, 1, 1)
     And m.ambient = 0.1
     And m.diffuse = 0.9
@@ -14,7 +12,6 @@ Feature: Materials
     And m.shininess = 200.0
 
   Scenario: Reflectivity for the default material
-    Given m ← material()
     Then m.reflective = 0.0
 
   Scenario: Transparency and Refractive Index for the default material
@@ -86,56 +83,56 @@ Feature: Materials
     Given m ← material()
     Then m material.equals m
 
-  Scenario: Comparing Materials
+  Scenario: Comparing Different Materials (color)
     Given m ← material()
     And n ← material()
     And n.color ← color(1, 2, 3)
     Then m does not material.equals n
     Then n does not material.equals m
 
-  Scenario: Comparing Materials
+  Scenario: Comparing Different Materials (ambient)
     Given m ← material()
     And n ← material()
     And n.ambient ← 0
     Then m does not material.equals n
     Then n does not material.equals m
 
-  Scenario: Comparing Materials
+  Scenario: Comparing Different Materials (diffuse)
     Given m ← material()
     And n ← material()
     And n.diffuse ← 0
     Then m does not material.equals n
     Then n does not material.equals m
 
-  Scenario: Comparing Materials
+  Scenario: Comparing Different Materials (speclar)
     Given m ← material()
     And n ← material()
     And n.specular ← 0
     Then m does not material.equals n
     Then n does not material.equals m
 
-  Scenario: Comparing Materials
+  Scenario: Comparing Different Materials (shininess)
     Given m ← material()
     And n ← material()
     And n.shininess ← 0
     Then m does not material.equals n
     Then n does not material.equals m
 
-  Scenario: Comparing Materials
+  Scenario: Comparing Different Materials (reflective)
     Given m ← material()
     And n ← material()
     And n.reflective ← 10
     Then m does not material.equals n
     Then n does not material.equals m
 
-  Scenario: Comparing Materials
+  Scenario: Comparing Different Materials (refractive_index)
     Given m ← material()
     And n ← material()
     And n.refractive_index ← 10
     Then m does not material.equals n
     Then n does not material.equals m
 
-  Scenario: Comparing Materials
+  Scenario: Comparing Different Materials (transparency)
     Given m ← material()
     And n ← material()
     And n.transparency ← 10

@@ -9,10 +9,9 @@ import {Material} from '../material';
 import {Light} from '../light';
 import {World} from '../world';
 import {Camera} from '../camera';
+import * as fs from 'fs';
 
-function saveFile(canvas: any) {
-    let fs = require('fs');
-    // @ts-ignore
+function saveFile(canvas: Canvas) {
     fs.writeFile('./ppm/ray-tracer2.ppm', Canvas.canvas_to_ppm(canvas).join('\n'), function (err) {
         if (err) {
             return console.error(err);

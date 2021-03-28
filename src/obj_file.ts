@@ -18,27 +18,27 @@ export class Parser {
 
     constructor(public readonly lines: string[]) {
         let skipped = 0;
-        let verts: Tuple[] = [];
-        let norms: Tuple[] = [];
+        const verts: Tuple[] = [];
+        const norms: Tuple[] = [];
         let triangles: Shape[] = [];
         let group_name = 'default_group';
         lines.map(l => l.toString()).forEach(l => {
             if (l.startsWith('v ')) {
-                let tokens: string[] = l.trim().split(' ');
+                const tokens: string[] = l.trim().split(' ');
                 if (tokens.length != 4) {
                     skipped++;
                 } else {
                     verts.push(point(parseArg(tokens[1]), parseArg(tokens[2]), parseArg(tokens[3])));
                 }
             } else if (l.startsWith('vn ')) {
-                let tokens: string[] = l.trim().split(' ');
+                const tokens: string[] = l.trim().split(' ');
                 if (tokens.length != 4) {
                     skipped++;
                 } else {
                     norms.push(vector(parseArg(tokens[1]), parseArg(tokens[2]), parseArg(tokens[3])));
                 }
             } else if (l.startsWith('f ')) {
-                let tokens: string[] = l.trim().split(' ');
+                const tokens: string[] = l.trim().split(' ');
                 if (tokens.length < 4) {
                     skipped++;
                 } else {
@@ -70,13 +70,13 @@ export class Parser {
                 this.groups[group_name] = new Group(Matrix.identity(), new Material(), triangles);
                 group_name = l.slice(2).trim();
                 triangles = [];
-            } else if (l.startsWith('vn ')) {
-                let tokens: string[] = l.trim().split(' ');
-                if (tokens.length != 4) {
-                    skipped++;
-                } else {
-                    norms.push(vector(parseArg(tokens[1]), parseArg(tokens[2]), parseArg(tokens[3])));
-                }
+                // } else if (l.startsWith('vn ')) {
+                //     let tokens: string[] = l.trim().split(' ');
+                //     if (tokens.length != 4) {
+                //         skipped++;
+                //     } else {
+                //         norms.push(vector(parseArg(tokens[1]), parseArg(tokens[2]), parseArg(tokens[3])));
+                //     }
             } else {
                 skipped++;
             }
@@ -92,8 +92,8 @@ export class Parser {
         if (name) {
             return this.groups[name];
         }
-        let grps: Group[] = [];
-        for (let g in this.groups) {
+        const grps: Group[] = [];
+        for (const g in this.groups) {
             if (this.groups[g].children.length > 0) {
                 grps.push(this.groups[g]);
             }
@@ -104,7 +104,7 @@ export class Parser {
 }
 
 export class ObjFile {
-    constructor(public readonly data: String) {
+    constructor(public readonly data: string) {
     }
 
     public get parser(): Parser {

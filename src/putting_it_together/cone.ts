@@ -3,17 +3,16 @@
 import {point, vector} from '../tuple';
 import {Canvas} from '../canvas';
 import {Color} from '../color';
-import {Matrix, rotation_x, rotation_y, scaling, translation, view_transform} from '../matrix';
+import {rotation_x, rotation_y, scaling, translation, view_transform} from '../matrix';
 import {Material} from '../material';
 import {World} from '../world';
 import {Camera} from '../camera';
 import {Cone, Plane} from '../shapes';
 import {checkers_pattern, combine_pattern, gradient_pattern} from '../pattern';
 import {Light} from '../light';
+import * as fs from 'fs';
 
-function saveFile(canvas: any) {
-    let fs = require('fs');
-    // @ts-ignore
+function saveFile(canvas: Canvas) {
     fs.writeFile('./ppm/cone.ppm', Canvas.canvas_to_ppm(canvas).join('\n'), function (err) {
         if (err) {
             return console.error(err);
@@ -22,7 +21,6 @@ function saveFile(canvas: any) {
     });
 }
 
-const s1 = scaling(10, 0.01, 10);
 const quarterPi = Math.PI / 4;
 
 const reflectiveCheckers = new Material(new Color(.67, 0.67, 0.67), 0.1, 0.9, 0, 200, 0, 0, 1).replace('reflective', 0.25).replace('pattern',
@@ -36,18 +34,6 @@ const floor = new Plane(
     translation(0, -2, 0)
     , reflectiveCheckers,
 );
-
-const left_wall = new Plane(
-    Matrix.multiply(translation(0, 0, 5),
-        Matrix.multiply(rotation_y(-quarterPi), rotation_x(2 * quarterPi))
-    ), new Material(new Color(.67, 0.16, 0.67), 0.1, 0.9, 0, 200, 0.05, 0, 1));
-
-const right_wall = new Plane(
-    Matrix.multiply(translation(0, 0, 5),
-        Matrix.multiply(rotation_y(quarterPi),
-            rotation_x(2 * quarterPi),
-        )
-    ), new Material(new Color(.16, 0.67, 0.16), 0.1, 0.9, 0, 200, 0.05, 0, 1));
 
 const cone = new Cone(
     rotation_x(-quarterPi / 2),

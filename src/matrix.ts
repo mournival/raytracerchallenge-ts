@@ -6,7 +6,7 @@ export class Matrix {
 
     constructor(row: number, col: number) {
         for (let c = 0; c < col; ++c) {
-            let newRow = [];
+            const newRow = [];
             for (let r = 0; r < row; ++r) {
                 newRow.push(0);
             }
@@ -39,7 +39,7 @@ export class Matrix {
             return this.det2();
         }
 
-        let dt: number = 0;
+        let dt = 0;
         for (let c = 0; c < this.cDim; ++c) {
             dt = dt + this.data[0][c] * this.cofactor(0, c);
         }
@@ -47,7 +47,7 @@ export class Matrix {
     }
 
     public get transpose(): Matrix {
-        let mPrime = new Matrix(this.cDim, this.rDim);
+        const mPrime = new Matrix(this.rDim, this.cDim);
         for (let c = 0; c < this.cDim; ++c) {
             for (let r = 0; r < this.rDim; ++r) {
                 mPrime.data[c][r] = this.data[r][c];
@@ -79,7 +79,7 @@ export class Matrix {
     }
 
     static multiply(lhs: Matrix, rhs: Matrix): Matrix {
-        let product = new Matrix(4, 4);
+        const product = new Matrix(4, 4);
 
         for (let c = 0; c < 4; ++c) {
             for (let r = 0; r < 4; ++r) {
@@ -108,7 +108,7 @@ export class Matrix {
     }
 
     static identity(dim = 4): Matrix {
-        let m = new Matrix(dim, dim);
+        const m = new Matrix(dim, dim);
         for (let i = 0; i < dim; ++i) {
             m.data[i][i] = 1;
         }

@@ -1,4 +1,3 @@
-#noinspection CucumberUndefinedStep
 Feature: Camera
 
   Scenario: Constructing a camera

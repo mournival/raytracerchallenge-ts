@@ -5,10 +5,9 @@ import {Canvas} from '../canvas';
 import {Color} from '../color';
 import {Ray} from '../ray';
 import {Sphere} from '../shapes';
+import * as fs from 'fs';
 
 function saveFile() {
-    let fs = require('fs');
-// @ts-ignore
     fs.writeFile('./ppm/sphere-shadow.ppm', Canvas.canvas_to_ppm(c).join('\n'), function (err) {
         if (err) {
             return console.error(err);
@@ -41,7 +40,7 @@ for (let y = 0; y < c.height; ++y) {
         const world_x = -half + pixel_size * x;
         const position = point(world_x, world_y, wall_z);
         const r = new Ray(ray_origin, Tuple.subtract(position, ray_origin).normalize);
-        s.intersect(r).forEach(i => Canvas.write_pixel(c, x, y, COLOR));
+        s.intersect(r).forEach(() => Canvas.write_pixel(c, x, y, COLOR));
     }
 }
 

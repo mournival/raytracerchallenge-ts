@@ -7,7 +7,7 @@ import {Intersection} from '../intersection';
 import {Util} from '../util';
 import {Cone} from "./cone";
 
-export function intersect_wall(shape: Cone | Cylinder, b: number, a: number, c: number, r: Ray) {
+export function intersect_wall(shape: Cone | Cylinder, b: number, a: number, c: number, r: Ray): Intersection[] {
     const disc = b * b - 4 * a * c;
     if (disc < 0) {
         return [];

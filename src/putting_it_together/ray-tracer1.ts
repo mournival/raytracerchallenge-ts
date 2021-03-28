@@ -9,10 +9,10 @@ import {Matrix} from '../matrix';
 import {Material} from '../material';
 import {Light} from '../light';
 import {Intersection} from '../intersection';
+import * as fs from 'fs';
 
 function saveFile() {
-    let fs = require('fs');
-// @ts-ignore
+
     fs.writeFile('./ppm/ray-tracer1.ppm', Canvas.canvas_to_ppm(canvas).join('\n'), function (err) {
         if (err) {
             return console.error(err);
@@ -49,7 +49,7 @@ const light = new Light(light_position, light_color);
 
 const COLOR = new Color(0.5, 0.5, 0.5);
 
-let p = canvas.width / 2;
+const p = canvas.width / 2;
 for (let n = 0; n < canvas.width; ++n) {
     canvas.colors[n][p] = COLOR;
     canvas.colors[p][n] = COLOR;

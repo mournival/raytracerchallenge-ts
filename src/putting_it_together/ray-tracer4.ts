@@ -3,17 +3,17 @@
 import {point, vector} from '../tuple';
 import {Canvas} from '../canvas';
 import {Color} from '../color';
-import {Matrix, rotation_x, rotation_y, rotation_z, scaling, translation, view_transform} from '../matrix';
+import {Matrix, rotation_x, rotation_y, scaling, translation, view_transform} from '../matrix';
 import {Material} from '../material';
 import {World} from '../world';
 import {Camera} from '../camera';
 import {Plane, Sphere} from '../shapes';
-import {checkers_pattern, combine_pattern, fill_pattern, gradient_pattern} from '../pattern';
+import {checkers_pattern, combine_pattern, gradient_pattern} from '../pattern';
 import {Light} from '../light';
+import * as fs from 'fs';
 
-function saveFile(canvas: any) {
-    let fs = require('fs');
-    // @ts-ignore
+function saveFile(canvas: Canvas) {
+
     fs.writeFile('./ppm/ray-tracer4.ppm', Canvas.canvas_to_ppm(canvas).join('\n'), function (err) {
         if (err) {
             return console.error(err);
@@ -22,7 +22,6 @@ function saveFile(canvas: any) {
     });
 }
 
-const s1 = scaling(10, 0.01, 10);
 const quarterPi = Math.PI / 4;
 
 const defaultMaterial = new Material(new Color(1, 0.9, 0.9), 0.1, 0.9, 0, 200, 0.0, 0, 1, checkers_pattern(Color.BLACK, Color.WHITE));
@@ -39,12 +38,6 @@ const floor = new Plane(
     , reflectiveCheckers,
 );
 
-const left_wall = new Plane(
-    Matrix.multiply(translation(0, 0, 5),
-        Matrix.multiply(rotation_y(-quarterPi), rotation_x(2 * quarterPi))
-    ), defaultMaterial.replace('pattern', fill_pattern(new Color(0.75, 0.75, 0.75)))
-);
-
 const right_wall = new Plane(
     Matrix.multiply(translation(0, 0, 5),
         Matrix.multiply(rotation_y(quarterPi),
@@ -52,12 +45,6 @@ const right_wall = new Plane(
         )
     ), defaultMaterial.replace('pattern', gradient_pattern(Color.BLACK, Color.WHITE))
 );
-
-const ceiling = new Plane(
-    Matrix.multiply(translation(0, 15, 0), rotation_z(-quarterPi)),
-    defaultMaterial.replace('pattern', checkers_pattern(Color.BLACK, Color.WHITE))
-);
-
 
 const middle = new Sphere(
     translation(-0.5, 1, 0.5),
@@ -87,7 +74,7 @@ const world = new World([
         left
     ]);
 
-const camera = new Camera(Math.floor(3200 / 1), Math.floor(2400 / 1), Math.PI / 4,
+const camera = new Camera(Math.floor(3200), Math.floor(2400), Math.PI / 4,
     view_transform(
         point(0, 5.0, -5),
         point(0, 1, 0),

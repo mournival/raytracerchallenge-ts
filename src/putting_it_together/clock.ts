@@ -4,10 +4,11 @@ import {point} from '../tuple';
 import {Canvas} from '../canvas';
 import {Color} from '../color';
 import {Matrix, rotation_z, scaling, translation} from '../matrix';
+import * as fs from 'fs';
 
 const COLOR = new Color(1, 1, 1);
 
-let c = new Canvas(1200, 1200);
+const c = new Canvas(1200, 1200);
 
 const scaledTranslation = Matrix.multiply(
     translation(c.width / 2, c.width / 2, 0),
@@ -34,7 +35,7 @@ function clock(dots: number, dotSize: number) {
 }
 
 function axes() {
-    let p = c.width / 2;
+    const p = c.width / 2;
     for (let n = 0; n < c.width; ++n) {
         c.colors[n][p] = COLOR;
         c.colors[p][n] = COLOR;
@@ -42,8 +43,6 @@ function axes() {
 }
 
 function saveFile() {
-    let fs = require('fs');
-// @ts-ignore
     fs.writeFile('./ppm/clock.ppm', Canvas.canvas_to_ppm(c).join('\n'), function (err) {
         if (err) {
             return console.error(err);

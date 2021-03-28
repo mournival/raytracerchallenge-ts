@@ -1,4 +1,3 @@
-#noinspection CucumberUndefinedStep
 Feature: Patterns
 
   Background:
@@ -9,7 +8,7 @@ Feature: Patterns
 #    Given pattern ← stripe_pattern(white, black)
 #    Then pattern.a = white
 #    And pattern.b = black
-
+#
   Scenario: A stripe pattern is constant in y
     Given pattern ← stripe_pattern(white, black)
     Then stripe_at(pattern, point(0, 0, 0)) = white
@@ -117,3 +116,4 @@ Feature: Patterns
     Then pattern_at(pattern, point(0, 0, 0)) = white
     And pattern_at(pattern, point(0, 0, 0.99)) = white
     And pattern_at(pattern, point(0, 0, 1.01)) = black
+

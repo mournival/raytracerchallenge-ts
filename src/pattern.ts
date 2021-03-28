@@ -27,7 +27,6 @@ export class Pattern {
     replace(transformation: Matrix): Pattern {
         return new Pattern(this.patternFunction, transformation);
     }
-
 }
 
 //
@@ -44,7 +43,7 @@ function test_function(): PatternFunction {
     return (p: Tuple) => new Color(p.x, p.y, p.z);
 }
 
-export function test_pattern() {
+export function test_pattern(): Pattern {
     return new Pattern(test_function());
 }
 
@@ -62,7 +61,7 @@ function ring_function(a: Color, b: Color): PatternFunction {
     return (p: Tuple) => Math.floor(p.x * p.x + p.z * p.z) % 4 === 0 ? a : b;
 }
 
-export function ring_pattern(a: Color, b: Color, transform = Matrix.identity()) {
+export function ring_pattern(a: Color, b: Color, transform = Matrix.identity()): Pattern {
     return new Pattern(ring_function(a, b), transform);
 }
 
@@ -71,7 +70,7 @@ function checkers_function(a: Color, b: Color): PatternFunction {
     return (p: Tuple) => (Math.floor(p.x) + Math.floor(p.y) + Math.floor(p.z)) % 2 === 0 ? a : b;
 }
 
-export function checkers_pattern(a: Color, b: Color, transform = Matrix.identity()) {
+export function checkers_pattern(a: Color, b: Color, transform = Matrix.identity()): Pattern {
     return new Pattern(checkers_function(a, b), transform);
 }
 
@@ -82,15 +81,14 @@ function combine_function(x: Pattern, y: Pattern): PatternFunction {
     );
 }
 
-
-export function combine_pattern(a: Pattern, b: Pattern, transform = Matrix.identity()) {
+export function combine_pattern(a: Pattern, b: Pattern, transform = Matrix.identity()): Pattern {
     return new Pattern(combine_function(a, b), transform);
 }
 
 export function fill(c: Color): PatternFunction {
-    return (p: Tuple) => c;
+    return () => c;
 }
 
-export function fill_pattern(a: Color) {
+export function fill_pattern(a: Color): Pattern {
     return new Pattern(fill(a));
 }

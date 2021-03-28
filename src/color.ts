@@ -7,7 +7,8 @@ export class Color {
     static RED = new Color(1, 0, 0);
 
     static WHITE = new Color(1, 1, 1);
-    static CLEMSON_ORANGE = new Color(0.9647, 0.4039, 0.2);
+
+    // static CLEMSON_ORANGE = new Color(0.9647, 0.4039, 0.2);
 
     constructor(public readonly red: number,
                 public readonly green: number,
@@ -65,7 +66,7 @@ export class Color {
         return this.red + ' ' + this.green + ' ' + this.blue;
     }
 
-    asPPMString(): any {
+    asPPMString(): string {
         return Color.mapColor(this.red) + ' ' + Color.mapColor(this.green) + ' ' + Color.mapColor(this.blue);
     }
 
@@ -77,7 +78,6 @@ export class Color {
                 return this.green;
             default:
                 return this.blue;
-
         }
     }
 }
