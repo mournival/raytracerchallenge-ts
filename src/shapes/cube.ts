@@ -24,7 +24,7 @@ export class Cube extends Shape {
         const tmin = Math.max(xtmin, ytmin, ztmin);
         const tmax = Math.min(xtmax, ytmax, ztmax);
 
-        if (tmin > tmax) {
+        if (tmin > tmax || tmax < 0) {
             return [];
         }
         return [new Intersection(this, tmin), new Intersection(this, tmax)];

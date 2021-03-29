@@ -6,7 +6,7 @@ export class Canvas {
 
     constructor(public readonly width: number, public readonly height: number) {
         for (let h = 0; h < height; h++) {
-            let row: Color[] = [];
+            const row: Color[] = [];
             for (let w = 0; w < width; w++) {
                 row[w] = new Color(0, 0, 0);
             }
@@ -23,7 +23,7 @@ export class Canvas {
     }
 
     static canvas_to_ppm(canvas: Canvas): string[] {
-        let ppm = ['P3', canvas.width.toString() + ' ' + canvas.height.toString(), '255'];
+        const ppm = ['P3', canvas.width.toString() + ' ' + canvas.height.toString(), '255'];
 
         for (let h = 0; h < canvas.height; h++) {
             let r = '';

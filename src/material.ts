@@ -71,9 +71,9 @@ export class Material {
         if (light_dot_normal < 0) {
             return ambient;
         }
-        let diffuse: Color = effective_color.scale(this.diffuse * light_dot_normal);
+        const diffuse: Color = effective_color.scale(this.diffuse * light_dot_normal);
 
-        let specular: Color = Color.BLACK;
+        let specular: Color;
         const reflectv = Tuple.reflect(lightv.negative, normalv);
         const reflect_dot_eye = Tuple.dot(reflectv, eyev);
         if (reflect_dot_eye < Util.EPSILON) {

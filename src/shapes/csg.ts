@@ -24,13 +24,25 @@ export class CSG extends Shape {
         this.right = right.replace(this);
     }
 
+    static intersectionAllowed(op: CSGOperation, lhit: boolean, inl: boolean, inr: boolean): boolean {
+        switch (op) {
+            case CSGOperation.UNION:
+                return (lhit && !inr) || (!lhit && !inl);
+            case CSGOperation.INTERSECTION:
+                return (lhit && inr) || (!lhit && inl);
+            case CSGOperation.DIFFERENCE:
+                return (lhit && !inr) || (!lhit && inl);
+        }
+        return false;
+    }
+
     local_intersection(r: Ray): Intersection[] {
         const leftxs: Intersection[] = this.left.intersect(r);
         const rightxs: Intersection[] = this.right.intersect(r);
         return this.filter_intersections([...leftxs, ...rightxs].sort((a, b) => a.t - b.t));
     }
 
-    local_normal_at(pt: Tuple): Tuple {
+    local_normal_at(_pt: Tuple): Tuple {
         return vector(0, 1, 0);
     }
 
@@ -58,26 +70,14 @@ export class CSG extends Shape {
             ;
     }
 
-    static intersectionAllowed(op: CSGOperation, lhit: boolean, inl: boolean, inr: boolean): boolean {
-        switch (op) {
-            case CSGOperation.UNION:
-                return (lhit && !inr) || (!lhit && !inl);
-            case CSGOperation.INTERSECTION:
-                return (lhit && inr) || (!lhit && inl);
-            case CSGOperation.DIFFERENCE:
-                return (lhit && !inr) || (!lhit && inl);
-        }
-        return false;
-    }
-
     filter_intersections(xs: Intersection[]): Intersection[] {
         let inl = false;
         let inr = false;
 
-        let result: Intersection[] = [];
+        const result: Intersection[] = [];
 
         xs.forEach(i => {
-            let lhit = this.left.includes(i.obj);
+            const lhit = this.left.includes(i.obj);
 
             if (CSG.intersectionAllowed(this.operation, lhit, inl, inr)) {
                 result.push(i);

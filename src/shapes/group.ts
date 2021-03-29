@@ -25,7 +25,7 @@ export class Group extends Shape {
         return this.children.flatMap(x => x.intersect(r)).sort((a, b) => a.t - b.t);
     }
 
-    local_normal_at(pt: Tuple): Tuple {
+    local_normal_at(_pt: Tuple): Tuple {
         return vector(0, 0, 0);
     }
 

@@ -4,7 +4,7 @@ export type VectorElement = 'x' | 'y' | 'z' | 'w';
 
 export class Tuple {
 
-    private norm: number = -1;
+    private norm = -1;
 
     constructor(
         public readonly x: number,

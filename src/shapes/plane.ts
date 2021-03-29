@@ -24,7 +24,7 @@ export class Plane extends Shape {
         return [new Intersection(this, -r.origin.y / r.direction.y)];
     }
 
-    local_normal_at(pt: Tuple): Tuple {
+    local_normal_at(_pt: Tuple): Tuple {
         return vector(0, 1, 0);
     }
 

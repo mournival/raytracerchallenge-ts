@@ -29,14 +29,13 @@ export abstract class Shape implements Interceptable {
 
     local_includes(obj: Shape): boolean {
         return false
-    };
+    }
 
     abstract equals(rhs: Shape): boolean;
 
     normal_at(point: Tuple, hit: Intersection | null = null): Tuple {
         const local_point = this.world_to_object(point);
         const local_normal = hit != null ? this.local_normal_at(local_point, hit) : this.local_normal_at(local_point);
-
         return this.normal_to_world(local_normal);
     }
 
@@ -59,7 +58,6 @@ export abstract class Shape implements Interceptable {
         if (this.parent !== null) {
             p = this.parent.world_to_object(point);
         }
-
         return Matrix.multiplyVector(this.transform.inverse, p);
     }
 
@@ -74,12 +72,12 @@ export abstract class Shape implements Interceptable {
         return n;
     }
 
-    includes(obj: Shape) {
+    includes(obj: Shape): boolean {
         return Shape.equals(this, obj) || this.local_includes(obj);
     }
 }
 
-export function isShape(arg: any) {
-    return arg instanceof Shape ;
+export function isShape(arg: any): boolean {
+    return arg instanceof Shape;
 }
 
