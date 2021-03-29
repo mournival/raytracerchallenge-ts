@@ -1,4 +1,3 @@
-#noinspection CucumberUndefinedStep
 Feature: Canvas
 
   Scenario: Creating a canvas

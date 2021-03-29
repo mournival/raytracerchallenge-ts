@@ -77,7 +77,7 @@ const world = new World([
         foxObj
     ]);
 
-const camera = new Camera(Math.floor(3200 / 4), Math.floor(2400 / 4), Math.PI / 3,
+const camera = new Camera(Math.floor(3200 / 8), Math.floor(2400 / 8), Math.PI / 3,
     view_transform(
         point(5, 35, -140),
         point(0, 35, 0),

@@ -1,4 +1,3 @@
-#noinspection CucumberUndefinedStep
 Feature: Abstract Shapes
 
   Scenario: The default transformation

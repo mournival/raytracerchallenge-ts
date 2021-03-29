@@ -1,4 +1,3 @@
-#noinspection CucumberUndefinedStep
 Feature: Triangles
 
   Scenario: Constructing a triangle

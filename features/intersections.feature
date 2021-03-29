@@ -1,4 +1,3 @@
-#noinspection CucumberUndefinedStep
 Feature: Intersections
 
   Scenario: An intersection encapsulates t and object

@@ -3,7 +3,6 @@ import {shouldEqualMsg, Workspace} from './Workspace';
 import {SmoothTriangle} from '../../src/shapes/smooth-triangle';
 import {point, Tuple, vector} from '../../src/tuple';
 import {expect} from 'chai';
-import {fail} from 'assert';
 import {parseArg} from '../../src/util';
 
 @binding([Workspace])
@@ -39,7 +38,7 @@ class SmoothTrianglesSteps {
                 actual = (this.workspace.shapes[smoothTriangleId] as SmoothTriangle).n3;
                 break;
             default:
-                fail('Unexpected normal id');
+                throw new Error('Unexpected normal id');
                 actual = vector(0, 0, 0);
         }
         const expected = this.workspace.tuples[vertexId];

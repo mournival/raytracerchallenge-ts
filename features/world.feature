@@ -1,4 +1,3 @@
-#noinspection CucumberUndefinedStep
 Feature: World
 
   Scenario: Creating a world

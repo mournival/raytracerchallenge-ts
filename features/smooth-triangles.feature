@@ -1,4 +1,3 @@
-#noinspection CucumberUndefinedStep
 Feature: Smooth Triangles
 
   Background:

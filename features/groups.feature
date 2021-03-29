@@ -1,4 +1,3 @@
-#noinspection CucumberUndefinedStep
 Feature: Groups
 
   Scenario: Creating a new group

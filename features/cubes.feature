@@ -1,4 +1,3 @@
-#noinspection CucumberUndefinedStep
 Feature: Cubes
 
   Scenario Outline: A ray intersects a cube

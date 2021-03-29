@@ -44,14 +44,7 @@ export class World {
     }
 
     intersect_world(r: Ray): Intersection[] {
-        // Require Node Version 11+
         return this.objects.flatMap(o => o.intersect(r));
-
-        // for Node Version < 11
-        // const xs: Intersection[] = [];
-        // this.objects.map(o => o.intersect(r)).forEach(xss => xs.push(...xss));
-        // xs.sort((a, b) => a.t - b.t);
-        // return xs;
     }
 
     shade_hit(pc: PreComputations, remaining: number): Color {

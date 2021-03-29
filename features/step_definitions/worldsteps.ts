@@ -4,7 +4,6 @@ import {default_world, World} from '../../src/world';
 import {expect} from 'chai';
 import {Color} from '../../src/color';
 import {glass_sphere, Sphere} from '../../src/shapes/sphere';
-import {fail} from 'assert';
 import {Matrix, scaling, translation} from '../../src/matrix';
 import {Material} from '../../src/material';
 import {PreComputations} from '../../src/pre-computations';
@@ -228,7 +227,7 @@ function parseRawTable(data: string[][], shapeType = 'sphere'): Shape {
                 t = parseMatrixOp(data[r][1]);
                 break;
             default:
-                fail('Unexpected field');
+                throw new Error('Unexpected field');
                 break;
         }
     }
@@ -241,7 +240,7 @@ function parseRawTable(data: string[][], shapeType = 'sphere'): Shape {
     } else if (shapeType === 'plane') {
         return new Plane(t, m);
     }
-    fail('Unexpected Object type : ' + shapeType);
+    throw new Error('Unexpected Object type : ' + shapeType);
     return new Sphere();
 
 }
@@ -256,7 +255,7 @@ function parseMatrixOp(s: string): Matrix {
             return translation(parseArg(fields[2]), parseArg(fields[3]), parseArg(fields[4]));
         }
     }
-    fail('Unexpected field');
+    throw new Error('Unexpected field');
     return new Matrix(0, 0);
 }
 
@@ -265,7 +264,7 @@ function parseColor(s: string): Color {
     if (fields) {
         return new Color(parseArg(fields[1]), parseArg(fields[2]), parseArg(fields[3]));
     }
-    fail('Unexpected field');
+    throw new Error('Unexpected field');
     return Color.BLACK;
 }
 

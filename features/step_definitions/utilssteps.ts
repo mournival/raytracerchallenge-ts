@@ -46,7 +46,7 @@ export class UtilsSteps {
                 )).to.be.false
                 break
             default:
-                fail()
+                throw new Error()
         }
     }
 }

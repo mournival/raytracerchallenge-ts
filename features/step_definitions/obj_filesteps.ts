@@ -6,7 +6,6 @@ import {parseArg} from '../../src/util';
 import {point, Tuple, vector} from '../../src/tuple';
 import {Group} from '../../src/shapes/group';
 import {Shape, SmoothTriangle, Triangle} from '../../src/shapes';
-import {fail} from 'assert';
 
 const fs = require('fs');
 
@@ -72,7 +71,7 @@ class ObjFileSteps {
                 actual = t.p3;
                 break;
             default:
-                fail('Unexpected vertex');
+                throw new Error('Unexpected vertex');
                 actual = point(0, 0, 0);
         }
         const expected = this.workspace.parsers[parserId].vertices[parseArg(vertexId) - 1];
@@ -132,7 +131,7 @@ class ObjFileSteps {
                 actual = t.n3;
                 break;
             default:
-                fail('Unexpected vertex');
+                throw new Error('Unexpected vertex');
                 actual = point(0, 0, 0);
         }
         const expected = this.workspace.parsers[parserId].normals[parseArg(normalId) - 1];

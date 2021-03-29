@@ -3,7 +3,6 @@ import {shouldEqualMsg, Workspace} from './Workspace';
 import {expect} from 'chai';
 import {Matrix} from '../../src/matrix';
 import {Tuple} from '../../src/tuple';
-import {fail} from 'assert';
 import {parseArg, Util} from '../../src/util';
 
 @binding([Workspace])
@@ -192,7 +191,7 @@ class MatricesSteps {
         } else if (this.workspace.tuples[rhsId]) {
             this.workspace.tuples[matCId] = Matrix.multiplyVector(this.workspace.matrices[lhsId], this.workspace.tuples[rhsId]);
         } else {
-            fail('Could not figure out which ops to test')
+            throw new Error('Could not figure out which ops to test')
         }
     }
 

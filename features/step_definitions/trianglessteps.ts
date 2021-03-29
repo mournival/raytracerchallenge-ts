@@ -3,7 +3,6 @@ import {shouldEqualMsg, Workspace} from './Workspace';
 import {Triangle} from '../../src/shapes/triangle';
 import {point, Tuple, vector} from '../../src/tuple';
 import {expect} from 'chai';
-import {fail} from 'assert';
 import {parseArg} from '../../src/util';
 
 @binding([Workspace])
@@ -36,7 +35,7 @@ class TrianglesSteps {
                 actual = (this.workspace.shapes[triangleId] as Triangle).p3;
                 break;
             default:
-                fail('Unexpected vertex id');
+                throw new Error('Unexpected vertex id');
                 actual = vector(0, 0, 0);
         }
         const expected = this.workspace.tuples[vertexId];
@@ -54,7 +53,7 @@ class TrianglesSteps {
                 actual = (this.workspace.shapes[triangleId] as Triangle).e2;
                 break;
             default:
-                fail('Unexpected edge id');
+                throw new Error('Unexpected edge id');
                 actual = vector(0, 0, 0);
         }
         const expected = vector(parseArg(x), parseArg(y), parseArg(z));

@@ -1,4 +1,3 @@
-#noinspection CucumberUndefinedStep
 Feature: Matrices
 
   Scenario: Constructing and inspecting a 4x4 matrix

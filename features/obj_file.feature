@@ -1,4 +1,3 @@
-#noinspection CucumberUndefinedStep
 Feature: OBJ File Parser
 
   Scenario: Ignoring unrecognized lines
