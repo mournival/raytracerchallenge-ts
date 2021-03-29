@@ -21,18 +21,16 @@ export class Cylinder extends Shape {
 
     local_intersection(r: Ray): Intersection[] {
         const a = r.direction.x * r.direction.x + r.direction.z * r.direction.z;
-
-        if (Util.closeTo(a, 0)) {
-            return this.intersect_cap(r);
-        }
-
-        const b = 2 * r.origin.x * r.direction.x
-            + 2 * r.origin.z * r.direction.z;
+        const b = 2 * r.origin.x * r.direction.x + 2 * r.origin.z * r.direction.z;
         const c = r.origin.x * r.origin.x + r.origin.z * r.origin.z - 1;
 
         const disc = b * b - 4 * a * c;
         if (disc < 0) {
             return []
+        }
+
+        if (Util.closeTo(a, 0)) {
+            return this.intersect_cap(r);
         }
 
         let t0 = (-b - Math.sqrt(disc)) / (2 * a)
@@ -86,12 +84,12 @@ export class Cylinder extends Shape {
     }
 
     intersect_cap(r: Ray): Intersection[] {
-        const xs: Intersection[] = [];
         const dir_y = r.direction.y;
         if (!this.closed || Util.closeTo(dir_y, 0)) {
-            return xs;
+            return []
         }
 
+        const xs: Intersection[] = [];
         const t0 = (this.minimum - r.origin.y) / dir_y;
         if (this.check_cap(r, t0)) {
             xs.push(new Intersection(this, t0));

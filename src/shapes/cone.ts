@@ -20,15 +20,14 @@ export class Cone extends Shape {
     }
 
     local_intersection(r: Ray): Intersection[] {
-        const a = r.direction.x * r.direction.x
-            - r.direction.y * r.direction.y
-            + r.direction.z * r.direction.z;
-        const b = 2 * r.origin.x * r.direction.x
-            - 2 * r.origin.y * r.direction.y
-            + 2 * r.origin.z * r.direction.z;
-        const c = r.origin.x * r.origin.x
-            - r.origin.y * r.origin.y
-            + r.origin.z * r.origin.z;
+        const a = r.direction.x * r.direction.x - r.direction.y * r.direction.y + r.direction.z * r.direction.z;
+        const b = 2 * r.origin.x * r.direction.x - 2 * r.origin.y * r.direction.y + 2 * r.origin.z * r.direction.z;
+        const c = r.origin.x * r.origin.x - r.origin.y * r.origin.y + r.origin.z * r.origin.z;
+
+        const disc = b * b - 4 * a * c;
+        if (disc < 0) {
+            return []
+        }
 
         if (Util.closeTo(a, 0)) {
             if (!Util.closeTo(b, 0)) {
@@ -38,11 +37,6 @@ export class Cone extends Shape {
                 ];
             }
             return this.intersect_cap(r);
-        }
-
-        const disc = b * b - 4 * a * c;
-        if (disc < 0) {
-            return []
         }
 
         let t0 = (-b - Math.sqrt(disc)) / (2 * a)
@@ -102,12 +96,12 @@ export class Cone extends Shape {
     }
 
     intersect_cap(r: Ray): Intersection[] {
-        const xs: Intersection[] = [];
         const dir_y = r.direction.y;
         if (!this.closed || Util.closeTo(dir_y, 0)) {
-            return xs;
+            return [];
         }
 
+        const xs: Intersection[] = [];
         const t0 = (this.minimum - r.origin.y) / dir_y;
         if (this.check_cap(r, t0, this.minimum)) {
             xs.push(new Intersection(this, t0));
@@ -129,7 +123,6 @@ export class Cone extends Shape {
             && Material.equals(this.material, rhs.material)
             // && this.parent.equals(rhs.parent)
             ;
-
     }
 
 }

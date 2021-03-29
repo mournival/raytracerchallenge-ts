@@ -7,7 +7,7 @@ import {Matrix, rotation_x, rotation_y, scaling, translation, view_transform} fr
 import {Material} from '../material';
 import {World} from '../world';
 import {Camera} from '../camera';
-import {Cone, Plane} from '../shapes';
+import {Cone, Cylinder, Plane} from '../shapes';
 import {checkers_pattern, combine_pattern, gradient_pattern} from '../pattern';
 import {Light} from '../light';
 
@@ -24,20 +24,16 @@ function saveFile(canvas: any) {
 
 const quarterPi = Math.PI / 4;
 
-const reflectiveCheckers = new Material(new Color(.67, 0.67, 0.67), 0.1, 0.9, 0, 200, 0, 0, 1).replace('reflective', 0.25).replace('pattern',
-    combine_pattern(
-        gradient_pattern(new Color(0.33, 0.33, 0.33), new Color(0.66, 0.66, 0.66), rotation_y(Math.PI / 2)),
+const checkers = new Material(new Color(.67, 0.67, 0.67), 0.1, 0.9, 0, 200, 0, 0, 1).replace('reflective', 0.25).replace('pattern',
         checkers_pattern(new Color(0.66, 0.66, 0.66), new Color(0.33, 0.33, 0.33), scaling(0.2, 0.2, 0.2))
-    )
 );
 
-const floor = new Plane(
-    translation(0, -2, 0)
-    , reflectiveCheckers,
-);
+const floor = new Plane(translation(0, -2, 0), checkers,);
 
 const cone = new Cone(
-    rotation_x(-quarterPi / 2),
+// const cone = new Cylinder(
+    Matrix.identity(),
+    // rotation_x(-quarterPi / 2),
     new Material(Color.RED, 0.2, 0.9, 1, 200)
     , -2, 2, true
 );
@@ -51,9 +47,9 @@ const world = new World([
         cone
     ]);
 
-const camera = new Camera(Math.floor(3200 / 4), Math.floor(2400 / 4), Math.PI / 4,
+const camera = new Camera(Math.floor(3200 / 8), Math.floor(2400 / 8), Math.PI / 6,
     view_transform(
-        point(0, 5, -15),
+        point(0, 5, -10),
         point(0, 0, 1),
         vector(0, 1, 0)
     )
