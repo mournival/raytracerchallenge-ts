@@ -59,9 +59,7 @@ export class World {
         let surface = Color.BLACK;
         this.lights.forEach(l => surface = Color.add(
             surface,
-            material.lighting(
-                pc.point, pc.eyev, pc.normalv, l, this.is_shadowed(pc.over_point, l), pc.object
-            )
+            material.lighting(pc.point, pc.eyev, pc.normalv, l, this.is_shadowed(pc.over_point, l), pc.object)
         ));
 
         let reflected = this.reflected_color(pc, remaining);
@@ -69,7 +67,7 @@ export class World {
         if (material.reflective > 0 && material.transparency > 0) {
             const reflectance = pc.schlick();
             reflected = reflected.scale(reflectance);
-            refracted = refracted.scale(1 - reflectance);
+            refracted = refracted.scale((1 - reflectance));
         }
         return Color.add(surface, Color.add(refracted, reflected));
     }
