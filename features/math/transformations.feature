@@ -114,21 +114,15 @@ Feature: Matrix Transformations
     And A ← rotation_x(π / 2)
     And B ← scaling(5, 5, 5)
     And C ← translation(10, 5, 7)
-    ## updated to use existing step defs
-#    When T ← C * B * A
-    When U ← C * B
-    And T ← U * A
+    When T ← C * B * A
     Then T * p = point(15, 0, 7)
 
   Scenario: The transformation matrix for the default orientation
     Given from ← point(0, 0, 0)
     And to ← point(0, 0, -1)
     And up ← vector(0, 1, 0)
-## updated to use existing step defs
-    And I ← identity_matrix
     When t ← view_transform(from, to, up)
-#    Then t = identity_matrix
-    Then matrix t = matrix I
+    Then t = identity_matrix
 
   Scenario: A view transformation matrix looking in positive z direction
     Given from ← point(0, 0, 0)

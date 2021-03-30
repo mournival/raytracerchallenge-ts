@@ -13,14 +13,24 @@ export const matricesSteps: StepDefinitions = ({given, and, when, then}) => {
         }
     )
 
-    given(/the following (\d+)x(\d+) matrix (\w+):/, (rows: string, cols: string, matId: string, data) => {
-            matrices[matId] = new Matrix(parseInt(cols), parseInt(rows));
-            for (let r = 0; r < parseInt(rows); ++r) {
-                const row = data[r];
-                for (let c = 0; c < parseInt(cols); ++c) {
-                    matrices[matId].set(r, c, parseArg(row[`col${c}`]));
-                }
+    function parseMatrixTable(cols: string, rows: string, data: DataTableType): Matrix {
+        const M = new Matrix(parseInt(cols), parseInt(rows));
+        for (let r = 0; r < parseInt(rows); ++r) {
+            const row = data[r];
+            for (let c = 0; c < parseInt(cols); ++c) {
+                M.set(r, c, parseArg(row[`col${c}`]));
             }
+        }
+        return M;
+    }
+
+    given(/the following (\d+)x(\d+) matrix (\w+):/, (rows: string, cols: string, matId: string, data) => {
+            matrices[matId] = parseMatrixTable(cols, rows, data);
+        }
+    )
+
+    given(/inverse\((\w+)\) is the following (\d+)x(\d+) matrix:/, (matId: string, rows: string, cols: string, data) => {
+            matrices[matId] = parseMatrixTable(cols, rows, data).inverse
         }
     )
 
@@ -70,22 +80,28 @@ export const matricesSteps: StepDefinitions = ({given, and, when, then}) => {
         }
     })
 
+    when(/^T ← C \* B \* A$/, () => {
+        matrices['T'] = Matrix.multiply((Matrix.multiply(matrices['C'], matrices['B'])), matrices['A']);
+    })
+
     then(/^(\w+)\[(\d+),(\d+)] = (.*)$/,
         (matId: string, row: string, col: string, expectedValue: string) => {
             const actual = matrices[matId].get(parseInt(row), parseInt(col));
             expect(actual).toBeCloseTo(parseArg(expectedValue), Util.EPSILON);
         })
 
-    then(/^matrix (\w+) = matrix (\w+)$/, (a, b) => {
+    then(/^([ABCt]) = ([ABCI]|identity_matrix)$/, (a, b) => {
         expect(Matrix.equals(matrices[a], matrices[b])).toBeTruthy();
     })
 
-    then(/^matrix A != matrix B$/, () => {
-        expect(Matrix.equals(matrices['A'], matrices['B'])).toBeFalsy();
+    then(/^C \* inverse\(B\) = A$/, () => {
+        const actual = Matrix.multiply(matrices['C'], matrices['B'].inverse);
+        const expected = matrices['A'];
+        expect(Matrix.equals(actual, expected)).toBeTruthy();
     })
 
-    then(/^matrix B != matrix A$/, () => {
-        expect(Matrix.equals(matrices['B'], matrices['A'])).toBeFalsy();
+    then(/^([AB]) != ([AB])$/, (lhs: string, rhs: string) => {
+        expect(Matrix.equals(matrices[lhs], matrices[rhs])).toBeFalsy();
     })
 
     then(/^(\w+) \* (\w+) is the following 4x4 matrix:$/,
