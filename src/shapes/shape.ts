@@ -77,7 +77,7 @@ export abstract class Shape implements Interceptable {
     }
 }
 
-export function isShape(arg: object): boolean {
+export function isShape(arg: any): boolean {
     return arg instanceof Shape;
 }
 
