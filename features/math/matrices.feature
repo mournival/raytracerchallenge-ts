@@ -48,9 +48,9 @@ Feature: Matrices
       | 5    | 6    | 7    | 8    |
       | 9    | 8    | 7    | 6    |
       | 5    | 4    | 3    | 2    |
-    Then A = B
+    Then matrix A = matrix B
 
-  Scenario: Matrix inequality with different matrices
+  Scenario: Matrix equality with different matrices
     Given the following matrix A:
       | col0 | col1 | col2 | col3 |
       | 1    | 2    | 3    | 4    |
@@ -63,7 +63,40 @@ Feature: Matrices
       | 6    | 7    | 8    | 9    |
       | 8    | 7    | 6    | 5    |
       | 4    | 3    | 2    | 1    |
-    Then A != B
+    Then matrix A != matrix B
+
+  Scenario: Matrix equality with different dim(rows) matrices
+    Given the following matrix A:
+      | col0 | col1 | col2 | col3 |
+      | 1    | 2    | 3    | 4    |
+      | 5    | 6    | 7    | 8    |
+      | 9    | 8    | 7    | 6    |
+      | 5    | 4    | 3    | 2    |
+    And the following matrix B:
+      | col0 | col1 | col2 | col3 |
+      | 2    | 3    | 4    | 5    |
+      | 6    | 7    | 8    | 9    |
+      | 8    | 7    | 6    | 5    |
+      | 4    | 3    | 2    | 1    |
+      | 5    | 4    | 3    | 2    |
+    Then matrix A != matrix B
+    And matrix B != matrix A
+
+  Scenario: Matrix equality with different dim(col) matrices
+    Given the following matrix A:
+      | col0 | col1 | col2 | col3 |
+      | 1    | 2    | 3    | 4    |
+      | 5    | 6    | 7    | 8    |
+      | 9    | 8    | 7    | 6    |
+      | 5    | 4    | 3    | 2    |
+    And the following matrix B:
+      | col0 | col1 | col2 | col3 | col4 |
+      | 2    | 3    | 4    | 5    | 6    |
+      | 6    | 7    | 8    | 9    | 7    |
+      | 8    | 7    | 6    | 5    | 8    |
+      | 4    | 3    | 2    | 1    | 9    |
+    Then matrix A != matrix B
+    And matrix B != matrix A
 
   Scenario: Multiplying two matrices
     Given the following matrix A:
@@ -124,8 +157,22 @@ Feature: Matrices
       | 0    | 8    | 3    | 8    |
 
   Scenario: Transposing the identity matrix
-    Given A ← transpose(identity_matrix)
-    Then A = identity_matrix
+    Given A ← identity_matrix
+    When B ← transpose(A)
+    Then matrix A = matrix B
+
+  Scenario: Transposing a non-square matrix
+    Given the following matrix A:
+      | col0 | col1 | col2 |
+      | 0    | 9    | 3    |
+      | 9    | 8    | 0    |
+      | 1    | 8    | 5    |
+      | 0    | 0    | 5    |
+    Then transpose(A) is the following matrix:
+      | col0 | col1 | col2 | col3 |
+      | 0    | 9    | 1    | 0    |
+      | 9    | 8    | 8    | 0    |
+      | 3    | 0    | 5    | 5    |
 
   Scenario: Calculating the determinant of a 2x2 matrix
     Given the following 2x2 matrix A:
@@ -250,7 +297,9 @@ Feature: Matrices
       | 7    | 5    | 6    | 1    |
       | -6   | 0    | 9    | 6    |
       | -3   | 0    | -9   | -4   |
-    Then inverse(A) is the following 4x4 matrix:
+    ## rewrite using existing rules
+    When B ← inverse(A)
+    Then B is the following 4x4 matrix:
       | col0     | col1     | col2     | col3     |
       | -0.15385 | -0.15385 | -0.28205 | -0.53846 |
       | -0.07692 | 0.12308  | 0.02564  | 0.03077  |
@@ -264,7 +313,9 @@ Feature: Matrices
       | -5   | -2   | -6   | -3   |
       | -4   | 9    | 6    | 4    |
       | -7   | 6    | 6    | 2    |
-    Then inverse(A) is the following 4x4 matrix:
+    ## rewrite using existing rules
+    When B ← inverse(A)
+    Then B is the following 4x4 matrix:
       | col0     | col1     | col2     | col3     |
       | -0.04074 | -0.07778 | 0.14444  | -0.22222 |
       | -0.07778 | 0.03333  | 0.36667  | -0.33333 |
@@ -284,18 +335,21 @@ Feature: Matrices
       | 3    | -1   | 7    | 0    |
       | 7    | 0    | 5    | 4    |
       | 6    | -2   | 0    | 5    |
-    And C ← A * B
-    Then C * inverse(B) = A
+#    And C ← A * B
+#    Then C * inverse(B) = A
+    ## rewrite using existing rules
+    When C ← A * B
+    And D ← inverse(B)
+    And E ← C * D
+    Then matrix E = matrix A
 
-  #
-  # Mournival Additions
-  #
-  #Putting it together question (Not in original
+
+#Putting it together question (Not in original
   Scenario: Multiplying an identity matrix by its inverse
     Given A ← identity_matrix(4)
     And B ← inverse(A)
     When C ← A * B
-    Then C = A
+    Then matrix C = matrix A
 
   Scenario: Inverting the identity matrix
     Given A ← identity_matrix(4)
@@ -317,7 +371,7 @@ Feature: Matrices
       | -6   | 5    | -1   | 1    |
     And B ← inverse(A)
     When C ← A * B
-    Then C = I
+    Then matrix C = matrix I
 
   Scenario: inverse(A)^T is = inverse(A^T)
     Given the following 4x4 matrix A:
@@ -330,7 +384,7 @@ Feature: Matrices
     And C ← transpose(AI)
     And AT ← transpose(A)
     And B ← inverse(AT)
-    Then C = B
+    Then matrix C = matrix B
 
   Scenario: 4
     Given the following 4x4 matrix A:
@@ -341,68 +395,3 @@ Feature: Matrices
       | 0    | 0    | 0    | 1    |
     And v ← vector(1, 2, 3)
     Then A * v = tuple(1, -16, 3, 0)
-
-  Scenario: Matrix equality with different matrices
-    Given the following matrix A:
-      | col0 | col1 | col2 | col3 |
-      | 1    | 2    | 3    | 4    |
-      | 5    | 6    | 7    | 8    |
-      | 9    | 8    | 7    | 6    |
-      | 5    | 4    | 3    | 2    |
-    And the following matrix B:
-      | col0 | col1 | col2 | col3 |
-      | 2    | 3    | 4    | 5    |
-      | 6    | 7    | 8    | 9    |
-      | 8    | 7    | 6    | 5    |
-      | 4    | 3    | 2    | 1    |
-    Then A != B
-
-    Given A ← identity_matrix
-    When B ← transpose(A)
-    Then A = B
-
-  Scenario: Transposing a non-square matrix
-    Given the following matrix A:
-      | col0 | col1 | col2 |
-      | 0    | 9    | 3    |
-      | 9    | 8    | 0    |
-      | 1    | 8    | 5    |
-      | 0    | 0    | 5    |
-    Then transpose(A) is the following matrix:
-      | col0 | col1 | col2 | col3 |
-      | 0    | 9    | 1    | 0    |
-      | 9    | 8    | 8    | 0    |
-      | 3    | 0    | 5    | 5    |
-
-  Scenario: Calculating the inverse of a fourth matrix
-    Given the following 4x4 matrix A:
-      | col0 | col1 | col2 | col3 |
-      | 8    | -5   | 9    | 2    |
-      | 7    | 5    | 6    | 1    |
-      | -6   | 0    | 9    | 6    |
-      | -3   | 0    | -9   | -4   |
-    ## rewrite using existing rules
-    When B ← inverse(A)
-    Then B is the following 4x4 matrix:
-      | col0     | col1     | col2     | col3     |
-      | -0.15385 | -0.15385 | -0.28205 | -0.53846 |
-      | -0.07692 | 0.12308  | 0.02564  | 0.03077  |
-      | 0.35897  | 0.35897  | 0.43590  | 0.92308  |
-      | -0.69231 | -0.69231 | -0.76923 | -1.92308 |
-
-  Scenario: Calculating the inverse of a fifth matrix
-    Given the following 4x4 matrix A:
-      | col0 | col1 | col2 | col3 |
-      | 9    | 3    | 0    | 9    |
-      | -5   | -2   | -6   | -3   |
-      | -4   | 9    | 6    | 4    |
-      | -7   | 6    | 6    | 2    |
-    ## rewrite using existing rules
-    When B ← inverse(A)
-    Then B is the following 4x4 matrix:
-      | col0     | col1     | col2     | col3     |
-      | -0.04074 | -0.07778 | 0.14444  | -0.22222 |
-      | -0.07778 | 0.03333  | 0.36667  | -0.33333 |
-      | -0.02901 | -0.14630 | -0.10926 | 0.12963  |
-      | 0.17778  | 0.06667  | -0.26667 | 0.33333  |
-    
